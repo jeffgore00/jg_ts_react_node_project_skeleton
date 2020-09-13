@@ -1,0 +1,69 @@
+{
+  "name": "jg-ts-react-node-project-skeleton",
+  "version": "0.1.0",
+  "description": "Jeff Gore's skeleton for TypeScript React-Node projects.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "jest",
+    "test:browser": "wdio wdio.conf.js",
+    "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone"
+  },
+  "author": "Jeff Gore",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-media": "^1.10.0",
+    "styled-components": "^5.1.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@testing-library/react": "^9.4.1",
+    "@types/jest": "^25.1.3",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@types/styled-components": "^5.1.3",
+    "@typescript-eslint/eslint-plugin": "^2.28.0",
+    "@typescript-eslint/parser": "^2.28.0",
+    "@wdio/cli": "^6.4.6",
+    "@wdio/jasmine-framework": "^6.4.0",
+    "@wdio/local-runner": "^6.4.6",
+    "@wdio/spec-reporter": "^6.4.0",
+    "@wdio/sync": "^6.4.6",
+    "chromedriver": "^85.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^7.2.1",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "husky": "^4.2.1",
+    "jest": "^25.1.0",
+    "lint-staged": "^10.1.6",
+    "prettier": "^2.0.4",
+    "source-map-loader": "^0.2.4",
+    "ts-jest": "^25.2.1",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^9.0.0",
+    "typescript": "^3.7.5",
+    "wdio-chromedriver-service": "^6.0.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}

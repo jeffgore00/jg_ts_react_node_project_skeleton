@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "lib": ["dom", "esnext"],
+    "esModuleInterop": true,
+    "types": [
+      "node",
+      "@wdio/sync",
+      "@wdio/jasmine-framework",
+      "jest",
+      "react",
+      "react-dom",
+      "styled-components"
+    ]
+  },
+  "include": ["src", "browser-tests", "test-utils","."]
+}
