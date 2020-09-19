@@ -2,7 +2,7 @@
 import Page from './page';
 
 class HomePage extends Page {
-  get heading() : WebdriverIO.Element {
+  get heading(): WebdriverIO.Element {
     return $('h1');
   }
 
@@ -10,7 +10,7 @@ class HomePage extends Page {
     return this.heading.waitForDisplayed();
   }
 
-  open() : void {
+  open(): void {
     return super.open();
   }
 }

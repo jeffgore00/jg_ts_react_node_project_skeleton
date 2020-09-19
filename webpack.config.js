@@ -1,7 +1,8 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: process.env.NODE_ENV || 'production',
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
   resolve: {
@@ -45,4 +46,20 @@ module.exports = {
     react: 'React',
     'react-dom': 'ReactDOM',
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      ...(process.env.NODE_ENV === 'development'
+        ? {
+            reactUrl: 'https://unpkg.com/react@16/umd/react.development.js',
+            reactDomUrl:
+              'https://unpkg.com/react-dom@16/umd/react-dom.development.js',
+          }
+        : {
+            reactUrl: 'https://unpkg.com/react@16/umd/react.production.min.js',
+            reactDomUrl:
+              'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+          }),
+      template: 'public/index-template.html',
+    }),
+  ],
 };

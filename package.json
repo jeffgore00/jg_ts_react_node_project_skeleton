@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "build:dev": "NODE_ENV=development webpack",
+    "start": "node -r ts-node/register src/server/index.ts",
+    "start:dev": "nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'",
     "test": "jest",
     "test:browser": "wdio wdio.conf.js",
-    "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
-    "start:dev": "nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'"
+    "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone"
   },
   "author": "Jeff Gore",
   "license": "ISC",
@@ -47,6 +49,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
+    "html-webpack-plugin": "^4.4.1",
     "husky": "^4.2.1",
     "jest": "^25.1.0",
     "lint-staged": "^10.1.6",

@@ -3,7 +3,7 @@ import express, { RequestHandler, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
-import apiRoutes from './api';
+import apiRouter from './routers/api';
 
 const app = express();
 
@@ -17,29 +17,21 @@ app.use(express.static(path.join(__dirname, '../..', 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// 'API' routes
-// app.use('/api', apiRoutes);
-
-// 404 middleware
-const notFoundMiddleware: RequestHandler = (req, res, next) => {
-  if (path.extname(req.path).length > 0) {
-    res.status(404).send('Not found');
-  }
-  next();
-};
-
-app.use(notFoundMiddleware);
-
-// send index.html
-const sendHomepageMiddleware: RequestHandler = (req, res) =>
+// custom middleware
+const sendHomepage: RequestHandler = (req, res) =>
   res.sendFile(path.join(__dirname, '../..', 'public/index.html'));
 
-app.use('*', sendHomepageMiddleware);
+const sendResourceNotFound: RequestHandler = (req, res) => {
+  res.status(404).send(`Path ${req.path} not found on this server.`);
+};
 
-// error handling endware
-const errorHandlingMiddleware: ErrorRequestHandler = (err, req, res) =>
+const sendErrorResponse: ErrorRequestHandler = (err, req, res) =>
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 
-app.use(errorHandlingMiddleware);
+// apply custom middleware
+app.get('/', sendHomepage);
+app.use('/api', apiRouter);
+app.use(sendResourceNotFound);
+app.use(sendErrorResponse);
 
 export default app;

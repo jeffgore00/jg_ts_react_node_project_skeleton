@@ -19,5 +19,5 @@
       "express"
     ]
   },
-  "include": ["src", "browser-tests", "test-utils","."]
+  "include": ["src", "test-browser", "test-utils","."]
 }
