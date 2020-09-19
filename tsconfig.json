@@ -8,6 +8,7 @@
     "jsx": "react",
     "lib": ["dom", "esnext"],
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "types": [
       "node",
       "@wdio/sync",

@@ -13,7 +13,7 @@ const app = express();
 
 // apply third-party middleware
 // logging
-app.use(morgan('dev'));
+if (app.get('env') !== 'test') app.use(morgan('dev'));
 
 // ......
 app.use(express.static(path.join(__dirname, '../..', 'public')));

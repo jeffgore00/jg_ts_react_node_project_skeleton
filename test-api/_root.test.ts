@@ -5,28 +5,28 @@ import path from 'path';
 import app from '../src/server/app';
 
 describe('GET /', () => {
+  const indexHtmlPath = path.join(__dirname, '../public/index.html');
+
   describe('When public/index.html exists', () => {
-    let noHtmlBuild = false;
-    const indexHtmlPath = path.join(__dirname, '../public/index.html');
+    /* The index.html is generated from a template on the build step and is not
+    committed to source control. Therefore this file is not guaranteed to exist
+    before the test begins.
+
+    Therefore this `describe` will create a dummy HTML file and delete it after
+    the test completes to ensure a consistent test precondition. */
+    let htmlExistedPriorToTest = true;
 
     beforeAll(() => {
       try {
         fs.readFileSync(indexHtmlPath);
       } catch (err) {
-        fs.writeFileSync(
-          indexHtmlPath,
-          `<html>
-            <head>
-                <meta charset="UTF-8" />
-            </head>
-            </html>`
-        );
-        noHtmlBuild = true;
+        htmlExistedPriorToTest = false;
+        fs.writeFileSync(indexHtmlPath, '<html></html>');
       }
     });
 
     afterAll(() => {
-      if (noHtmlBuild) {
+      if (!htmlExistedPriorToTest) {
         fs.unlinkSync(indexHtmlPath);
       }
     });
@@ -41,15 +41,20 @@ describe('GET /', () => {
   });
 
   describe('When public/index.html does not exist', () => {
+    /* The index.html is generated from a template on the build step and is not
+    committed to source control. Still, it could already exist as the result of
+    the local development process.
+
+    Therefore this `describe` will delete any existing index.html file and
+    restore it after completes to ensure a consistent test precondition. */
     let preexistingHtml = '';
-    const indexHtmlPath = path.join(__dirname, '../public/index.html');
 
     beforeAll(() => {
       try {
         preexistingHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
         fs.unlinkSync(indexHtmlPath);
       } catch (err) {
-        // do nothing, no index.html in build folder
+        // do nothing, a missing index.html is what we want for this test.
       }
     });
 
@@ -67,8 +72,8 @@ describe('GET /', () => {
   });
 });
 
-describe('When the requested HTTP method + route combination is not recognized', () => {
-  it('responds with 404', async () => {
+describe('When the requested HTTP operation is not recognized', () => {
+  it('responds with 404 and restates the unrecognized operation in an error message', async () => {
     let response = await request(app).get('/puppies');
     expect(response.status).toEqual(404);
     expect(response.text).toEqual(
