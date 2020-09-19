@@ -7,11 +7,15 @@
     "build": "webpack",
     "test": "jest",
     "test:browser": "wdio wdio.conf.js",
-    "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone"
+    "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
+    "start:dev": "nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'"
   },
   "author": "Jeff Gore",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-media": "^1.10.0",
@@ -21,7 +25,9 @@
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@testing-library/react": "^9.4.1",
+    "@types/express": "^4.17.8",
     "@types/jest": "^25.1.3",
+    "@types/morgan": "^1.9.1",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/styled-components": "^5.1.3",
@@ -44,6 +50,7 @@
     "husky": "^4.2.1",
     "jest": "^25.1.0",
     "lint-staged": "^10.1.6",
+    "nodemon": "^2.0.4",
     "prettier": "^2.0.4",
     "source-map-loader": "^0.2.4",
     "ts-jest": "^25.2.1",
@@ -64,6 +71,14 @@
     "*.{ts,tsx,js,jsx}": [
       "eslint --fix",
       "prettier --write"
+    ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts"
+    ],
+    "watch": [
+      "src/server"
     ]
   }
 }

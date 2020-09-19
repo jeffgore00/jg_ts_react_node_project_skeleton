@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen, getByRole } from '@testing-library/react';
-import { Homepage } from '.';
+
 import { setupReactMediaMock } from '../../../../test-utils/react-media';
+import { Homepage } from '.';
 
 jest.mock('react-media', () => jest.fn());
 setupReactMediaMock();

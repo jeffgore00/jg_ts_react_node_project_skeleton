@@ -14,7 +14,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
-  ignorePatterns: ['webpack.config.js'],
+  ignorePatterns: ['webpack.config.js', 'public', '.eslintrc.js'],
   plugins: ['@typescript-eslint', 'jest'],
   rules: {
     'react/prop-types': 0,
@@ -22,5 +22,7 @@ module.exports = {
     'import/prefer-default-export': 0,
     'import/extensions': 0,
     'comma-dangle': 0, // for some reason this is not turned off by prettier extension
+    'implicit-arrow-linebreak': 0, // for some reason this is not turned off by prettier extension
+    'function-paren-newline': 0, // for some reason this is not turned off by prettier extension
   },
 };

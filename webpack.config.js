@@ -8,6 +8,10 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   entry: './src/client',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'public'),
+  },
   module: {
     rules: [
       {
@@ -18,7 +22,6 @@ module.exports = {
           );
         },
         include: [path.resolve(__dirname, 'src')],
-        exclude: [path.resolve(__dirname, 'test')],
         use: [
           {
             loader: 'ts-loader',

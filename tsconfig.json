@@ -15,7 +15,8 @@
       "jest",
       "react",
       "react-dom",
-      "styled-components"
+      "styled-components",
+      "express"
     ]
   },
   "include": ["src", "browser-tests", "test-utils","."]
