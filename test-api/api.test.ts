@@ -9,11 +9,12 @@ describe('GET /api', () => {
 
   describe('When public/index.html exists', () => {
     /* The index.html is generated from a template on the build step and is not
-    committed to source control. Therefore this file is not guaranteed to exist
+    committed to source control, which means this file is not guaranteed to exist
     before the test begins.
 
-    Therefore this `describe` will create a dummy HTML file and delete it after
-    the test completes to ensure a consistent test precondition. */
+    Therefore if there is no built HTML file available, this `describe` will
+    create a dummy HTML file to ensure a consistent test precondition, and will
+    delete it after the test completes. */
     let htmlExistedPriorToTest = true;
 
     beforeAll(() => {

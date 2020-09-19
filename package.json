@@ -10,6 +10,7 @@
     "start:dev": "nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'",
     "test": "jest",
     "test:browser": "wdio wdio.conf.js",
+    "release": "standard-version",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone"
   },
   "author": "Jeff Gore",
@@ -58,6 +59,7 @@
     "nodemon": "^2.0.4",
     "prettier": "^2.0.4",
     "source-map-loader": "^0.2.4",
+    "standard-version": "^9.0.0",
     "supertest": "^4.0.2",
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.1",
