@@ -10,6 +10,7 @@
     "start:dev": "nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'",
     "test": "jest",
     "test:browser": "wdio wdio.conf.js",
+    "lint": "eslint --ext .jsx,.js,.tsx,.ts .",
     "release": "standard-version",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone"
   },
@@ -65,6 +66,7 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^9.0.0",
     "typescript": "^3.7.5",
+    "typescript-plugin-styled-components": "^1.4.4",
     "wdio-chromedriver-service": "^6.0.4",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"

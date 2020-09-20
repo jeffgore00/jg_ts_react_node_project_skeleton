@@ -1,5 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
+  .default;
+const styledComponentsTransformer = createStyledComponentsTransformer();
 
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
@@ -23,11 +26,12 @@ module.exports = {
           );
         },
         include: [path.resolve(__dirname, 'src')],
-        use: [
-          {
-            loader: 'ts-loader',
-          },
-        ],
+        loader: 'ts-loader',
+        options: {
+          getCustomTransformers: () => ({
+            before: [styledComponentsTransformer],
+          }),
+        },
       },
       // All output '.js' files will have any sourcemaps pre-processed by 'source-map-loader'.
       {
