@@ -1,6 +1,6 @@
 exports.config = {
   runner: 'local',
-  specs: ['./test-browser/specs/**/*.spec.ts'],
+  specs: ['./test-browser/specs/**/*.browser.test.ts'],
   maxInstances: 10,
   path: '/wd/hub',
   /*  automationProtocol: 'webdriver' was the default in WDIO v5, now v6 default is 'devtools'

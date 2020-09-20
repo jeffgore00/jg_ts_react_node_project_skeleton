@@ -31,7 +31,7 @@ describe('GET /', () => {
       }
     });
 
-    it('responds with public/index.html', async () => {
+    it('responds with 200 and public/index.html', async () => {
       const response = await request(app).get('/');
       expect(response.status).toEqual(200);
       expect(response.header['content-type']).toEqual(
@@ -64,7 +64,7 @@ describe('GET /', () => {
       }
     });
 
-    it('responds with 404 and "HTML not found"', async () => {
+    it('responds with 404 and "Main HTML file not found!"', async () => {
       const response = await request(app).get('/');
       expect(response.status).toEqual(404);
       expect(response.text).toEqual('Main HTML file not found!');
@@ -80,6 +80,7 @@ describe('When the requested HTTP operation is not recognized', () => {
       'Operation GET /puppies not recognized on this server.'
     );
 
+    // GET / is valid, but not POST /
     response = await request(app).post('/');
     expect(response.status).toEqual(404);
     expect(response.text).toEqual(

@@ -11,30 +11,40 @@ interface ResponseError extends Error {
 
 const app = express();
 
-// apply third-party middleware
-// logging
-if (app.get('env') !== 'test') app.use(morgan('dev'));
+/* APPLY THIRD-PARTY MIDDLEWARE */
 
-// ......
+// Request/response logs. Do not use in test since API tests' console output would be cluttered.
+if (app.get('env') === 'development') {
+  app.use(morgan('dev'));
+} else if (app.get('env') === 'production') {
+  app.use(morgan('short'));
+}
+
+// When the server gets a request for a file, look in the /public directory
 app.use(express.static(path.join(__dirname, '../..', 'public')));
 
-// .........
+// Make JSON responses available on `response.body`
 app.use(bodyParser.json());
+
+// (figure this out)
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// define custom middleware
+
+/* DEFINE CUSTOM MIDDLEWARE */
 const sendHomepage: RequestHandler = (req, res) => {
   res.sendFile(
     path.join(__dirname, '../..', 'public/index.html'),
     null,
     (err: ResponseError) => {
-      if (err) {
+      if (err && !res.headersSent) {
         res.status(404).send('Main HTML file not found!');
       }
     }
   );
 };
 
+// `next` is not used in the below two functions, but NOT passing it to the function resulted
+// in some puzzling broken behavior.
 const sendResourceNotFound: RequestHandler = (req, res, next) => {
   res
     .status(404)
@@ -47,7 +57,7 @@ const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
   });
 };
 
-// apply custom middleware
+/* APPLY CUSTOM MIDDLEWARE */
 app.get('/', sendHomepage);
 app.use('/api', apiRouter);
 app.use(sendResourceNotFound);

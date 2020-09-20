@@ -1,10 +1,11 @@
 import request from 'supertest';
 
 import app from '../src/server/app';
-// import childProcess from 'child_process';
 
+const regexSemver = /^((([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)$/gm
 const regexSHA1 = /\b[0-9a-f]{40}\b/;
 
+/* Scoping this mock call to each `describe` is not possible, for reasons I can't fully explain. */
 jest.mock('child_process', () => ({
   exec: (_: string, callback: Function): void => {
     if (process.env.CHILD_PROCESS_MOCK === 'success') {
@@ -16,7 +17,7 @@ jest.mock('child_process', () => ({
   },
 }));
 
-describe('GET /api/health-check', () => {
+describe('GET /api/health', () => {
   afterAll(() => {
     delete process.env.CHILD_PROCESS_MOCK;
   });
@@ -31,8 +32,8 @@ describe('GET /api/health-check', () => {
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(
         expect.objectContaining({
-          version: expect.any(String),
-          uptime: expect.any(String),
+          version: expect.stringMatching(regexSemver),
+          uptime: expect.any(String), // date in human-readable format
           commit: expect.stringMatching(regexSHA1),
         })
       );
