@@ -35,14 +35,17 @@ const sendHomepage: RequestHandler = (req, res) => {
   );
 };
 
-const sendResourceNotFound: RequestHandler = (req, res) => {
+const sendResourceNotFound: RequestHandler = (req, res, next) => {
   res
     .status(404)
     .send(`Operation ${req.method} ${req.path} not recognized on this server.`);
 };
 
-const sendErrorResponse: ErrorRequestHandler = (err, req, res) =>
-  res.status(err.status || 500).send(err || 'Internal server error.');
+const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal server error.',
+  });
+};
 
 // apply custom middleware
 app.get('/', sendHomepage);
