@@ -20,7 +20,7 @@ if (app.get('env') === 'development') {
   app.use(morgan('short'));
 }
 
-// When the server gets a request for a file, look in the /public directory
+// When the server gets a request for a _file_, look in the /public directory
 app.use(express.static(path.join(__dirname, '../..', 'public')));
 
 // Make JSON responses available on `response.body`
@@ -28,7 +28,6 @@ app.use(bodyParser.json());
 
 // (figure this out)
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 /* DEFINE CUSTOM MIDDLEWARE */
 const sendHomepage: RequestHandler = (req, res) => {

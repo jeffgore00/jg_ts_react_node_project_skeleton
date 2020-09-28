@@ -7,4 +7,6 @@ function createServer(expressApp: Express.Application): http.Server {
 }
 
 const server = createServer(app);
+
+// eslint-disable-next-line no-console
 server.listen(3000, () => console.log('Listening on port 3000'));
