@@ -1,50 +1,45 @@
+/* eslint-disable global-require */
 /*
-- test that logging middleware is applied correctly
-- test the default 500 response message when there is no error message
+ test the default 500 response message when there is no error message
 */
 
 import morgan from 'morgan';
 import { Request, Response, NextFunction } from 'express';
 
 jest.mock('morgan', () =>
-  jest.fn(() => (req: Request, res: Response, next: NextFunction) => {})
+  jest.fn(() => (req: Request, res: Response, next: NextFunction): void => {})
 );
 
 describe('Logging', () => {
-  describe('When the environment is development', () => {
+  const setupTest = (nodeEnv: string): void => {
     let originalProcessEnv: string;
 
     beforeAll(() => {
       originalProcessEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'development';
+      process.env.NODE_ENV = nodeEnv;
+      jest.isolateModules(() => {
+        require('./app');
+      });
     });
 
     afterAll(() => {
       process.env.NODE_ENV = originalProcessEnv;
-      jest.resetAllMocks();
+      jest.clearAllMocks();
     });
+  };
 
-    it('works', async () => {
-      await import('./app');
+  describe('When the environment is development', () => {
+    setupTest('development');
+
+    it('uses the "dev" logging mode', () => {
       expect(morgan).toHaveBeenCalledWith('dev');
     });
   });
 
   describe('When the environment is production', () => {
-    let originalProcessEnv: string;
+    setupTest('production');
 
-    beforeAll(() => {
-      originalProcessEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'production';
-    });
-
-    afterAll(() => {
-      process.env.NODE_ENV = originalProcessEnv;
-      jest.resetAllMocks();
-    });
-
-    it('uses short', async () => {
-      await import('./app');
+    it('uses the "short" logging mode', () => {
       expect(morgan).toHaveBeenCalledWith('short');
     });
   });

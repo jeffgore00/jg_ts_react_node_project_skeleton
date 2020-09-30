@@ -14,9 +14,9 @@ const app = express();
 /* APPLY THIRD-PARTY MIDDLEWARE */
 
 // Request/response logs. Do not use in test since API tests' console output would be cluttered.
-if (app.get('env') === 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-} else if (app.get('env') === 'production') {
+} else if (process.env.NODE_ENV === 'production') {
   app.use(morgan('short'));
 }
 
