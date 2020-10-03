@@ -7,6 +7,5 @@ module.exports = {
     '!**/node_modules/**',
     '!**/dist/**',
   ],
-  coveragePathIgnorePatterns: ['src/server/index.ts'],
   testPathIgnorePatterns: ['<rootDir>/test-browser/'],
 };

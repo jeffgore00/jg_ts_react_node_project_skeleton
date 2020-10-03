@@ -3,6 +3,8 @@ import https from 'https';
 import fs from 'fs';
 import path from 'path';
 import { Application } from 'express';
+import { add } from 'date-fns';
+import { pki } from 'node-forge';
 
 import app from './app';
 
@@ -15,22 +17,36 @@ function createServer(expressApp: Application): http.Server | https.Server {
     return http.createServer(expressApp);
   }
 
-  const httpsOptions = {
-    key: fs.readFileSync(
-      path.join(__dirname, '../..', 'secrets/certs/key.pem'),
+  const load = (name: string): string =>
+    fs.readFileSync(
+      path.join(__dirname, '../..', `secrets/certs/${name}.pem`),
       'utf-8'
-    ),
-    cert: fs.readFileSync(
-      path.join(__dirname, '../..', 'secrets/certs/cert.pem'),
-      'utf-8'
-    ),
-  };
+    );
 
-  return https.createServer(httpsOptions, expressApp);
+  const key = load('key');
+  const cert = load('cert');
+
+  const { validity } = pki.certificateFromPem(cert);
+
+  const currentTimestamp = new Date();
+  if (validity.notBefore > currentTimestamp) {
+    throw new Error('Certificate not yet valid');
+  }
+  if (validity.notAfter < currentTimestamp) {
+    throw new Error('Certificate expired');
+  }
+  if (add(currentTimestamp, { days: 30 }) >= validity.notAfter) {
+    /* Presumably you can set up your logging service to send you an email when
+    this log occurs */
+    // eslint-disable-next-line no-console
+    console.warn(`Certificate expiring on ${validity.notAfter}`);
+  }
+
+  return https.createServer({ key, cert }, expressApp);
 }
 
 const server = createServer(app);
-const port = process.env.LISTEN_PORT || 3000;
+const port = process.env.LISTEN_PORT || '3000';
 
 server.listen(port, () =>
   // eslint-disable-next-line no-console
