@@ -13,7 +13,8 @@ const app = express();
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
 
-// Request/response logs. Do not use in test since API tests' console output would be cluttered.
+/* Request/response logs. Do not use in `test` since API tests' console output
+would be cluttered with logs. */
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 } else if (process.env.NODE_ENV === 'production') {
