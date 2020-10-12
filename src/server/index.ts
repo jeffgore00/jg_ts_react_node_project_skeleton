@@ -3,8 +3,8 @@ import https from 'https';
 import fs from 'fs';
 import path from 'path';
 import { Application } from 'express';
-import { add } from 'date-fns';
-import { pki } from 'node-forge';
+// import { add } from 'date-fns';
+// import { pki } from 'node-forge';
 
 import app from './app';
 
@@ -26,21 +26,21 @@ function createServer(expressApp: Application): http.Server | https.Server {
   const key = load('key');
   const cert = load('cert');
 
-  const { validity } = pki.certificateFromPem(cert);
+  // const { validity } = pki.certificateFromPem(cert);
 
-  const currentTimestamp = new Date();
-  if (validity.notBefore > currentTimestamp) {
-    throw new Error('Certificate not yet valid');
-  }
-  if (validity.notAfter < currentTimestamp) {
-    throw new Error('Certificate expired');
-  }
-  if (add(currentTimestamp, { days: 30 }) >= validity.notAfter) {
-    /* Presumably you can set up your logging service to send you an email when
-    this log occurs */
-    // eslint-disable-next-line no-console
-    console.warn(`Certificate expiring on ${validity.notAfter}`);
-  }
+  // const currentTimestamp = new Date();
+  // // if (validity.notBefore > currentTimestamp) {
+  // //   throw new Error('Certificate not yet valid');
+  // // }
+  // // if (validity.notAfter < currentTimestamp) {
+  // //   throw new Error('Certificate expired');
+  // // }
+  // // if (add(currentTimestamp, { days: 30 }) >= validity.notAfter) {
+  // //   /* Presumably you can set up your logging service to send you an email when
+  // //   this log occurs */
+  // //   // eslint-disable-next-line no-console
+  // //   console.warn(`Certificate expiring on ${validity.notAfter}`);
+  // // }
 
   return https.createServer({ key, cert }, expressApp);
 }

@@ -7,7 +7,7 @@ jest.mock('./app');
 
 const httpServerMock = {} as http.Server;
 const httpsServerMock = {} as https.Server;
-const serverListenMock = jest.fn((port, cb: any) => cb());
+const serverListenMock = jest.fn((port, callback: any) => callback());
 
 httpServerMock.listen = serverListenMock;
 httpsServerMock.listen = serverListenMock;

@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /* DEFINE CUSTOM MIDDLEWARE */
-const sendHomepage: RequestHandler = (req, res) => {
+export const sendHomepage: RequestHandler = (req, res) => {
   res.sendFile(
     path.join(__dirname, '../..', 'public/index.html'),
     null,
@@ -45,14 +45,14 @@ const sendHomepage: RequestHandler = (req, res) => {
 
 // `next` is not used in the below two functions, but NOT passing it to the function resulted
 // in some puzzling broken behavior.
-const sendResourceNotFound: RequestHandler = (req, res, next) => {
+export const sendResourceNotFound: RequestHandler = (req, res, next) => {
   res
     .status(404)
     .send(`Operation ${req.method} ${req.path} not recognized on this server.`);
 };
 
-const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
-  res.status(err.status || 500).json({
+export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
+  res.status(500).json({
     error: err.message || 'Internal server error.',
   });
 };
