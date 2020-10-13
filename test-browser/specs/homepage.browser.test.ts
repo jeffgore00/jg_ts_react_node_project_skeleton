@@ -5,5 +5,10 @@ describe('The homepage', () => {
     Homepage.open();
 
     expect(Homepage.isHeadingDisplayed()).toBe(true);
+
+    // Simulate mobile window (Pixel 2)
+    browser.setWindowSize(411, 731);
+
+    expect(Homepage.isHeadingDisplayed()).toBe(true);
   });
 });
