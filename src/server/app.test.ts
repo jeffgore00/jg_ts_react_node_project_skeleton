@@ -30,6 +30,10 @@ jest.mock('morgan', () =>
 );
 
 describe('Logging', () => {
+  /* This test requires isolated module loading, because the logging
+  configuration is executed as soon as the module loads. In other words this
+  tests how the app is configured to function, not the functionality itself;
+  because the configuration is dynamic it should be tested. */
   const setupTest = (nodeEnv: string): void => {
     let originalProcessEnv: string;
 
@@ -71,7 +75,8 @@ describe('Error handling middleware', () => {
   let sendErrorResponse: any;
 
   beforeAll(async () => {
-    // need to do this to allow other dynamic require tests above to succeed
+    /* The function needs to be loaded dynamically in order to allow other tests
+    in this file to work, since they depend on isolated loading. */
     ({ sendErrorResponse } = await import('./app'));
   });
 
@@ -84,8 +89,8 @@ describe('Error handling middleware', () => {
     expect(statusMock).toHaveBeenCalledWith(500);
   });
 
-  describe('when error has a message', () => {
-    it('does the right thing', () => {
+  describe('when error has a `message` property', () => {
+    it('assigns that message to the `error` property of the JSON response', () => {
       sendErrorResponse(errorWithMessage, req, res, next);
       expect(resReturnedFromStatus.json).toHaveBeenCalledWith({
         error: errorWithMessage.message,
@@ -94,7 +99,7 @@ describe('Error handling middleware', () => {
   });
 
   describe('when error does not have a message', () => {
-    it('does the right thing', () => {
+    it('assigns a generic message to the `error` property of the JSON response', () => {
       sendErrorResponse(errorWithoutMessage, req, res, next);
       expect(resReturnedFromStatus.json).toHaveBeenCalledWith({
         error: 'Internal server error.',
@@ -103,37 +108,49 @@ describe('Error handling middleware', () => {
   });
 });
 
-describe('Send homepage callback', () => {
+describe('Send Homepage middleware', () => {
   let sendHomepage: any;
 
   beforeAll(async () => {
     // need to do this to allow other dynamic require tests above to succeed
     ({ sendHomepage } = await import('./app'));
+    sendFileMock.mockImplementation((filePath, options, errback) => {
+      errback();
+    });
   });
 
-  describe('When there is no error', () => {
+  it('Calls `res.sendFile` with the index.html file', () => {
+    sendHomepage(req, res);
+    expect(sendFileMock.mock.calls[0][0]).toContain('public/index.html');
+  });
+
+  describe('When `res.sendFile` does not result in error', () => {
     beforeAll(() => {
       sendFileMock.mockImplementation((filePath, options, errback) => {
         errback();
       });
     });
 
-    it('works', () => {
+    it('does nothing', () => {
       sendHomepage(req, res);
       expect(statusMock).not.toHaveBeenCalled();
+      expect(resReturnedFromStatus.send).not.toHaveBeenCalled();
     });
   });
 
-  describe('When there is an error', () => {
+  describe('When `res.sendFile` results in an error which prevents a response', () => {
     beforeAll(() => {
       sendFileMock.mockImplementation((filePath, options, errback) => {
         errback(new Error());
       });
     });
 
-    it('works', () => {
+    it('Sends a text error response with a 404 status code', () => {
       sendHomepage(req, res);
       expect(statusMock).toHaveBeenCalledWith(404);
+      expect(resReturnedFromStatus.send).toHaveBeenCalledWith(
+        'Main HTML file not found!'
+      );
     });
   });
 });
