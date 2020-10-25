@@ -1,7 +1,7 @@
 import http from 'http';
 import https from 'https';
-import fs from 'fs';
-import path from 'path';
+// import fs from 'fs';
+// import path from 'path';
 import { Application } from 'express';
 // import { add } from 'date-fns';
 // import { pki } from 'node-forge';
@@ -17,14 +17,16 @@ function createServer(expressApp: Application): http.Server | https.Server {
     return http.createServer(expressApp);
   }
 
-  const load = (name: string): string =>
-    fs.readFileSync(
-      path.join(__dirname, '../..', `secrets/certs/${name}.pem`),
-      'utf-8'
-    );
+  // const load = (name: string): string =>
+  //   fs.readFileSync(
+  //     path.join(__dirname, '../..', `secrets/certs/${name}.pem`),
+  //     'utf-8'
+  //   );
 
-  const key = load('key');
-  const cert = load('cert');
+  // const key = load('key');
+  // const cert = load('cert');
+  const key = 'test';
+  const cert = 'test';
 
   // const { validity } = pki.certificateFromPem(cert);
 

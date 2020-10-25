@@ -17,7 +17,7 @@ exports.config = {
       acceptInsecureCerts: true,
     },
   ],
-  logLevel: 'trace',
+  logLevel: 'warn',
   bail: 0,
   baseUrl: 'http://localhost',
   waitforTimeout: 10000,

@@ -14,6 +14,8 @@ httpsServerMock.listen = serverListenMock;
 
 describe('Server', () => {
   let originalNodeEnv: string;
+  let consoleSpy: any;
+
   const httpSpy = jest
     .spyOn(http, 'createServer')
     .mockImplementation(jest.fn(() => httpServerMock));
@@ -21,7 +23,7 @@ describe('Server', () => {
     .spyOn(https, 'createServer')
     .mockImplementation(jest.fn(() => httpsServerMock));
 
-  beforeEach(() => {
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
@@ -32,6 +34,7 @@ describe('Server', () => {
     });
 
     beforeEach(() => {
+      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
       jest.isolateModules(() => {
         require('.');
       });
@@ -44,6 +47,9 @@ describe('Server', () => {
     it('creates an HTTP server with the Express application', () => {
       expect(httpSpy).toHaveBeenCalledWith(app);
       expect(httpsSpy).not.toHaveBeenCalled();
+      expect(
+        consoleSpy.mock.calls[0][0].includes('HTTP server listening on port')
+      ).toBe(true);
     });
   });
 
@@ -54,6 +60,7 @@ describe('Server', () => {
     });
 
     beforeEach(() => {
+      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
       jest.isolateModules(() => {
         require('.');
       });
@@ -81,6 +88,7 @@ describe('Server', () => {
     });
 
     beforeEach(() => {
+      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
       jest.isolateModules(() => {
         require('.');
       });
@@ -104,6 +112,7 @@ describe('Server', () => {
     });
 
     beforeEach(() => {
+      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
       jest.isolateModules(() => {
         require('.');
       });
