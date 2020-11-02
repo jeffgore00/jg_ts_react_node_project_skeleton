@@ -25,7 +25,8 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-media": "^1.10.0",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "ts-node": "^9.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -66,7 +67,6 @@
     "supertest": "^4.0.2",
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.1",
-    "ts-node": "^9.0.0",
     "typescript": "^3.7.5",
     "typescript-plugin-styled-components": "^1.4.4",
     "wdio-chromedriver-service": "^6.0.4",
