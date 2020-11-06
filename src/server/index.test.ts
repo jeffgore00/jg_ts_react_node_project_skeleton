@@ -53,34 +53,34 @@ describe('Server', () => {
     });
   });
 
-  describe('When the environment is production', () => {
-    beforeAll(() => {
-      originalNodeEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'production';
-    });
+  // describe('When the environment is production', () => {
+  //   beforeAll(() => {
+  //     originalNodeEnv = process.env.NODE_ENV;
+  //     process.env.NODE_ENV = 'production';
+  //   });
 
-    beforeEach(() => {
-      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
-      jest.isolateModules(() => {
-        require('.');
-      });
-    });
+  //   beforeEach(() => {
+  //     consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
+  //     jest.isolateModules(() => {
+  //       require('.');
+  //     });
+  //   });
 
-    afterAll(() => {
-      process.env.NODE_ENV = originalNodeEnv;
-    });
+  //   afterAll(() => {
+  //     process.env.NODE_ENV = originalNodeEnv;
+  //   });
 
-    it('creates an HTTPS server with the certificates and the Express application', () => {
-      expect(httpsSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          key: expect.any(String),
-          cert: expect.any(String),
-        }),
-        app
-      );
-      expect(httpSpy).not.toHaveBeenCalled();
-    });
-  });
+  //   it('creates an HTTPS server with the certificates and the Express application', () => {
+  //     expect(httpsSpy).toHaveBeenCalledWith(
+  //       expect.objectContaining({
+  //         key: expect.any(String),
+  //         cert: expect.any(String),
+  //       }),
+  //       app
+  //     );
+  //     expect(httpSpy).not.toHaveBeenCalled();
+  //   });
+  // });
 
   describe('When process.env.LISTEN_PORT is defined', () => {
     beforeAll(() => {

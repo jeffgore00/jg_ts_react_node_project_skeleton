@@ -13,9 +13,9 @@ export const isProductionMode = (): boolean =>
 export const isDevelopmentMode = (): boolean => !isProductionMode();
 
 function createServer(expressApp: Application): http.Server | https.Server {
-  if (isDevelopmentMode()) {
-    return http.createServer(expressApp);
-  }
+  // if (isDevelopmentMode()) {
+  return http.createServer(expressApp);
+  // }
 
   // const load = (name: string): string =>
   //   fs.readFileSync(
@@ -25,8 +25,8 @@ function createServer(expressApp: Application): http.Server | https.Server {
 
   // const key = load('key');
   // const cert = load('cert');
-  const key = 'test';
-  const cert = 'test';
+  // const key = 'test';
+  // const cert = 'test';
 
   // const { validity } = pki.certificateFromPem(cert);
 
@@ -44,7 +44,7 @@ function createServer(expressApp: Application): http.Server | https.Server {
   // //   console.warn(`Certificate expiring on ${validity.notAfter}`);
   // // }
 
-  return https.createServer({ key, cert }, expressApp);
+  // return https.createServer({ key, cert }, expressApp);
 }
 
 const server = createServer(app);
