@@ -11,7 +11,9 @@ export default function createHealthfile(): void {
     'git rev-parse HEAD',
     (err: childProcess.ExecException, stdout: string) => {
       if (err) {
-        throw new Error('Error writing healthfile: could not get commit hash');
+        throw new Error(
+          `Error writing healthfile: could not get commit hash, error: ${err}`
+        );
       } else {
         const health = {
           commit: stdout.replace('\n', ''),
