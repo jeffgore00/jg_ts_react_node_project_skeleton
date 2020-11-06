@@ -82,9 +82,9 @@ describe('Server', () => {
   //   });
   // });
 
-  describe('When process.env.LISTEN_PORT is defined', () => {
+  describe('When process.env.PORT is defined', () => {
     beforeAll(() => {
-      process.env.LISTEN_PORT = '8080';
+      process.env.PORT = '8080';
     });
 
     beforeEach(() => {
@@ -95,20 +95,20 @@ describe('Server', () => {
     });
 
     afterAll(() => {
-      delete process.env.LISTEN_PORT;
+      delete process.env.PORT;
     });
 
     it('listens on that port', () => {
       expect(httpServerMock.listen).toHaveBeenCalledWith(
-        process.env.LISTEN_PORT,
+        process.env.PORT,
         expect.any(Function)
       );
     });
   });
 
-  describe('When process.env.LISTEN_PORT is not defined', () => {
+  describe('When process.env.PORT is not defined', () => {
     beforeAll(() => {
-      delete process.env.LISTEN_PORT;
+      delete process.env.PORT;
     });
 
     beforeEach(() => {

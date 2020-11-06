@@ -48,7 +48,7 @@ function createServer(expressApp: Application): http.Server | https.Server {
 }
 
 const server = createServer(app);
-const port = process.env.LISTEN_PORT || '3000';
+const port = process.env.PORT || '3000';
 
 server.listen(port, () =>
   // eslint-disable-next-line no-console
