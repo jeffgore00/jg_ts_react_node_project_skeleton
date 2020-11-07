@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": ".",
+    "outDir": "./dist",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
@@ -11,14 +11,10 @@
     "resolveJsonModule": true,
     "types": [
       "node",
-      "@wdio/sync",
-      "@wdio/jasmine-framework",
       "jest",
-      "react",
-      "react-dom",
-      "styled-components",
       "express"
     ]
   },
-  "include": ["src", "test-browser", "test-api", "test-utils","."]
+  "include": ["src/server"],
+  "exclude": ["**/*.test.ts"]
 }

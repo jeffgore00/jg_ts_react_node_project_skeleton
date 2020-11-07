@@ -4,7 +4,7 @@ import childProcess from 'child_process';
 
 import { version } from '../../../package.json';
 
-const healthLocation = '../health.json';
+const healthLocation = '../../../dist/src/server/health.json';
 
 export default function createHealthfile(): void {
   childProcess.exec(

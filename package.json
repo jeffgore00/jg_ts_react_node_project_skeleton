@@ -4,9 +4,9 @@
   "description": "Skeleton for TypeScript React-Node projects.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "build:dev": "NODE_ENV=development webpack",
-    "start": "node -r ts-node/register src/server/utils/create-healthfile.ts && node -r ts-node/register src/server/index.ts",
+    "build:client": "webpack",
+    "build:server": "rm -rf dist && tsc --project tsconfig.server.json",
+    "start": "node dist/src/server/utils/create-healthfile.js && node dist/src/server/index.js",
     "start:dev": "nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'",
     "test": "jest",
     "test:browser": "wdio wdio.conf.js",

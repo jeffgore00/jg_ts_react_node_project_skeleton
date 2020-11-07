@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /* DEFINE CUSTOM MIDDLEWARE */
 export const sendHomepage: RequestHandler = (req, res) => {
   res.sendFile(
-    path.join(__dirname, '../..', 'public/index.html'),
+    path.join(__dirname, '../../..', 'public/index.html'),
     null,
     (err: ResponseError) => {
       if (err && !res.headersSent) {

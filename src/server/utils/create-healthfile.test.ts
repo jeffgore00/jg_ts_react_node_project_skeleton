@@ -22,7 +22,7 @@ describe('Create Healthfile', () => {
   });
 
   describe('When the git commit hash is retrieved successfully', () => {
-    const healthfilePath = path.join(__dirname, '../health.json');
+    const healthfilePath = path.join(__dirname, '../../../dist/src/server/health.json');
     let preexistingHealthfileContents: string;
 
     beforeAll(() => {
@@ -36,7 +36,7 @@ describe('Create Healthfile', () => {
 
     it('writes to the healthfile with the repo version and latest commit hash', async () => {
       createHealthfile();
-      const fileJson = await import('../health.json').then(
+      const fileJson = await import('../../../dist/src/server/health.json').then(
         (module) => module.default
       );
       expect(fileJson).toEqual({
