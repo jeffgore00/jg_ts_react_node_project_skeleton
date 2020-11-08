@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": ".",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",

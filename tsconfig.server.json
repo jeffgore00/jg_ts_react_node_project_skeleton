@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./dist/server",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
@@ -16,5 +16,5 @@
     ]
   },
   "include": ["src/server"],
-  "exclude": ["**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "**/create-healthfile.ts"]
 }

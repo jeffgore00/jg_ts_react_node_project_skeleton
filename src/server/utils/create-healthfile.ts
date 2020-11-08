@@ -4,9 +4,11 @@ import childProcess from 'child_process';
 
 import { version } from '../../../package.json';
 
-const healthLocation = '../../../dist/src/server/health.json';
+const healthLocation = '../health.json';
 
-export default function createHealthfile(): void {
+export default function createHealthfile(
+  healthLocationOverride?: string
+): void {
   childProcess.exec(
     'git rev-parse HEAD',
     (err: childProcess.ExecException, stdout: string) => {
@@ -19,8 +21,10 @@ export default function createHealthfile(): void {
           commit: stdout.replace('\n', ''),
           version,
         };
+        const relativePathToHealthfile =
+          healthLocationOverride || healthLocation;
         fs.writeFileSync(
-          path.join(__dirname, healthLocation),
+          path.join(__dirname, relativePathToHealthfile),
           JSON.stringify(health, null, 2)
         );
       }
@@ -28,4 +32,4 @@ export default function createHealthfile(): void {
   );
 }
 
-createHealthfile();
+createHealthfile('../../../dist/server/health.json');
