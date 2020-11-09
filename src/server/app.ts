@@ -13,7 +13,17 @@ interface ResponseError extends Error {
 const app = express();
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        'default-src': "'self'",
+        'script-src': ["'self'", 'https://unpkg.com'], // for React and React DOM
+        'style-src': ["'self'", "'unsafe-inline'"], // for Styled Components
+      },
+    },
+  })
+);
 
 /* Request/response logs. Do not use in `test` since API tests' console output
 would be cluttered with logs. */
