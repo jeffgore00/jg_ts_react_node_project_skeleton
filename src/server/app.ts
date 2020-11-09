@@ -2,6 +2,7 @@ import path from 'path';
 import express, { RequestHandler, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import helmet from 'helmet';
 
 import apiRouter from './routers/api';
 
@@ -12,6 +13,7 @@ interface ResponseError extends Error {
 const app = express();
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
+app.use(helmet());
 
 /* Request/response logs. Do not use in `test` since API tests' console output
 would be cluttered with logs. */
