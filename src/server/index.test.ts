@@ -13,85 +13,33 @@ httpServerMock.listen = serverListenMock;
 httpsServerMock.listen = serverListenMock;
 
 describe('Server', () => {
-  let originalNodeEnv: string;
   let consoleSpy: any;
 
   const httpSpy = jest
     .spyOn(http, 'createServer')
     .mockImplementation(jest.fn(() => httpServerMock));
-  const httpsSpy = jest
-    .spyOn(https, 'createServer')
-    .mockImplementation(jest.fn(() => httpsServerMock));
+
+  beforeEach(() => {
+    consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
+    jest.isolateModules(() => {
+      require('.');
+    });
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('When the environment is not production', () => {
-    beforeAll(() => {
-      originalNodeEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'development';
-    });
-
-    beforeEach(() => {
-      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
-      jest.isolateModules(() => {
-        require('.');
-      });
-    });
-
-    afterAll(() => {
-      process.env.NODE_ENV = originalNodeEnv;
-    });
-
-    it('creates an HTTP server with the Express application', () => {
-      expect(httpSpy).toHaveBeenCalledWith(app);
-      expect(httpsSpy).not.toHaveBeenCalled();
-      expect(
-        consoleSpy.mock.calls[0][0].includes('HTTP server listening on port')
-      ).toBe(true);
-    });
+  it('creates an HTTP server with the Express application', () => {
+    expect(httpSpy).toHaveBeenCalledWith(app);
+    expect(
+      consoleSpy.mock.calls[0][0].includes('HTTP server listening on port')
+    ).toBe(true);
   });
-
-  // describe('When the environment is production', () => {
-  //   beforeAll(() => {
-  //     originalNodeEnv = process.env.NODE_ENV;
-  //     process.env.NODE_ENV = 'production';
-  //   });
-
-  //   beforeEach(() => {
-  //     consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
-  //     jest.isolateModules(() => {
-  //       require('.');
-  //     });
-  //   });
-
-  //   afterAll(() => {
-  //     process.env.NODE_ENV = originalNodeEnv;
-  //   });
-
-  //   it('creates an HTTPS server with the certificates and the Express application', () => {
-  //     expect(httpsSpy).toHaveBeenCalledWith(
-  //       expect.objectContaining({
-  //         key: expect.any(String),
-  //         cert: expect.any(String),
-  //       }),
-  //       app
-  //     );
-  //     expect(httpSpy).not.toHaveBeenCalled();
-  //   });
-  // });
 
   describe('When process.env.PORT is defined', () => {
     beforeAll(() => {
       process.env.PORT = '8080';
-    });
-
-    beforeEach(() => {
-      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
-      jest.isolateModules(() => {
-        require('.');
-      });
     });
 
     afterAll(() => {
@@ -109,13 +57,6 @@ describe('Server', () => {
   describe('When process.env.PORT is not defined', () => {
     beforeAll(() => {
       delete process.env.PORT;
-    });
-
-    beforeEach(() => {
-      consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
-      jest.isolateModules(() => {
-        require('.');
-      });
     });
 
     it('listens on port 3000', () => {
