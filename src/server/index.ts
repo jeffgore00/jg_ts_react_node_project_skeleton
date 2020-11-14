@@ -2,6 +2,7 @@ import http from 'http';
 import { Application } from 'express';
 
 import app from './app';
+import logger from './utils/logger';
 
 function createServer(expressApp: Application): http.Server {
   /* TODO: create HTTPS server if node env is production. Heroku magically takes care of this, but
@@ -12,7 +13,6 @@ function createServer(expressApp: Application): http.Server {
 const server = createServer(app);
 const port = process.env.PORT || '3000';
 
-server.listen(port, () =>
-  // eslint-disable-next-line no-console
-  console.log(`HTTP server listening on port ${port}`)
-);
+server.listen(port, () => {
+  logger.info(`HTTP server listening on port ${port}`);
+});
