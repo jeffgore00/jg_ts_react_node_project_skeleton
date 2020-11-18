@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { version } from '../../../package.json';
+import logger from "./logger";
 
 const healthLocation = '../health.json';
 
@@ -24,7 +25,9 @@ export default function createHealthfile(
       JSON.stringify(health, null, 2)
     );
   } else {
-    console.log('Failed to get commit hash');
+    logger.info(
+      'Failed to get commit hash - process.env.SOURCE_VERSION not defined'
+    );
   }
 }
 

@@ -2,6 +2,7 @@
 import http from 'http';
 import https from 'https';
 import app from './app';
+import logger from './utils/logger';
 
 jest.mock('./app');
 
@@ -13,14 +14,14 @@ httpServerMock.listen = serverListenMock;
 httpsServerMock.listen = serverListenMock;
 
 describe('Server', () => {
-  let consoleSpy: any;
+  let loggerSpy: any;
 
   const httpSpy = jest
     .spyOn(http, 'createServer')
     .mockImplementation(jest.fn(() => httpServerMock));
 
   beforeEach(() => {
-    consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(jest.fn());
+    loggerSpy = jest.spyOn(logger, 'info').mockImplementationOnce(jest.fn());
     jest.isolateModules(() => {
       require('.');
     });
@@ -33,7 +34,7 @@ describe('Server', () => {
   it('creates an HTTP server with the Express application', () => {
     expect(httpSpy).toHaveBeenCalledWith(app);
     expect(
-      consoleSpy.mock.calls[0][0].includes('HTTP server listening on port')
+      loggerSpy.mock.calls[0][0].includes('HTTP server listening on port')
     ).toBe(true);
   });
 

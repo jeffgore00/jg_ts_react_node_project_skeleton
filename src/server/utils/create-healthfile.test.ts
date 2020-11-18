@@ -4,6 +4,10 @@ import fs from 'fs';
 import createHealthfile from './create-healthfile';
 import packageJson from '../../../package.json';
 
+jest.mock('./logger', () => ({
+  info: jest.fn(),
+}));
+
 describe('Create Healthfile', () => {
   const healthfilePath = path.join(__dirname, '../health.json');
   let preexistingHealthfileContents: string;
@@ -34,6 +38,8 @@ describe('Create Healthfile', () => {
   });
 
   describe('When process.env.SOURCE_VERSION is not defined', () => {
-    // write this test
+    it('fails', () => {
+      throw new Error('write this test');
+    });
   });
 });
