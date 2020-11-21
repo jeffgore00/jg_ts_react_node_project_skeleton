@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import winston, { createLogger, format, transports } from 'winston';
 import chalk from 'chalk';
 
@@ -6,7 +7,6 @@ const levels = {
   warn: 1,
   info: 2,
   debug: 3,
-  perf: 4,
 };
 
 const labels: { [index: string]: string } = {
@@ -14,7 +14,6 @@ const labels: { [index: string]: string } = {
   debug: chalk.bgMagenta.black(' DEBUG '),
   warn: chalk.bgYellow.black(' WARN '),
   error: chalk.bgRed.black(' ERROR '),
-  perf: chalk.bgGreen.black(' PERF '),
 };
 
 const devLoggerColorizer: {
@@ -24,7 +23,6 @@ const devLoggerColorizer: {
   debug: (logMessage: string): string => chalk.magenta(logMessage),
   warn: (logMessage: string): string => chalk.yellow(logMessage),
   error: (logMessage: string): string => chalk.red(logMessage),
-  perf: (logMessage: string): string => chalk.green(logMessage),
 };
 
 const developmentFormatter = format.printf(
@@ -38,7 +36,7 @@ const developmentLogger = createLogger({
   levels,
   transports: [
     new transports.Console({
-      level: 'perf', // means that this and all levels below it will be logged
+      level: 'debug', // means that this and all levels below it will be logged
       format: format.combine(format.timestamp(), developmentFormatter),
     }),
   ],
@@ -67,6 +65,18 @@ class Logger {
 
   info(message: string, metadata?: any): void {
     this.internalLogger.info(message, metadata);
+  }
+
+  debug(message: string, metadata?: any): void {
+    this.internalLogger.debug(message, metadata);
+  }
+
+  error(message: string, metadata?: any): void {
+    this.internalLogger.error(message, metadata);
+  }
+
+  warn(message: string, metadata?: any): void {
+    this.internalLogger.warn(message, metadata);
   }
 }
 

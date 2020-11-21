@@ -1,8 +1,10 @@
+/* eslint-disable global-require, @typescript-eslint/unbound-method */
 import path from 'path';
 import fs from 'fs';
 
-import createHealthfile from './create-healthfile';
+import createHealthfile, { logs } from './create-healthfile';
 import packageJson from '../../../package.json';
+import logger from './logger';
 
 jest.mock('./logger', () => ({
   info: jest.fn(),
@@ -11,25 +13,41 @@ jest.mock('./logger', () => ({
 describe('Create Healthfile', () => {
   const healthfilePath = path.join(__dirname, '../health.json');
   let preexistingHealthfileContents: string;
+  let fileJson: any;
+
+  beforeEach(() => {
+    preexistingHealthfileContents = fs.readFileSync(healthfilePath, 'utf-8');
+    jest.resetAllMocks();
+    createHealthfile();
+    jest.isolateModules(() => {
+      fileJson = require('../health.json');
+    });
+  });
+
+  afterEach(() => {
+    fs.writeFileSync(healthfilePath, preexistingHealthfileContents);
+  });
+
+  it('writes to the healthfile a JSON object with the repo version', () => {
+    expect(fileJson).toEqual(
+      expect.objectContaining({
+        version: packageJson.version,
+      })
+    );
+  });
 
   describe('When process.env.SOURCE_VERSION is defined', () => {
     const sampleCommitHash = 'daa20e9175eb078889604272046bd0ff077dbfc3';
 
     beforeAll(() => {
-      preexistingHealthfileContents = fs.readFileSync(healthfilePath, 'utf-8');
-      process.env.SOURCE_VERSION = 'daa20e9175eb078889604272046bd0ff077dbfc3';
+      process.env.SOURCE_VERSION = sampleCommitHash;
     });
 
     afterAll(() => {
-      fs.writeFileSync(healthfilePath, preexistingHealthfileContents);
       delete process.env.SOURCE_VERSION;
     });
 
-    it('writes to the healthfile with the repo version and the value of that env variable (which should be a commit hash)', async () => {
-      createHealthfile();
-      const fileJson = await import('../health.json').then(
-        (module) => module.default
-      );
+    it('adds to the healthfile JSON the "commit" key, the value of that env variable (which should be a commit hash)', () => {
       expect(fileJson).toEqual({
         version: packageJson.version,
         commit: sampleCommitHash,
@@ -38,8 +56,12 @@ describe('Create Healthfile', () => {
   });
 
   describe('When process.env.SOURCE_VERSION is not defined', () => {
-    it('fails', () => {
-      throw new Error('write this test');
+    beforeAll(() => {
+      delete process.env.SOURCE_VERSION;
+    });
+
+    it('logs the inability to get the commit ', () => {
+      expect(logger.info).toHaveBeenCalledWith(logs.FAILED_TO_GET_COMMIT_HASH);
     });
   });
 });
