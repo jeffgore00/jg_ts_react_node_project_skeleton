@@ -5,8 +5,8 @@ describe('Logger', () => {
   const SAMPLE_MESSAGE = 'sample message';
 
   beforeAll(() => {
-    // @ts-ignore
     consoleSpy = jest
+      // @ts-ignore
       .spyOn(console._stdout, 'write')
       .mockImplementation(() => null);
     jest.isolateModules(() => {
