@@ -60,9 +60,9 @@ describe('Server', () => {
       delete process.env.PORT;
     });
 
-    it('listens on port 3000', () => {
+    it('listens on port 1337', () => {
       expect(httpServerMock.listen).toHaveBeenCalledWith(
-        '3000',
+        '1337',
         expect.any(Function)
       );
     });

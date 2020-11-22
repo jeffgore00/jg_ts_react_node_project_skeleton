@@ -11,7 +11,7 @@ function createServer(expressApp: Application): http.Server {
 }
 
 const server = createServer(app);
-const port = process.env.PORT || '3000';
+const port = process.env.PORT || '1337';
 
 server.listen(port, () => {
   logger.info(`HTTP server listening on port ${port}`);
