@@ -9,11 +9,7 @@
     "lib": ["dom", "esnext"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": [
-      "node",
-      "jest",
-      "express"
-    ]
+    "types": ["node", "jest", "express"]
   },
   "include": ["src/server"],
   "exclude": ["**/*.test.ts", "**/create-healthfile.ts"]

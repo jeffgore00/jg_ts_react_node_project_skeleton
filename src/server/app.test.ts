@@ -3,7 +3,7 @@
  test the default 500 response message when there is no error message
 */
 import morgan from 'morgan';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 const req = {} as Request;
 const res = {} as Response;
@@ -19,15 +19,7 @@ res.status = statusMock;
 const sendFileMock = jest.fn();
 res.sendFile = sendFileMock;
 
-jest.mock('morgan', () =>
-  jest.fn(
-    () => (
-      request: Request,
-      response: Response,
-      nextFunc: NextFunction
-    ): void => {}
-  )
-);
+jest.mock('morgan', () => jest.fn(() => (): void => {}));
 
 describe('Logging', () => {
   /* This test requires isolated module loading, because the logging

@@ -15,11 +15,11 @@ describe('The health-check middleware', () => {
   let next: any;
 
   beforeAll(() => {
-    request = () => {};
+    request = (): void => {};
     response = {
       json: jest.fn(),
     };
-    next = () => {};
+    next = (): void => {};
     healthfileContents = fs.readFileSync(healthfilePath, 'utf-8');
   });
 

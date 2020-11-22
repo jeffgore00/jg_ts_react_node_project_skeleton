@@ -14,7 +14,15 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
-  ignorePatterns: ['webpack.config.js', 'public'],
+  ignorePatterns: [
+    'webpack.config.js',
+    'public',
+    'dist',
+    'node_modules',
+    'coverage',
+    '*.json',
+    '*.md',
+  ],
   plugins: ['@typescript-eslint', 'jest'],
   rules: {
     'react/prop-types': 0,

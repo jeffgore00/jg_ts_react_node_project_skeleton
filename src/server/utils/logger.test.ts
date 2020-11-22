@@ -1,5 +1,5 @@
 /* eslint-disable global-require, @typescript-eslint/ban-ts-ignore, no-underscore-dangle,
-no-useless-escape */
+no-useless-escape, no-console */
 
 // import { Logger } from './logger'
 
