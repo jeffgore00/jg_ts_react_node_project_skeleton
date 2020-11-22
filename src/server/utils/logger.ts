@@ -52,7 +52,10 @@ const productionLogger = createLogger({
   ],
 });
 
-class Logger {
+// interface RawParams {
+//   [key: string]: Function
+// }
+export class Logger {
   internalLogger: winston.Logger;
 
   constructor() {
@@ -79,5 +82,12 @@ class Logger {
     this.internalLogger.warn(message, metadata);
   }
 }
+
+// export interface Logger extends RawParams {
+//   info(message: string, metadata?: any): void
+//   debug(message: string, metadata?: any): void
+//   error(message: string, metadata?: any): void
+//   warn(message: string, metadata?: any): void
+// }
 
 export default new Logger();

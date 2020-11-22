@@ -8,6 +8,9 @@ import logger from './logger';
 
 jest.mock('./logger', () => ({
   info: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn(),
+  debug: jest.fn(),
 }));
 
 describe('Create Healthfile', () => {
