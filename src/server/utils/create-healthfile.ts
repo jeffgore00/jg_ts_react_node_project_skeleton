@@ -40,4 +40,10 @@ This file is intended for use as an npm script argument e.g.
 
 tsc --project tsconfig.server.json && node -r ts-node/register src/server/utils/create-healthfile.ts
 */
-createHealthfile('../../../dist/server/health.json');
+if (process.env.NODE_ENV !== 'test') {
+  try {
+    createHealthfile('../../../dist/server/health.json');
+  } catch (err) {
+    console.error(`Health file creation failed: ${err}`);
+  }
+}
