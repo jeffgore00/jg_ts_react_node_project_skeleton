@@ -17,7 +17,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'default-src': "'self'",
+        'default-src': "'self'", // provided by default if `directives` are not supplied, but since I am supplying custom directives below, I have to add this as well
         'script-src': ["'self'", 'https://unpkg.com'], // for React and React DOM
         'style-src': ["'self'", "'unsafe-inline'"], // for Styled Components
       },
@@ -55,15 +55,13 @@ export const sendHomepage: RequestHandler = (req, res) => {
   );
 };
 
-// `next` is not used in the below two functions, but NOT passing it to the function resulted
-// in some puzzling broken behavior.
-export const sendResourceNotFound: RequestHandler = (req, res, next) => {
+export const sendResourceNotFound: RequestHandler = (req, res) => {
   res
     .status(404)
     .send(`Operation ${req.method} ${req.path} not recognized on this server.`);
 };
 
-export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
+export const sendErrorResponse: ErrorRequestHandler = (err, req, res) => {
   res.status(500).json({
     error: err.message || 'Internal server error.',
   });

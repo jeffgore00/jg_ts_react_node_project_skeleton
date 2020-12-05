@@ -13,7 +13,7 @@
     "start": "node dist/server/index.js",
     "start:dev": "NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
-    "test": "npm run lint && npm run prettier:check && npm run test:unitAndApi",
+    "test": "npm run test:unitAndApi && npm run lint && npm run prettier:check",
     "test:unitAndApi": "jest",
     "test:browser": "wdio wdio.conf.js"
   },

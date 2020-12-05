@@ -1,20 +1,22 @@
-/* eslint-disable global-require, @typescript-eslint/unbound-method */
+/* eslint-disable global-require, @typescript-eslint/unbound-method,
+@typescript-eslint/ban-ts-ignore */
 import http from 'http';
-import https from 'https';
+
 import app from './app';
 import logger from './utils/logger';
 
 jest.mock('./app');
 
 const httpServerMock = {} as http.Server;
-const httpsServerMock = {} as https.Server;
-const serverListenMock = jest.fn((port, callback: any) => callback());
+const serverListenMock = jest.fn(
+  (path: string, listeningListener?: () => void) => listeningListener()
+);
 
+// @ts-ignore. Ignoring TS here because it's ignoring the valid overload of this function.
 httpServerMock.listen = serverListenMock;
-httpsServerMock.listen = serverListenMock;
 
 describe('Server', () => {
-  let loggerSpy: any;
+  let loggerSpy: jest.SpyInstance;
 
   const httpSpy = jest
     .spyOn(http, 'createServer')

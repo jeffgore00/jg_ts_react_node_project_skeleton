@@ -1,17 +1,16 @@
 /* eslint-disable global-require, @typescript-eslint/ban-ts-ignore, no-underscore-dangle,
 no-useless-escape, no-console */
 
-// import { Logger } from './logger'
-
 describe('Logger', () => {
-  let logger: any; // Logger
+  let logger: any;
   let consoleSpy: jest.SpyInstance;
   const SAMPLE_MESSAGE = 'sample message';
   const logLevels = ['info', 'debug', 'warn', 'error'];
 
   beforeAll(() => {
     consoleSpy = jest
-      // @ts-ignore
+      /* TS is saying _stdout doesn't exist on Console, but it does; it's what Winston uses.
+      @ts-ignore. */
       .spyOn(console._stdout, 'write')
       .mockImplementation(() => null);
     jest.isolateModules(() => {

@@ -16,7 +16,7 @@ jest.mock('./logger', () => ({
 describe('Create Healthfile', () => {
   const healthfilePath = path.join(__dirname, '../health.json');
   let preexistingHealthfileContents: string;
-  let fileJson: any;
+  let fileJson: { version: string; commit: string };
 
   beforeEach(() => {
     preexistingHealthfileContents = fs.readFileSync(healthfilePath, 'utf-8');

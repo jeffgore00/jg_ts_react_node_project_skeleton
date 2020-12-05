@@ -40,4 +40,4 @@ This file is intended for use as an npm script argument e.g.
 
 tsc --project tsconfig.server.json && node -r ts-node/register src/server/utils/create-healthfile.ts
 */
-// createHealthfile('../../../dist/server/health.json');
+createHealthfile('../../../dist/server/health.json');

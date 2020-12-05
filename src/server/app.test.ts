@@ -3,7 +3,12 @@
  test the default 500 response message when there is no error message
 */
 import morgan from 'morgan';
-import { Request, Response } from 'express';
+import {
+  Request,
+  Response,
+  ErrorRequestHandler,
+  RequestHandler,
+} from 'express';
 
 const req = {} as Request;
 const res = {} as Response;
@@ -64,7 +69,7 @@ describe('Error handling middleware', () => {
   const errorWithMessage = new Error('sample error');
   const errorWithoutMessage = new Error();
 
-  let sendErrorResponse: any;
+  let sendErrorResponse: ErrorRequestHandler;
 
   beforeAll(async () => {
     /* The function needs to be loaded dynamically in order to allow other tests
@@ -101,7 +106,7 @@ describe('Error handling middleware', () => {
 });
 
 describe('Send Homepage middleware', () => {
-  let sendHomepage: any;
+  let sendHomepage: RequestHandler;
 
   beforeAll(async () => {
     // need to do this to allow other dynamic require tests above to succeed
@@ -112,7 +117,7 @@ describe('Send Homepage middleware', () => {
   });
 
   it('Calls `res.sendFile` with the index.html file', () => {
-    sendHomepage(req, res);
+    sendHomepage(req, res, null);
     expect(sendFileMock.mock.calls[0][0]).toContain('public/index.html');
   });
 
@@ -124,7 +129,7 @@ describe('Send Homepage middleware', () => {
     });
 
     it('does nothing', () => {
-      sendHomepage(req, res);
+      sendHomepage(req, res, null);
       expect(statusMock).not.toHaveBeenCalled();
       expect(resReturnedFromStatus.send).not.toHaveBeenCalled();
     });
@@ -138,7 +143,7 @@ describe('Send Homepage middleware', () => {
     });
 
     it('Sends a text error response with a 404 status code', () => {
-      sendHomepage(req, res);
+      sendHomepage(req, res, null);
       expect(statusMock).toHaveBeenCalledWith(404);
       expect(resReturnedFromStatus.send).toHaveBeenCalledWith(
         'Main HTML file not found!'

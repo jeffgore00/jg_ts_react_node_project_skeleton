@@ -4,7 +4,7 @@ import health from '../health.json';
 
 const serverStartTimestamp = new Date();
 
-const healthCheckMiddleware: RequestHandler = (req, res) => {
+const healthCheckMiddleware: RequestHandler = (_, res) => {
   res.json({ ...health, uptime: formatDistanceToNow(serverStartTimestamp) });
 };
 
