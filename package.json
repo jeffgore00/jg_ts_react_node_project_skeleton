@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run build:client && npm run build:server",
     "build:client": "webpack",
-    "build:server": "rm -rf dist && tsc --project tsconfig.server.json && node -r ts-node/register src/server/utils/create-healthfile.ts",
+    "build:server": "rm -rf dist && tsc --project tsconfig.server.json && node -r ts-node/register src/server/health-check.ts",
     "lint": "eslint \"**\"",
     "prettier:check": "prettier '**/*.js' '**/*.json' '**/*.md' '**/*.html' --check",
     "release": "standard-version",

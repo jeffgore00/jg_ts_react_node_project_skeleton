@@ -1,5 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import winston, { createLogger, format, transports } from 'winston';
+import winston, {
+  createLogger,
+  format,
+  transports,
+  LogCallback,
+} from 'winston';
 import chalk from 'chalk';
 
 const levels = {
@@ -52,9 +57,10 @@ const productionLogger = createLogger({
   ],
 });
 
-// interface RawParams {
-//   [key: string]: Function
-// }
+interface Metadata {
+  [key: string]: string | number;
+}
+
 export class Logger {
   internalLogger: winston.Logger;
 
@@ -66,22 +72,26 @@ export class Logger {
     }
   }
 
-  info(message: string, metadata?: any): void {
-    this.internalLogger.info(message, metadata);
+  info(message: string, metadata?: Metadata, callback?: LogCallback): void {
+    this.internalLogger.info(message, metadata, callback);
   }
 
-  debug(message: string, metadata?: any): void {
-    this.internalLogger.debug(message, metadata);
+  debug(message: string, metadata?: Metadata, callback?: LogCallback): void {
+    this.internalLogger.debug(message, metadata, callback);
   }
 
-  error(message: string, metadata?: any): void {
-    this.internalLogger.error(message, metadata);
+  error(message: string, metadata?: Metadata, callback?: LogCallback): void {
+    this.internalLogger.error(message, metadata, callback);
   }
 
-  warn(message: string, metadata?: any): void {
-    this.internalLogger.warn(message, metadata);
+  warn(message: string, metadata?: Metadata, callback?: LogCallback): void {
+    this.internalLogger.warn(message, metadata, callback);
   }
 }
+
+// interface RawParams {
+//   [key: string]: Function
+// }
 
 // export interface Logger extends RawParams {
 //   info(message: string, metadata?: any): void

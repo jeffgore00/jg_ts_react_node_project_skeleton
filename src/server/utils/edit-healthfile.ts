@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from 'fs';
 import path from 'path';
 
@@ -12,9 +13,7 @@ export const logs = {
 };
 
 /* Exported for unit testing, but true intended usage is in invocation at bottom. */
-export default function createHealthfile(
-  healthLocationOverride?: string
-): void {
+export default function editHealthfile(healthLocationOverride?: string): void {
   const relativePathToHealthfile = healthLocationOverride || healthLocation;
   const health = {
     version,
@@ -32,18 +31,4 @@ export default function createHealthfile(
     path.join(__dirname, relativePathToHealthfile),
     JSON.stringify(health, null, 2)
   );
-}
-
-/*
-As part of a production build, we want to alter the file in `dist`, not in `src`.
-This file is intended for use as an npm script argument e.g.
-
-tsc --project tsconfig.server.json && node -r ts-node/register src/server/utils/create-healthfile.ts
-*/
-if (process.env.NODE_ENV !== 'test') {
-  try {
-    createHealthfile('../../../dist/server/health.json');
-  } catch (err) {
-    console.error(`Health file creation failed: ${err}`);
-  }
 }

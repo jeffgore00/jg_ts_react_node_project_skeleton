@@ -2,7 +2,7 @@
 import path from 'path';
 import fs from 'fs';
 
-import createHealthfile, { logs } from './create-healthfile';
+import editHealthfile, { logs } from './edit-healthfile';
 import packageJson from '../../../package.json';
 import logger from './logger';
 
@@ -21,7 +21,7 @@ describe('Create Healthfile', () => {
   beforeEach(() => {
     preexistingHealthfileContents = fs.readFileSync(healthfilePath, 'utf-8');
     jest.resetAllMocks();
-    createHealthfile();
+    editHealthfile();
     jest.isolateModules(() => {
       fileJson = require('../health.json');
     });
