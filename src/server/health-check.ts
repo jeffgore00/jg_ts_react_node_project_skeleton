@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { editHealthfile } from './utils/edit-healthfile';
 
-export const PATH_TO_DIST_HEALTHFILE = '../../../dist/server/health.json';
+export const PATH_TO_DIST_HEALTHFILE = '../../dist/server/health.json';
 export const HEALTHFILE_EDIT_ERROR_MESSAGE = 'Health file edit failed: ';
 /*
 As part of a production build, we want to alter the file in `dist`, not in `src`.
