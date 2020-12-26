@@ -12,5 +12,5 @@
     "types": ["node", "jest", "express"]
   },
   "include": ["src/server"],
-  "exclude": ["**/*.test.ts", "**/edit-healthfile.ts"]
+  "exclude": ["**/*.test.ts", "**/edit-healthfile.ts", "**/health-check.ts"]
 }
