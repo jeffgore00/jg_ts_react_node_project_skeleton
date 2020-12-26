@@ -61,8 +61,14 @@ interface Metadata {
   [key: string]: string | number;
 }
 
-export class Logger {
+interface RawParams {
+  [key: string]: Function;
+}
+export class Logger implements RawParams {
   internalLogger: winston.Logger;
+
+  // In order to allow logger['info']
+  [key: string]: Function;
 
   constructor() {
     if (process.env.NODE_ENV === 'development') {
@@ -88,10 +94,6 @@ export class Logger {
     this.internalLogger.warn(message, metadata, callback);
   }
 }
-
-// interface RawParams {
-//   [key: string]: Function
-// }
 
 // export interface Logger extends RawParams {
 //   info(message: string, metadata?: any): void

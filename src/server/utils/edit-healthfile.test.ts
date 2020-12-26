@@ -2,7 +2,7 @@
 import path from 'path';
 import fs from 'fs';
 
-import editHealthfile, { logs } from './edit-healthfile';
+import { editHealthfile, logs } from './edit-healthfile';
 import packageJson from '../../../package.json';
 import logger from './logger';
 

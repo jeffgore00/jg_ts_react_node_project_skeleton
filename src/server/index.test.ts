@@ -23,6 +23,7 @@ describe('Server', () => {
     .mockImplementation(jest.fn(() => httpServerMock));
 
   beforeEach(() => {
+    // @ts-ignore
     loggerSpy = jest.spyOn(logger, 'info').mockImplementationOnce(jest.fn());
     jest.isolateModules(() => {
       require('.');

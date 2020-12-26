@@ -13,7 +13,7 @@ export const logs = {
 };
 
 /* Exported for unit testing, but true intended usage is in invocation at bottom. */
-export default function editHealthfile(healthLocationOverride?: string): void {
+export function editHealthfile(healthLocationOverride?: string): void {
   const relativePathToHealthfile = healthLocationOverride || healthLocation;
   const health = {
     version,

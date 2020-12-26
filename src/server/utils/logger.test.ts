@@ -1,8 +1,9 @@
 /* eslint-disable global-require, @typescript-eslint/ban-ts-ignore, no-underscore-dangle,
 no-useless-escape, no-console */
+import { Logger } from './logger';
 
 describe('Logger', () => {
-  let logger: any;
+  let logger: Logger;
   let consoleSpy: jest.SpyInstance;
   const SAMPLE_MESSAGE = 'sample message';
   const logLevels = ['info', 'debug', 'warn', 'error'];
