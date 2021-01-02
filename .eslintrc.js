@@ -32,5 +32,7 @@ module.exports = {
     'comma-dangle': 0, // for some reason this is not turned off by prettier extension
     'implicit-arrow-linebreak': 0, // for some reason this is not turned off by prettier extension
     'function-paren-newline': 0, // for some reason this is not turned off by prettier extension
+    'operator-linebreak': 0, // for some reason this is not turned off by prettier extension
+    'object-curly-newline': 0, // complains about perfectly reasonable one-line destructuring
   },
 };

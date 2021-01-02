@@ -1,12 +1,11 @@
 /* eslint-disable global-require, @typescript-eslint/ban-ts-ignore, no-underscore-dangle,
 no-useless-escape, no-console */
-import { Logger } from './logger';
+import { Logger, LogTypes } from './logger';
 
 describe('Logger', () => {
   let logger: Logger;
   let consoleSpy: jest.SpyInstance;
   const SAMPLE_MESSAGE = 'sample message';
-  const logLevels = ['info', 'debug', 'warn', 'error'];
 
   beforeAll(() => {
     consoleSpy = jest
@@ -14,9 +13,6 @@ describe('Logger', () => {
       @ts-ignore. */
       .spyOn(console._stdout, 'write')
       .mockImplementation(() => null);
-    jest.isolateModules(() => {
-      logger = require('./logger').default;
-    });
   });
 
   beforeEach(() => {
@@ -29,8 +25,9 @@ describe('Logger', () => {
 
   it('exposes the logging methods info, error, warn, debug', () => {
     // Just to demonstrate it is 1) callable and 2) returns nothing, side effects only:
-    logLevels.forEach((logLevel) => {
-      logger[logLevel]('hi');
+    logger = new Logger();
+    Object.values(LogTypes).forEach((logType) => {
+      logger[logType]('hi');
       const result = logger.info(SAMPLE_MESSAGE);
 
       expect(result).toEqual(undefined);
@@ -40,17 +37,15 @@ describe('Logger', () => {
   describe('When the environment is development', () => {
     beforeAll(() => {
       process.env.NODE_ENV = 'development';
-      jest.isolateModules(() => {
-        logger = require('./logger').default;
-      });
+      logger = new Logger();
     });
 
     const createTestRegex = (
       color: string,
-      logLevel: string,
+      logType: string,
       logMessage: string
     ): RegExp => {
-      const regexStr = `<black text with ${color} background> ${logLevel.toUpperCase()} <\\/black text with ${color} background> <${color} text>${logMessage}<\\/${color} text> <gray text>${dateRegexString}<\\/gray text>\\n`;
+      const regexStr = `<black text with ${color} background> ${logType.toUpperCase()} <\\/black text with ${color} background> <${color} text>${logMessage}<\\/${color} text> <gray text>${dateRegexString}<\\/gray text>\\n`;
       return new RegExp(regexStr);
     };
 
@@ -86,20 +81,18 @@ describe('Logger', () => {
   describe('When the environment is not development', () => {
     beforeAll(() => {
       process.env.NODE_ENV = 'production';
-      jest.isolateModules(() => {
-        logger = require('./logger').default;
-      });
+      logger = new Logger();
     });
 
     describe('When the log level is not debug', () => {
       it('logs in plain JSON the log, log level, and timestamp', () => {
-        logLevels
-          .filter((level) => level !== 'debug')
-          .forEach((logLevel, index) => {
-            logger[logLevel]('hi');
+        Object.values(LogTypes)
+          .filter((type) => type !== 'debug')
+          .forEach((logType, index) => {
+            logger[logType]('hi');
 
             expect(JSON.parse(consoleSpy.mock.calls[index][0])).toEqual({
-              level: logLevel,
+              level: logType,
               message: 'hi',
               timestamp: expect.stringMatching(new RegExp(dateRegexString)),
             });

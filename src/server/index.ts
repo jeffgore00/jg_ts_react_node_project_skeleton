@@ -5,7 +5,7 @@ import app from './app';
 import logger from './utils/logger';
 
 function createServer(expressApp: Application): http.Server {
-  /* TODO: create HTTPS server if node env is production. Heroku magically takes care of this, but
+  /* TODO: create HTTPS server if NODE_ENV is 'production'. Heroku magically takes care of this, but
   unsure if the same would be true for other platforms. */
   return http.createServer(expressApp);
 }

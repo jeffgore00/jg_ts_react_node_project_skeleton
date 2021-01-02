@@ -7,11 +7,18 @@ import winston, {
 } from 'winston';
 import chalk from 'chalk';
 
-const levels = {
-  error: 0,
-  warn: 1,
-  info: 2,
-  debug: 3,
+export enum LogTypes {
+  Info = 'info',
+  Debug = 'debug',
+  Warn = 'warn',
+  Error = 'error',
+}
+
+const LogLevels = {
+  [LogTypes.Error]: 0,
+  [LogTypes.Warn]: 1,
+  [LogTypes.Info]: 2,
+  [LogTypes.Debug]: 3,
 };
 
 const labels: { [index: string]: string } = {
@@ -30,15 +37,23 @@ const devLoggerColorizer: {
   error: (logMessage: string): string => chalk.red(logMessage),
 };
 
-const developmentFormatter = format.printf(
-  (log) =>
-    `${labels[log.level]} ${devLoggerColorizer[log.level](
-      log.message
-    )} ${chalk.gray(log.timestamp)}`
-);
+const developmentFormatter = format.printf((log) => {
+  const { level, message, timestamp, ...additionalData } = log;
+  const additionalDataKeyVals = Object.entries(additionalData).map(
+    ([key, value]) => `data_${key}=${value}`
+  );
+  const additionalDataStr =
+    additionalDataKeyVals.length > 0
+      ? ` ${chalk.dim(additionalDataKeyVals.join(' '))}`
+      : '';
+
+  return `${labels[level]} ${devLoggerColorizer[level](
+    `${message}${additionalDataStr}`
+  )} ${chalk.gray(timestamp)}`;
+});
 
 const developmentLogger = createLogger({
-  levels,
+  levels: LogLevels,
   transports: [
     new transports.Console({
       level: 'debug', // means that this and all levels below it will be logged
@@ -48,7 +63,7 @@ const developmentLogger = createLogger({
 });
 
 const productionLogger = createLogger({
-  levels,
+  levels: LogLevels,
   transports: [
     new transports.Console({
       level: 'info', // means that this and all levels below it will be logged
@@ -57,7 +72,7 @@ const productionLogger = createLogger({
   ],
 });
 
-interface Metadata {
+export interface Metadata {
   [key: string]: string | number;
 }
 
@@ -94,12 +109,5 @@ export class Logger implements RawParams {
     this.internalLogger.warn(message, metadata, callback);
   }
 }
-
-// export interface Logger extends RawParams {
-//   info(message: string, metadata?: any): void
-//   debug(message: string, metadata?: any): void
-//   error(message: string, metadata?: any): void
-//   warn(message: string, metadata?: any): void
-// }
 
 export default new Logger();
