@@ -10,6 +10,7 @@ export const Homepage = (): React.ReactElement => {
   useEffect(() => {
     axios.put('/api/logs', {
       logType: 'info',
+      logSource: 'UI',
       message: 'Homepage Rendered',
     });
   }, []);

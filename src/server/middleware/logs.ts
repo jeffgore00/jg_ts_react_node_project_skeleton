@@ -1,18 +1,15 @@
 import { RequestHandler } from 'express';
-import { Logger, LogTypes, Metadata } from '../utils/logger';
-
-interface NewLogBody {
-  message: string;
-  logType: LogTypes;
-  additionalData: Metadata;
-}
+import logger from '../utils/logger';
+import { NewLogBody } from '../../shared/types/logging';
 
 const logMiddleware: RequestHandler = (req, res) => {
-  const logger = new Logger();
   const { body }: { body: NewLogBody } = req;
-  const { message, logType, additionalData } = body;
+  const { message, logType, additionalData, logSource } = body;
 
-  logger[logType](`UI LOG: ${message}`, additionalData);
+  logger[logType](
+    `Log from ${logSource.toUpperCase()}: ${message}`,
+    additionalData
+  );
 
   res.sendStatus(200);
 };

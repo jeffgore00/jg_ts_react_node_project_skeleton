@@ -7,12 +7,7 @@ import winston, {
 } from 'winston';
 import chalk from 'chalk';
 
-export enum LogTypes {
-  Info = 'info',
-  Debug = 'debug',
-  Warn = 'warn',
-  Error = 'error',
-}
+import { LogTypes, Metadata } from '../../shared/types/logging';
 
 const LogLevels = {
   [LogTypes.Error]: 0,
@@ -72,14 +67,7 @@ const productionLogger = createLogger({
   ],
 });
 
-export interface Metadata {
-  [key: string]: string | number;
-}
-
-interface RawParams {
-  [key: string]: Function;
-}
-export class Logger implements RawParams {
+export class Logger {
   internalLogger: winston.Logger;
 
   // In order to allow logger['info']

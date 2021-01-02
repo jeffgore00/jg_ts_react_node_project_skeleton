@@ -1,6 +1,7 @@
 /* eslint-disable global-require, @typescript-eslint/ban-ts-ignore, no-underscore-dangle,
 no-useless-escape, no-console */
-import { Logger, LogTypes } from './logger';
+import { Logger } from './logger';
+import { LogTypes } from '../../shared/types/logging';
 
 describe('Logger', () => {
   let logger: Logger;

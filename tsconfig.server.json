@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/server",
+    "outDir": "./dist",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
@@ -11,6 +11,6 @@
     "resolveJsonModule": true,
     "types": ["node", "jest", "express"]
   },
-  "include": ["src/server"],
+  "include": ["src/server", "src/shared"],
   "exclude": ["**/*.test.ts", "**/edit-healthfile.ts", "**/health-check.ts"]
 }
