@@ -3,16 +3,16 @@ import { Logger, LogTypes, Metadata } from '../utils/logger';
 
 interface NewLogBody {
   message: string;
-  logLevel: LogTypes;
+  logType: LogTypes;
   additionalData: Metadata;
 }
 
 const logMiddleware: RequestHandler = (req, res) => {
   const logger = new Logger();
   const { body }: { body: NewLogBody } = req;
-  const { message, logLevel, additionalData } = body;
+  const { message, logType, additionalData } = body;
 
-  logger[logLevel](`UI LOG: ${message}`, additionalData);
+  logger[logType](`UI LOG: ${message}`, additionalData);
 
   res.sendStatus(200);
 };
