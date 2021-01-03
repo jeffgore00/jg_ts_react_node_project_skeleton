@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import logger from '../utils/logger';
 import { NewLogBody } from '../../shared/types/logging';
 
-const logMiddleware: RequestHandler = (req, res) => {
+const processLogFromClient: RequestHandler = (req, res) => {
   const { body }: { body: NewLogBody } = req;
   const { message, logType, additionalData, logSource } = body;
 
@@ -14,4 +14,4 @@ const logMiddleware: RequestHandler = (req, res) => {
   res.sendStatus(200);
 };
 
-export default logMiddleware;
+export default processLogFromClient;
