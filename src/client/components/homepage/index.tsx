@@ -7,9 +7,11 @@ export const HomepageStylingContainer = styled.div`
   font-family: Helvetica, sans serif;
 `;
 
+export const HOMEPAGE_RENDERED_LOG = 'Homepage Rendered';
+
 export const Homepage = (): React.ReactElement => {
   useEffect(() => {
-    logger.info('Homepage Rendered');
+    logger.info(HOMEPAGE_RENDERED_LOG);
   }, []);
 
   return (
