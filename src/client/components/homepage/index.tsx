@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+
+import logger from '../../utils/logger';
 
 export const HomepageStylingContainer = styled.div`
   font-family: Helvetica, sans serif;
@@ -8,11 +9,7 @@ export const HomepageStylingContainer = styled.div`
 
 export const Homepage = (): React.ReactElement => {
   useEffect(() => {
-    axios.put('/api/logs', {
-      logType: 'info',
-      logSource: 'UI',
-      message: 'Homepage Rendered',
-    });
+    logger.info('Homepage Rendered');
   }, []);
 
   return (

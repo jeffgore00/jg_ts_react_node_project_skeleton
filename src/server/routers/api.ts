@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import healthCheck from '../middleware/health-check';
-import addLog from '../middleware/logs';
+import processLogFromClient from '../middleware/process-log-from-client';
 
 const router = Router();
 
 router.get('/health', healthCheck);
-router.put('/logs', addLog);
+router.put('/logs', processLogFromClient);
 
 export default router;

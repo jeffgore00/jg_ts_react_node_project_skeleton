@@ -4,6 +4,7 @@ import { render, screen, getByRole } from '@testing-library/react';
 import { setupReactMediaMock } from '../../../../test-utils/react-media';
 import { Homepage } from '.';
 
+jest.mock('../../utils/logger');
 jest.mock('react-media', () => jest.fn());
 setupReactMediaMock();
 
@@ -12,7 +13,7 @@ describe('Homepage', () => {
 
   beforeAll(() => {
     render(<Homepage />);
-    homepage = screen.getByTestId('home'); // </nav>
+    homepage = screen.getByTestId('home');
   });
 
   it('renders heading text', () => {
