@@ -6,7 +6,6 @@ import { LogTypes } from '../../shared/types/logging';
 describe('Logger', () => {
   let logger: Logger;
   let consoleSpy: jest.SpyInstance;
-  const SAMPLE_MESSAGE = 'sample message';
 
   beforeAll(() => {
     consoleSpy = jest
@@ -28,8 +27,7 @@ describe('Logger', () => {
     // Just to demonstrate it is 1) callable and 2) returns nothing, side effects only:
     logger = new Logger();
     Object.values(LogTypes).forEach((logType) => {
-      logger[logType]('hi');
-      const result = logger.info(SAMPLE_MESSAGE);
+      const result = logger[logType]('hi');
 
       expect(result).toEqual(undefined);
     });
@@ -41,12 +39,25 @@ describe('Logger', () => {
       logger = new Logger();
     });
 
+    const devColorMap = {
+      info: 'cyan',
+      debug: 'magenta',
+      warn: 'yellow',
+      error: 'red',
+    };
+
     const createTestRegex = (
       color: string,
       logType: string,
-      logMessage: string
+      logMessage: string,
+      additionalData?: { [index: string]: string | number }
     ): RegExp => {
-      const regexStr = `<black text with ${color} background> ${logType.toUpperCase()} <\\/black text with ${color} background> <${color} text>${logMessage}<\\/${color} text> <gray text>${dateRegexString}<\\/gray text>\\n`;
+      const additionalDataStr = additionalData
+        ? ` <dimmed text>${Object.entries(additionalData).map(
+            ([key, value]) => `data_${key}=${value}`
+          )}</dimmed text>`
+        : '';
+      const regexStr = `<black text with ${color} background> ${logType.toUpperCase()} <\\/black text with ${color} background> <${color} text>${logMessage}${additionalDataStr}<\\/${color} text> <gray text>${dateRegexString}<\\/gray text>\\n`;
       return new RegExp(regexStr);
     };
 
@@ -76,6 +87,24 @@ describe('Logger', () => {
       logger.error(logMessage);
       const regex = createTestRegex('red', 'error', logMessage);
       expect(consoleSpy).toHaveBeenCalledWith(expect.stringMatching(regex));
+    });
+
+    describe('When the optional `additionalData` argument is provided', () => {
+      it.each(Object.values(LogTypes).map((type) => [type]))(
+        'logs them as data_key=value in the same color as the log level, but dim',
+        (logType) => {
+          const logMessage = 'THIS IS A LOG';
+          const logAdditionalData = { clientId: 12345 };
+          logger[logType](logMessage, logAdditionalData);
+          const regex = createTestRegex(
+            devColorMap[logType],
+            logType,
+            logMessage,
+            logAdditionalData
+          );
+          expect(consoleSpy).toHaveBeenCalledWith(expect.stringMatching(regex));
+        }
+      );
     });
   });
 
