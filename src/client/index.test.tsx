@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { ErrorBoundary } from './components/error-boundary';
 import { Homepage } from './components/homepage';
 
 const reactDOMRenderSpy = jest
@@ -21,6 +22,11 @@ describe('root', () => {
 
   it('injects the <Homepage> element into <div id="root">', async () => {
     await import('.');
-    expect(reactDOMRenderSpy).toHaveBeenCalledWith(<Homepage />, root);
+    expect(reactDOMRenderSpy).toHaveBeenCalledWith(
+      <ErrorBoundary>
+        <Homepage />
+      </ErrorBoundary>,
+      root
+    );
   });
 });
