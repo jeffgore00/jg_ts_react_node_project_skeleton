@@ -1,5 +1,7 @@
 # TypeScript-React-Node Project Skeleton
 
+React is not bundled so you can't work on this offline.
+
 ## Build
 
 `build:client` generates a webpack bundle in `public/webpack.bundle.js`.

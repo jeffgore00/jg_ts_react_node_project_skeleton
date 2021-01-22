@@ -3,6 +3,7 @@ import express, { RequestHandler, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
+import cors from 'cors';
 
 import apiRouter from './routers/api';
 
@@ -13,6 +14,7 @@ interface ResponseError extends Error {
 const app = express();
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
+app.use(cors());
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -39,7 +41,7 @@ app.use(express.static(path.join(__dirname, '../..', 'public')));
 // Make JSON responses available on `response.body`
 app.use(bodyParser.json());
 
-// (figure this out)
+// TODO: figure out what this does
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /* DEFINE CUSTOM MIDDLEWARE */
