@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 
 import apiRouter from './routers/api';
+import logger from '../client/utils/logger';
 
 interface ResponseError extends Error {
   status?: number;
@@ -65,6 +66,7 @@ export const sendResourceNotFound: RequestHandler = (req, res, next) => {
 
 // Error handler will not work without next!
 export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
+  logger.error('SERVER 500 ERROR', { error: err });
   res.status(500).json({
     error: err.message || 'Internal server error.',
   });
