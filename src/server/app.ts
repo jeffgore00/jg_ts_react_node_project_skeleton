@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import path from 'path';
 import express, { RequestHandler, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
-import cors from 'cors';
 
 import apiRouter from './routers/api';
 
@@ -14,7 +14,7 @@ interface ResponseError extends Error {
 const app = express();
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
-app.use(cors());
+
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -57,13 +57,14 @@ export const sendHomepage: RequestHandler = (req, res) => {
   );
 };
 
-export const sendResourceNotFound: RequestHandler = (req, res) => {
+export const sendResourceNotFound: RequestHandler = (req, res, next) => {
   res
     .status(404)
     .send(`Operation ${req.method} ${req.path} not recognized on this server.`);
 };
 
-export const sendErrorResponse: ErrorRequestHandler = (err, req, res) => {
+// Error handler will not work without next!
+export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
   res.status(500).json({
     error: err.message || 'Internal server error.',
   });
