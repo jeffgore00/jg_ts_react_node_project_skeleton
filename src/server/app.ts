@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 import path from 'path';
+import zlib from 'zlib';
+import fs from 'fs';
+
 import express, { RequestHandler, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
@@ -13,6 +16,10 @@ interface ResponseError extends Error {
 }
 
 const app = express();
+
+const compressedJavascriptBundle = zlib.gzipSync(
+  fs.readFileSync(path.join(__dirname, '../..', 'public/bundle.js'), 'utf8')
+);
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
 
@@ -36,6 +43,16 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('short'));
 }
 
+/* DEFINE CUSTOM MIDDLEWARE */
+export const sendBundle: RequestHandler = (req, res) => {
+  console.log('JG HELLO');
+  res.header('Content-Encoding', 'gzip');
+  res.header('Content-Type', 'application/javascript');
+  res.send(compressedJavascriptBundle);
+};
+
+app.get('/bundle.js', sendBundle);
+
 // When the server gets a request for a _file_, look in the /public directory
 app.use(express.static(path.join(__dirname, '../..', 'public')));
 
@@ -44,19 +61,6 @@ app.use(bodyParser.json());
 
 // TODO: figure out what this does
 app.use(bodyParser.urlencoded({ extended: true }));
-
-/* DEFINE CUSTOM MIDDLEWARE */
-export const sendHomepage: RequestHandler = (req, res) => {
-  res.sendFile(
-    path.join(__dirname, '../../..', 'public/index.html'),
-    null,
-    (err: ResponseError) => {
-      if (err && !res.headersSent) {
-        res.status(404).send('Main HTML file not found!');
-      }
-    }
-  );
-};
 
 export const sendResourceNotFound: RequestHandler = (req, res, next) => {
   res
@@ -73,7 +77,7 @@ export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
 };
 
 /* APPLY CUSTOM MIDDLEWARE */
-app.get('/', sendHomepage);
+// app.get('/', sendHomepage);
 app.use('/api', apiRouter);
 app.use(sendResourceNotFound);
 app.use(sendErrorResponse);

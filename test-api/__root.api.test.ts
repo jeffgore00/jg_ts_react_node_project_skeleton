@@ -64,10 +64,12 @@ describe('GET /', () => {
       }
     });
 
-    it('responds with 404 and "Main HTML file not found!"', async () => {
+    it('responds with 404 and "Operation GET / not recognized on this server."', async () => {
       const response = await request(app).get('/');
       expect(response.status).toEqual(404);
-      expect(response.text).toEqual('Main HTML file not found!');
+      expect(response.text).toEqual(
+        'Operation GET / not recognized on this server.'
+      );
     });
   });
 });

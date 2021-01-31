@@ -106,49 +106,49 @@ describe('Error handling middleware', () => {
   });
 });
 
-describe('Send Homepage middleware', () => {
-  let sendHomepage: RequestHandler;
+// describe('Send Homepage middleware', () => {
+//   let sendHomepage: RequestHandler;
 
-  beforeAll(async () => {
-    // need to do this to allow other dynamic require tests above to succeed
-    ({ sendHomepage } = await import('./app'));
-    sendFileMock.mockImplementation((filePath, options, errback) => {
-      errback();
-    });
-  });
+//   beforeAll(async () => {
+//     // need to do this to allow other dynamic require tests above to succeed
+//     ({ sendHomepage } = await import('./app'));
+//     sendFileMock.mockImplementation((filePath, options, errback) => {
+//       errback();
+//     });
+//   });
 
-  it('Calls `res.sendFile` with the index.html file', () => {
-    sendHomepage(req, res, null);
-    expect(sendFileMock.mock.calls[0][0]).toContain('public/index.html');
-  });
+//   it('Calls `res.sendFile` with the index.html file', () => {
+//     sendHomepage(req, res, null);
+//     expect(sendFileMock.mock.calls[0][0]).toContain('public/index.html');
+//   });
 
-  describe('When `res.sendFile` does not result in error', () => {
-    beforeAll(() => {
-      sendFileMock.mockImplementation((filePath, options, errback) => {
-        errback();
-      });
-    });
+//   describe('When `res.sendFile` does not result in error', () => {
+//     beforeAll(() => {
+//       sendFileMock.mockImplementation((filePath, options, errback) => {
+//         errback();
+//       });
+//     });
 
-    it('does nothing', () => {
-      sendHomepage(req, res, null);
-      expect(statusMock).not.toHaveBeenCalled();
-      expect(resReturnedFromStatus.send).not.toHaveBeenCalled();
-    });
-  });
+//     it('does nothing', () => {
+//       sendHomepage(req, res, null);
+//       expect(statusMock).not.toHaveBeenCalled();
+//       expect(resReturnedFromStatus.send).not.toHaveBeenCalled();
+//     });
+//   });
 
-  describe('When `res.sendFile` results in an error which prevents a response', () => {
-    beforeAll(() => {
-      sendFileMock.mockImplementation((filePath, options, errback) => {
-        errback(new Error());
-      });
-    });
+//   describe('When `res.sendFile` results in an error which prevents a response', () => {
+//     beforeAll(() => {
+//       sendFileMock.mockImplementation((filePath, options, errback) => {
+//         errback(new Error());
+//       });
+//     });
 
-    it('Sends a text error response with a 404 status code', () => {
-      sendHomepage(req, res, null);
-      expect(statusMock).toHaveBeenCalledWith(404);
-      expect(resReturnedFromStatus.send).toHaveBeenCalledWith(
-        'Main HTML file not found!'
-      );
-    });
-  });
-});
+//     it('Sends a text error response with a 404 status code', () => {
+//       sendHomepage(req, res, null);
+//       expect(statusMock).toHaveBeenCalledWith(404);
+//       expect(resReturnedFromStatus.send).toHaveBeenCalledWith(
+//         'Main HTML file not found!'
+//       );
+//     });
+//   });
+// });
