@@ -8,4 +8,5 @@ module.exports = {
     '!**/dist/**',
   ],
   testPathIgnorePatterns: ['<rootDir>/test-browser/'],
+  setupFiles: ['<rootDir>/jest-setup.js'],
 };

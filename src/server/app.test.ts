@@ -24,6 +24,7 @@ res.status = statusMock;
 const sendFileMock = jest.fn();
 res.sendFile = sendFileMock;
 
+jest.mock('axios');
 jest.mock('morgan', () => jest.fn(() => (): void => {}));
 
 describe('Logging', () => {
