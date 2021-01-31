@@ -17,9 +17,15 @@ interface ResponseError extends Error {
 
 const app = express();
 
-const compressedJavascriptBundle = zlib.gzipSync(
-  fs.readFileSync(path.join(__dirname, '../..', 'public/bundle.js'), 'utf8')
-);
+let compressedJavascriptBundle: Buffer;
+
+try {
+  compressedJavascriptBundle = zlib.gzipSync(
+    fs.readFileSync(path.join(__dirname, '../..', 'public/bundle.js'), 'utf8')
+  );
+} catch {
+  compressedJavascriptBundle = null;
+}
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
 
@@ -45,7 +51,9 @@ if (process.env.NODE_ENV === 'development') {
 
 /* DEFINE CUSTOM MIDDLEWARE */
 export const sendBundle: RequestHandler = (req, res) => {
-  console.log('JG HELLO');
+  if (!compressedJavascriptBundle) {
+    res.sendStatus(404);
+  }
   res.header('Content-Encoding', 'gzip');
   res.header('Content-Type', 'application/javascript');
   res.send(compressedJavascriptBundle);
