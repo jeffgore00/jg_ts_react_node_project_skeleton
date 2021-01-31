@@ -1,12 +1,9 @@
 import cors, { CorsOptions } from 'cors';
 import { RequestHandler, Response, Request } from 'express';
 import logger from './logger';
+import getConfig from '../config';
 
-const corsWhitelist = [
-  // process.env.APP_DOMAIN instead of the below
-  'http://localhost:1337',
-  'https://ts-react-node-project-skeleton.herokuapp.com',
-];
+const { corsWhitelist } = getConfig();
 
 const buildCorsOptions = (req: Request, res: Response): CorsOptions => ({
   origin(origin, callback): void {
@@ -18,7 +15,7 @@ const buildCorsOptions = (req: Request, res: Response): CorsOptions => ({
       res.sendStatus(403);
     };
 
-    if (!corsWhitelist.includes(origin)) {
+    if (!corsWhitelist.includes(origin) && !corsWhitelist.includes('*')) {
       return handleCorsError();
     }
     return callback(null, true);

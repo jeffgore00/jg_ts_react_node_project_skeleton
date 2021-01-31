@@ -11,11 +11,11 @@
   "scripts": {
     "build": "npm run build:client && npm run build:server",
     "build:client": "webpack",
-    "build:server": "rm -rf dist && tsc --project tsconfig.server.json && node -r ts-node/register src/server/health-check.ts",
+    "build:server": "rm -rf dist && tsc --project tsconfig.server.json && if [ \"$NODE_ENV\" == \"production\" ]; then node -r ts-node/register src/server/health-check.ts; fi",
     "lint": "eslint \"**\"",
     "prettier:check": "prettier '**/*.js' '**/*.json' '**/*.md' '**/*.html' --check",
     "release": "standard-version",
-    "start": "node dist/server/index.js",
+    "start": "NODE_ENV=production node dist/server/index.js",
     "start:dev": "NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --exec ts-node --extensions '.ts, .js'",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
     "test": "NODE_ENV=test npm run test:unitAndApi && npm run lint && npm run prettier:check",

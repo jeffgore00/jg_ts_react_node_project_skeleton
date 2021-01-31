@@ -1,0 +1,3 @@
+{
+  "corsWhitelist": ["http://localhost:1337"]
+}

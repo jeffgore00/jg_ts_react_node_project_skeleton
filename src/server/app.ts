@@ -64,7 +64,7 @@ export const sendResourceNotFound: RequestHandler = (req, res, next) => {
     .send(`Operation ${req.method} ${req.path} not recognized on this server.`);
 };
 
-// Error handler will not work without next!
+// Error handler will not work without next! TODO: figure out why not.
 export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
   logger.error('SERVER 500 ERROR', { error: err });
   res.status(500).json({
