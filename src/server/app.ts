@@ -11,21 +11,7 @@ import helmet from 'helmet';
 import apiRouter from './routers/api';
 import logger from '../client/utils/logger';
 
-interface ResponseError extends Error {
-  status?: number;
-}
-
 const app = express();
-
-let compressedJavascriptBundle: Buffer;
-
-try {
-  compressedJavascriptBundle = zlib.gzipSync(
-    fs.readFileSync(path.join(__dirname, '../..', 'public/bundle.js'), 'utf8')
-  );
-} catch {
-  compressedJavascriptBundle = null;
-}
 
 /* APPLY THIRD-PARTY MIDDLEWARE */
 
@@ -50,6 +36,19 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 /* DEFINE CUSTOM MIDDLEWARE */
+
+let compressedJavascriptBundle: Buffer;
+
+/* Swallow errors because this file isn't guaranteed to exist in test environments. Let the
+middleware handle the 404 if the file is null. */
+try {
+  compressedJavascriptBundle = zlib.gzipSync(
+    fs.readFileSync(path.join(__dirname, '../..', 'public/bundle.js'), 'utf8')
+  );
+} catch {
+  compressedJavascriptBundle = null;
+}
+
 export const sendBundle: RequestHandler = (req, res) => {
   if (!compressedJavascriptBundle) {
     res.sendStatus(404);
@@ -59,6 +58,7 @@ export const sendBundle: RequestHandler = (req, res) => {
   res.send(compressedJavascriptBundle);
 };
 
+// Must be used before standard `express.static` middleware, which would send the file uncompressed.
 app.get('/bundle.js', sendBundle);
 
 // When the server gets a request for a _file_, look in the /public directory
