@@ -13,7 +13,7 @@ export const logs = {
 };
 
 /* Exported for unit testing, but true intended usage is in invocation at bottom. */
-export function editHealthfile(healthLocationOverride?: string): void {
+export function editHealthfile(healthLocationOverride?: string): any {
   const relativePathToHealthfile = healthLocationOverride || healthLocation;
   const health = {
     version,
@@ -22,6 +22,7 @@ export function editHealthfile(healthLocationOverride?: string): void {
   /* SOURCE_VERSION appears to be a Heroku-specific environment variable. A previous iteration had
   an `else` clause that ran a Node process to run 'git rev-parse HEAD', but that became very
   difficult to test, since mocking the child process also interfered with setting env variables. */
+
   if (process.env.SOURCE_VERSION) {
     health.commit = process.env.SOURCE_VERSION;
   } else {
@@ -31,4 +32,6 @@ export function editHealthfile(healthLocationOverride?: string): void {
     path.join(__dirname, relativePathToHealthfile),
     JSON.stringify(health, null, 2),
   );
+
+  return health;
 }
