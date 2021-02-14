@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 
 import processLogFromClient from './process-log-from-client';
-import { LogTypes, NewLogBody } from '../../shared/types/logging';
+import { LogTypes, NewLogRequest } from '../../shared/types/logging';
 import logger from '../utils/logger';
 
 // @ts-ignore
@@ -20,7 +20,7 @@ const debugLoggerSpy = jest
 
 describe('Middleware for logging from external source', () => {
   let response: Partial<Response>;
-  const request: Partial<Request> = {
+  const request: Partial<NewLogRequest> = {
     body: {
       message: 'TEST LOG',
       logSource: 'UI',
@@ -29,7 +29,7 @@ describe('Middleware for logging from external source', () => {
         storeManager: 'John Smith',
         storeId: 39735,
       },
-    } as NewLogBody,
+    },
   };
 
   const expectedLogMessage = `Log from ${request.body.logSource.toUpperCase()}: ${

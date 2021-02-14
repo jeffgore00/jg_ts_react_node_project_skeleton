@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 import logger from '../utils/logger';
-import { NewLogBody } from '../../shared/types/logging';
+import { NewLogRequest } from '../../shared/types/logging';
 
-const processLogFromClient: RequestHandler = (req, res) => {
-  const { body }: { body: NewLogBody } = req;
+const processLogFromClient: RequestHandler = (req: NewLogRequest, res) => {
+  const { body } = req;
   const { message, logType, additionalData, logSource } = body;
 
   logger[logType](

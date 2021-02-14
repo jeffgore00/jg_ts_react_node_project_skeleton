@@ -12,14 +12,20 @@ export class Logger {
     message: string,
     additionalData?: Metadata,
   ): void {
-    axios.put('/api/logs', {
-      logType,
-      logSource: 'UI',
-      message,
-      ...(additionalData && {
-        additionalData,
-      }),
-    });
+    axios
+      .put('/api/logs', {
+        logType,
+        logSource: 'UI',
+        message,
+        ...(additionalData && {
+          additionalData,
+        }),
+      })
+      .catch((err: Error) => {
+        console.error(
+          `Failed to log message: ${message}. Error: ${err.message}`,
+        );
+      });
   }
 
   info(message: string, additionalData?: Metadata): void {

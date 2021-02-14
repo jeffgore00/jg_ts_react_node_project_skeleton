@@ -4,7 +4,9 @@ export enum LogTypes {
   Warn = 'warn',
   Error = 'error',
 }
-
+export interface NewLogRequest {
+  body: NewLogBody;
+}
 export interface NewLogBody {
   message: string;
   logType: LogTypes;

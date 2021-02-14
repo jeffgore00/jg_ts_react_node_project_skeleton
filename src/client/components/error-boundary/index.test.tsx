@@ -34,7 +34,7 @@ describe('Error boundary', () => {
 
     it('logs the error', () => {
       expect(loggerSpy).toHaveBeenCalledWith(
-        'Error Caught by React Error Boundary: Error: unique error',
+        'Error Caught by React Error Boundary: unique error',
         {
           errorComponentStack: `
     in FaultyComponent

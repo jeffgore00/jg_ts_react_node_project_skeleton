@@ -9,7 +9,10 @@ type Props = {
   children: React.ReactNode;
 };
 
-export class ErrorBoundary extends React.Component<{}, { hasError: boolean }> {
+export class ErrorBoundary extends React.Component<
+  Record<string, unknown>,
+  { hasError: boolean }
+> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
@@ -17,7 +20,7 @@ export class ErrorBoundary extends React.Component<{}, { hasError: boolean }> {
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
     this.setState({ hasError: true });
-    logger.error(`Error Caught by React Error Boundary: ${error}`, {
+    logger.error(`Error Caught by React Error Boundary: ${error.message}`, {
       errorComponentStack: info.componentStack,
     });
   }

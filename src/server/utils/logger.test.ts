@@ -50,7 +50,7 @@ describe('Logger', () => {
       color: string,
       logType: string,
       logMessage: string,
-      additionalData?: { [index: string]: string | number },
+      additionalData?: { [index: string]: any },
     ): RegExp => {
       const additionalDataStr = additionalData
         ? ` <dimmed text>${Object.entries(additionalData).map(
