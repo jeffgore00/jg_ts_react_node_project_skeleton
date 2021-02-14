@@ -15,8 +15,9 @@ jest.mock('./logger', () => ({
   debug: jest.fn(),
 }));
 
-// TODO: test file writing. Previously did, but upgrade to TS4 or new Jest broke
-// this test. Even though using sync methods, Jest appears to be caching the .json
+// TODO: test the side effect of the file actually being written. Previously
+// this file had such tests, but upgrade to TS4 or new Jest broke
+// them. Even though using sync methods, Jest appears to be caching the .json
 // file.
 describe('Create Healthfile', () => {
   const healthfilePath = path.join(__dirname, '../health.json');

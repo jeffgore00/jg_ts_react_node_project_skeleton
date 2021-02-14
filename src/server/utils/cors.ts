@@ -22,7 +22,7 @@ const buildCorsOptions = (req: Request, res: Response): CorsOptions => ({
   },
 });
 
-/* The "same-origin policy" doesn't apply to request from tools like postman or the browser
+/* The "same-origin policy" doesn't apply to requests from tools like Postman or the browser
 console, in which the origin is undefined (i.e., not originating from another URL). This middleware
 prevents access from requests with an undefined origin. (Though granted, you can just hardcode
 the `Origin` header to one of the whitelist values if you know the whitelist. And it's easy to guess
