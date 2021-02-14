@@ -1,5 +1,6 @@
 /* eslint-disable global-require, @typescript-eslint/unbound-method,
-@typescript-eslint/ban-ts-comment */
+@typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-call,
+@typescript-eslint/no-unsafe-member-access */
 import http from 'http';
 
 import app from './app';

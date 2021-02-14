@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from 'axios';
 
 import { Logger } from './logger';
@@ -9,11 +10,13 @@ describe('Logger', () => {
   const SAMPLE_MESSAGE = 'sample message';
 
   beforeAll(() => {
-    axiosPutSpy = jest.spyOn(axios, 'put').mockImplementation(() => null);
+    axiosPutSpy = jest
+      .spyOn(axios, 'put')
+      .mockImplementation(() => Promise.resolve());
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('exposes the logging methods info, error, warn, debug', () => {

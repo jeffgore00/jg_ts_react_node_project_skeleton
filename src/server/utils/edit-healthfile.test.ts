@@ -1,4 +1,6 @@
-/* eslint-disable global-require, @typescript-eslint/unbound-method */
+/* eslint-disable global-require, @typescript-eslint/unbound-method,
+@typescript-eslint/no-unsafe-assignment */
+
 import path from 'path';
 import fs from 'fs';
 
@@ -20,7 +22,7 @@ describe('Create Healthfile', () => {
 
   beforeEach(() => {
     preexistingHealthfileContents = fs.readFileSync(healthfilePath, 'utf-8');
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     editHealthfile();
     jest.isolateModules(() => {
       fileJson = require('../health.json');

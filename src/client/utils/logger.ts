@@ -5,7 +5,7 @@ import { LogTypes, Metadata } from '../../shared/types/logging';
 
 export class Logger {
   // In order to allow logger['info']
-  [key: string]: Function;
+  [key: string]: any;
 
   internalLogger(
     logType: LogTypes,

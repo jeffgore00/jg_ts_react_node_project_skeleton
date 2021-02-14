@@ -34,6 +34,7 @@ describe('GET /', () => {
     it('responds with 200 and public/index.html', async () => {
       const response = await request(app).get('/');
       expect(response.status).toEqual(200);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(response.header['content-type']).toEqual(
         'text/html; charset=UTF-8',
       );

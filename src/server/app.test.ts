@@ -1,4 +1,6 @@
-/* eslint-disable global-require, @typescript-eslint/unbound-method */
+/* eslint-disable global-require, @typescript-eslint/unbound-method,
+@typescript-eslint/no-unsafe-assignment */
+
 /*
  test the default 500 response message when there is no error message
 */
@@ -68,9 +70,6 @@ describe('Logging', () => {
 });
 
 describe('Error handling middleware', () => {
-  const errorWithMessage = new Error('sample error');
-  const errorWithoutMessage = new Error();
-
   let sendErrorResponse: ErrorRequestHandler;
 
   beforeAll(() => {
@@ -86,26 +85,8 @@ describe('Error handling middleware', () => {
     jest.clearAllMocks();
   });
 
-  it('assigns a 500 status to the response', () => {
+  it('sends a 500 response', () => {
     sendErrorResponse(new Error(), req, res, next);
-    expect(statusMock).toHaveBeenCalledWith(500);
-  });
-
-  describe('when error has a `message` property', () => {
-    it('assigns that message to the `error` property of the JSON response', () => {
-      sendErrorResponse(errorWithMessage, req, res, next);
-      expect(resReturnedFromStatus.json).toHaveBeenCalledWith({
-        error: errorWithMessage.message,
-      });
-    });
-  });
-
-  describe('when error does not have a message', () => {
-    it('assigns a generic message to the `error` property of the JSON response', () => {
-      sendErrorResponse(errorWithoutMessage, req, res, next);
-      expect(resReturnedFromStatus.json).toHaveBeenCalledWith({
-        error: 'Internal server error.',
-      });
-    });
+    expect(sendStatusMock).toHaveBeenCalledWith(500);
   });
 });

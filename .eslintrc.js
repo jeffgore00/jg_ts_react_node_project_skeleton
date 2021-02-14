@@ -34,6 +34,6 @@ module.exports = {
     'function-paren-newline': 0, // for some reason this is not turned off by prettier extension
     'operator-linebreak': 0, // for some reason this is not turned off by prettier extension
     'object-curly-newline': 0, // complains about perfectly reasonable one-line destructuring
-    '@typescript-eslint/restrict-template-expressions': 0, 
+    '@typescript-eslint/restrict-template-expressions': 0,
   },
 };

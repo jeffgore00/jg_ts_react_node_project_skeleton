@@ -1,5 +1,7 @@
 /* eslint-disable global-require, @typescript-eslint/ban-ts-comment, no-underscore-dangle,
-no-useless-escape, no-console */
+no-useless-escape, no-console, @typescript-eslint/no-unsafe-assignment,
+@typescript-eslint/no-unsafe-member-access */
+
 import { Logger } from './logger';
 import { LogTypes } from '../../shared/types/logging';
 
@@ -16,7 +18,7 @@ describe('Logger', () => {
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   // ISO datetime i.e '2020-11-21T22:37:51.226Z'

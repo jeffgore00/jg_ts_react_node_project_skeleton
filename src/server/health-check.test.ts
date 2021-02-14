@@ -1,4 +1,6 @@
-/* eslint-disable no-console, global-require, @typescript-eslint/no-unused-expressions */
+/* eslint-disable no-console, global-require, @typescript-eslint/no-unused-expressions,
+@typescript-eslint/no-unsafe-assignment */
+
 import * as editHealthfileModule from './utils/edit-healthfile';
 
 const sampleError = new Error('write failure');

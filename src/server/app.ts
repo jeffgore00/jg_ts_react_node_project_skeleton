@@ -56,11 +56,14 @@ export const sendResourceNotFound: RequestHandler = (req, res, next) => {
 };
 
 // Error handler will not work without next! TODO: figure out why not.
-export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
+export const sendErrorResponse: ErrorRequestHandler = (
+  err: unknown,
+  req,
+  res,
+  next,
+) => {
   logger.error('SERVER 500 ERROR', { error: err });
-  res.status(500).json({
-    error: err.message || 'Internal server error.',
-  });
+  res.sendStatus(500);
 };
 
 /* APPLY CUSTOM MIDDLEWARE */

@@ -71,7 +71,7 @@ export class Logger {
   internalLogger: winston.Logger;
 
   // In order to allow logger['info']
-  [key: string]: Function;
+  [key: string]: any;
 
   constructor() {
     if (process.env.NODE_ENV === 'development') {

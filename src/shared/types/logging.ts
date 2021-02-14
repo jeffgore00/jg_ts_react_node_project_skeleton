@@ -15,5 +15,5 @@ export interface NewLogBody {
 }
 
 export interface Metadata {
-  [key: string]: string | number;
+  [key: string]: any;
 }
