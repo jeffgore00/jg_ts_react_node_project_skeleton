@@ -1,4 +1,5 @@
 const path = require('path');
+const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
   .default;
@@ -15,6 +16,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
+    publicPath: '',
   },
   module: {
     rules: [
@@ -51,6 +53,7 @@ module.exports = {
     'react-dom': 'ReactDOM',
   },
   plugins: [
+    new CompressionPlugin(),
     new HtmlWebpackPlugin({
       ...(process.env.NODE_ENV === 'development'
         ? {

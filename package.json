@@ -19,7 +19,7 @@
     "start:dev": "NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --unhandled-rejections=strict --exec ts-node --extensions '.ts, .js'",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
     "test": "NODE_ENV=test npm run test:unitAndApi && npm run lint && npm run prettier:check",
-    "test:unitAndApi": "jest",
+    "test:unitAndApi": "jest --runInBand --detectOpenHandles",
     "test:browser": "wdio wdio.conf.js"
   },
   "author": "Jeff Gore",
@@ -63,6 +63,7 @@
     "@wdio/spec-reporter": "^6.4.0",
     "@wdio/sync": "^6.4.6",
     "chromedriver": "^87.0.4",
+    "compression-webpack-plugin": "^7.1.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript": "^7.2.1",
     "eslint-config-prettier": "^6.10.1",
@@ -84,7 +85,7 @@
     "ts-loader": "^6.2.1",
     "typescript-plugin-styled-components": "^1.4.4",
     "wdio-chromedriver-service": "^6.0.4",
-    "webpack": "^4.41.5",
+    "webpack": "^5.21.2",
     "webpack-cli": "^3.3.10"
   },
   "husky": {

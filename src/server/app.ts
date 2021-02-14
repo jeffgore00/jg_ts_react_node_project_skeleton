@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 import path from 'path';
-import zlib from 'zlib';
-import fs from 'fs';
 
 import express, { RequestHandler, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
@@ -35,31 +33,12 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('short'));
 }
 
-/* DEFINE CUSTOM MIDDLEWARE */
-
-let compressedJavascriptBundle: Buffer;
-
-/* Swallow errors because this file isn't guaranteed to exist in test environments. Let the
-middleware handle the 404 if the file is null. */
-try {
-  compressedJavascriptBundle = zlib.gzipSync(
-    fs.readFileSync(path.join(__dirname, '../..', 'public/bundle.js'), 'utf8')
-  );
-} catch {
-  compressedJavascriptBundle = null;
-}
-
-export const sendCompressedJsClientBundle: RequestHandler = (req, res) => {
-  if (!compressedJavascriptBundle) {
-    res.sendStatus(404);
-  }
-  res.header('Content-Encoding', 'gzip');
+app.get('*.js', (req, res, next) => {
+  req.url += '.gz';
+  res.set('Content-Encoding', 'gzip');
   res.header('Content-Type', 'application/javascript');
-  res.send(compressedJavascriptBundle);
-};
-
-// Must be used before standard `express.static` middleware, which would send the file uncompressed.
-app.get('/bundle.js', sendCompressedJsClientBundle);
+  next();
+});
 
 // When the server gets a request for a _file_, look in the /public directory
 app.use(express.static(path.join(__dirname, '../..', 'public')));
