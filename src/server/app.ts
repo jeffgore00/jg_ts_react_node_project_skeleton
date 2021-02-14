@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import path from 'path';
 
 import express, { RequestHandler, ErrorRequestHandler } from 'express';
@@ -64,7 +64,6 @@ export const sendErrorResponse: ErrorRequestHandler = (err, req, res, next) => {
 };
 
 /* APPLY CUSTOM MIDDLEWARE */
-// app.get('/', sendHomepage);
 app.use('/api', apiRouter);
 app.use(sendResourceNotFound);
 app.use(sendErrorResponse);

@@ -16,7 +16,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
-    publicPath: '',
+    publicPath: '', // default is 'auto', which we don't want
   },
   module: {
     rules: [

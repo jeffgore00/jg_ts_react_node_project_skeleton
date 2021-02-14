@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore, no-underscore-dangle, no-console */
+/* eslint-disable @typescript-eslint/ban-ts-comment, no-underscore-dangle, no-console */
 import React, { useEffect } from 'react';
 import { render, screen } from '@testing-library/react';
 
