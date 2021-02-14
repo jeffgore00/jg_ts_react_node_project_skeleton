@@ -9,7 +9,7 @@ jest.mock('./app');
 
 const httpServerMock = {} as http.Server;
 const serverListenMock = jest.fn(
-  (path: string, listeningListener?: () => void) => listeningListener()
+  (path: string, listeningListener?: () => void) => listeningListener(),
 );
 
 // @ts-ignore. Ignoring TS here because it's ignoring the valid overload of this function.
@@ -37,7 +37,7 @@ describe('Server', () => {
   it('creates an HTTP server with the Express application', () => {
     expect(httpSpy).toHaveBeenCalledWith(app);
     expect(
-      loggerSpy.mock.calls[0][0].includes('HTTP server listening on port')
+      loggerSpy.mock.calls[0][0].includes('HTTP server listening on port'),
     ).toBe(true);
   });
 
@@ -53,7 +53,7 @@ describe('Server', () => {
     it('listens on that port', () => {
       expect(httpServerMock.listen).toHaveBeenCalledWith(
         process.env.PORT,
-        expect.any(Function)
+        expect.any(Function),
       );
     });
   });
@@ -66,7 +66,7 @@ describe('Server', () => {
     it('listens on port 1337', () => {
       expect(httpServerMock.listen).toHaveBeenCalledWith(
         '1337',
-        expect.any(Function)
+        expect.any(Function),
       );
     });
   });

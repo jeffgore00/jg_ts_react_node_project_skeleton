@@ -28,14 +28,14 @@ describe('Health check', () => {
 
   it('calls editHealthfile with the distributon path', () => {
     expect(editHealthfileSpy).toHaveBeenCalledWith(
-      module.PATH_TO_DIST_HEALTHFILE
+      module.PATH_TO_DIST_HEALTHFILE,
     );
   });
 
   describe('when theres an error', () => {
     it('calls editHealthfile with the distributon path', () => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        `${module.HEALTHFILE_EDIT_ERROR_MESSAGE}${sampleError}`
+        `${module.HEALTHFILE_EDIT_ERROR_MESSAGE}${sampleError}`,
       );
     });
   });

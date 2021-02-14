@@ -29,6 +29,6 @@ export function editHealthfile(healthLocationOverride?: string): void {
   }
   fs.writeFileSync(
     path.join(__dirname, relativePathToHealthfile),
-    JSON.stringify(health, null, 2)
+    JSON.stringify(health, null, 2),
   );
 }

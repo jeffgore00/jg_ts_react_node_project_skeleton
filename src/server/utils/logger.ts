@@ -35,7 +35,7 @@ const devLoggerColorizer: {
 const developmentFormatter = format.printf((log) => {
   const { level, message, timestamp, ...additionalData } = log;
   const additionalDataKeyVals = Object.entries(additionalData).map(
-    ([key, value]) => `data_${key}=${value}`
+    ([key, value]) => `data_${key}=${value}`,
   );
   const additionalDataStr =
     additionalDataKeyVals.length > 0
@@ -43,7 +43,7 @@ const developmentFormatter = format.printf((log) => {
       : '';
 
   return `${labels[level]} ${devLoggerColorizer[level](
-    `${message}${additionalDataStr}`
+    `${message}${additionalDataStr}`,
   )} ${chalk.gray(timestamp)}`;
 });
 

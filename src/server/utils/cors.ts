@@ -10,7 +10,7 @@ const buildCorsOptions = (req: Request, res: Response): CorsOptions => ({
     const handleCorsError = (): void => {
       logger.warn(
         `Request "${req.method} ${req.originalUrl}" from origin ${origin} blocked by CORS policy`,
-        { requestBody: JSON.stringify(req.body) }
+        { requestBody: JSON.stringify(req.body) },
       );
       res.sendStatus(403);
     };

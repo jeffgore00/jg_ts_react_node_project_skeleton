@@ -35,7 +35,7 @@ describe('Create Healthfile', () => {
     expect(fileJson).toEqual(
       expect.objectContaining({
         version: packageJson.version,
-      })
+      }),
     );
   });
 

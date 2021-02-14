@@ -22,7 +22,7 @@ app.use(
         'style-src': ["'self'", "'unsafe-inline'"], // for Styled Components
       },
     },
-  })
+  }),
 );
 
 /* Request/response logs. Do not use in `test` since API tests' console output

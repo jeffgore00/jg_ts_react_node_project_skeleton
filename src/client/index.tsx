@@ -8,5 +8,5 @@ ReactDOM.render(
   <ErrorBoundary>
     <Homepage />
   </ErrorBoundary>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

@@ -59,7 +59,7 @@ describe('Middleware for logging from external source', () => {
       processLogFromClient(request as Request, response as Response, null);
       expect(infoLoggerSpy).toHaveBeenCalledWith(
         expectedLogMessage,
-        request.body.additionalData
+        request.body.additionalData,
       );
     });
   });
@@ -72,7 +72,7 @@ describe('Middleware for logging from external source', () => {
       processLogFromClient(request as Request, response as Response, null);
       expect(errorLoggerSpy).toHaveBeenCalledWith(
         expectedLogMessage,
-        request.body.additionalData
+        request.body.additionalData,
       );
     });
   });
@@ -85,7 +85,7 @@ describe('Middleware for logging from external source', () => {
       processLogFromClient(request as Request, response as Response, null);
       expect(warnLoggerSpy).toHaveBeenCalledWith(
         expectedLogMessage,
-        request.body.additionalData
+        request.body.additionalData,
       );
     });
   });
@@ -98,7 +98,7 @@ describe('Middleware for logging from external source', () => {
       processLogFromClient(request as Request, response as Response, null);
       expect(debugLoggerSpy).toHaveBeenCalledWith(
         expectedLogMessage,
-        request.body.additionalData
+        request.body.additionalData,
       );
     });
   });

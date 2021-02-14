@@ -26,7 +26,7 @@ describe('root', () => {
       <ErrorBoundary>
         <Homepage />
       </ErrorBoundary>,
-      root
+      root,
     );
   });
 });

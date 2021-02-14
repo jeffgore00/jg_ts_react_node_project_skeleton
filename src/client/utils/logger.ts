@@ -10,7 +10,7 @@ export class Logger {
   internalLogger(
     logType: LogTypes,
     message: string,
-    additionalData?: Metadata
+    additionalData?: Metadata,
   ): void {
     axios.put('/api/logs', {
       logType,

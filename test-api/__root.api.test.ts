@@ -35,7 +35,7 @@ describe('GET /', () => {
       const response = await request(app).get('/');
       expect(response.status).toEqual(200);
       expect(response.header['content-type']).toEqual(
-        'text/html; charset=UTF-8'
+        'text/html; charset=UTF-8',
       );
     });
   });
@@ -68,7 +68,7 @@ describe('GET /', () => {
       const response = await request(app).get('/');
       expect(response.status).toEqual(404);
       expect(response.text).toEqual(
-        'Operation GET / not recognized on this server.'
+        'Operation GET / not recognized on this server.',
       );
     });
   });
@@ -79,14 +79,14 @@ describe('When the requested HTTP operation is not recognized', () => {
     let response = await request(app).get('/puppies');
     expect(response.status).toEqual(404);
     expect(response.text).toEqual(
-      'Operation GET /puppies not recognized on this server.'
+      'Operation GET /puppies not recognized on this server.',
     );
 
     // GET / is valid, but not POST /
     response = await request(app).post('/');
     expect(response.status).toEqual(404);
     expect(response.text).toEqual(
-      'Operation POST / not recognized on this server.'
+      'Operation POST / not recognized on this server.',
     );
   });
 });

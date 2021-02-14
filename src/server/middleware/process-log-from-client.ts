@@ -8,7 +8,7 @@ const processLogFromClient: RequestHandler = (req, res) => {
 
   logger[logType](
     `Log from ${logSource.toUpperCase()}: ${message}`,
-    additionalData
+    additionalData,
   );
 
   res.sendStatus(200);

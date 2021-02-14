@@ -27,7 +27,7 @@ describe('Error boundary', () => {
       render(
         <ErrorBoundary>
           <FaultyComponent />
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
       fallbackUi = screen.queryByTestId('react-error-fallback-ui');
     });
@@ -39,7 +39,7 @@ describe('Error boundary', () => {
           errorComponentStack: `
     in FaultyComponent
     in ErrorBoundary`,
-        }
+        },
       );
     });
     it('renders the fallback ui', () => {
@@ -55,7 +55,7 @@ describe('Error boundary', () => {
       render(
         <ErrorBoundary>
           <div data-testid="healthy-component" />
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
       healthyComponent = screen.queryByTestId('healthy-component');
       fallbackUi = screen.queryByTestId('react-error-fallback-ui');

@@ -3,11 +3,7 @@
  test the default 500 response message when there is no error message
 */
 import morgan from 'morgan';
-import {
-  Request,
-  Response,
-  ErrorRequestHandler,
-} from 'express';
+import { Request, Response, ErrorRequestHandler } from 'express';
 
 const req = {} as Request;
 const res = {} as Response;

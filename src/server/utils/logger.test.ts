@@ -50,11 +50,11 @@ describe('Logger', () => {
       color: string,
       logType: string,
       logMessage: string,
-      additionalData?: { [index: string]: string | number }
+      additionalData?: { [index: string]: string | number },
     ): RegExp => {
       const additionalDataStr = additionalData
         ? ` <dimmed text>${Object.entries(additionalData).map(
-            ([key, value]) => `data_${key}=${value}`
+            ([key, value]) => `data_${key}=${value}`,
           )}</dimmed text>`
         : '';
       const regexStr = `<black text with ${color} background> ${logType.toUpperCase()} <\\/black text with ${color} background> <${color} text>${logMessage}${additionalDataStr}<\\/${color} text> <gray text>${dateRegexString}<\\/gray text>\\n`;
@@ -100,10 +100,10 @@ describe('Logger', () => {
             devColorMap[logType],
             logType,
             logMessage,
-            logAdditionalData
+            logAdditionalData,
           );
           expect(consoleSpy).toHaveBeenCalledWith(expect.stringMatching(regex));
-        }
+        },
       );
     });
   });

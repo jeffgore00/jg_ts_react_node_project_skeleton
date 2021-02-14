@@ -36,7 +36,7 @@ describe('Logger', () => {
           logSource: 'UI',
           message: SAMPLE_MESSAGE,
         });
-      }
+      },
     );
 
     describe('When the optional `additionalData` argument is provided', () => {
@@ -50,7 +50,7 @@ describe('Logger', () => {
             message: SAMPLE_MESSAGE,
             additionalData: { clientId: 12345 },
           });
-        }
+        },
       );
     });
   });
