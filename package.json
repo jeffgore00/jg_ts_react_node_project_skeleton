@@ -19,7 +19,7 @@
     "start:dev": "NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --unhandled-rejections=strict --exec ts-node --extensions '.ts, .js'",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
     "test": "NODE_ENV=test npm run test:unitAndApi && npm run lint && npm run prettier:check",
-    "test:unitAndApi": "jest --runInBand --detectOpenHandles",
+    "test:unitAndApi": "jest --detectOpenHandles",
     "test:browser": "wdio wdio.conf.js"
   },
   "author": "Jeff Gore",
