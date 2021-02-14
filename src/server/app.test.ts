@@ -1,8 +1,11 @@
-/* eslint-disable global-require */
+/* eslint-disable global-require, @typescript-eslint/unbound-method */
 /*
  test the default 500 response message when there is no error message
 */
+import fs from 'fs';
+import path from 'path';
 import morgan from 'morgan';
+import zlib from 'zlib';
 import {
   Request,
   Response,
@@ -21,8 +24,14 @@ resReturnedFromStatus.send = jest.fn();
 const statusMock = jest.fn(() => resReturnedFromStatus);
 res.status = statusMock;
 
-const sendFileMock = jest.fn();
-res.sendFile = sendFileMock;
+const sendStatusMock = jest.fn();
+res.sendStatus = sendStatusMock;
+
+const sendMock = jest.fn();
+res.send = sendMock;
+
+const headerMock = jest.fn();
+res.header = headerMock;
 
 jest.mock('../client/utils/logger');
 jest.mock('morgan', () => jest.fn(() => (): void => {}));
@@ -72,10 +81,13 @@ describe('Error handling middleware', () => {
 
   let sendErrorResponse: ErrorRequestHandler;
 
-  beforeAll(async () => {
-    /* The function needs to be loaded dynamically in order to allow other tests
-    in this file to work, since they depend on isolated loading. */
-    ({ sendErrorResponse } = await import('./app'));
+  beforeAll(() => {
+    /* This function does not depend on isolated loading, but the other middlewares do,
+    hence this also needs to be loaded in isolation to avoid polluting the scope of
+    other tests. Note that a dynamic import does not solve this problem! */
+    jest.isolateModules(() => {
+      ({ sendErrorResponse } = require('./app'));
+    });
   });
 
   afterEach(() => {
@@ -106,49 +118,69 @@ describe('Error handling middleware', () => {
   });
 });
 
-// describe('Send Homepage middleware', () => {
-//   let sendHomepage: RequestHandler;
+describe('Middleware to send compressed client JavaScript bundle', () => {
+  /* This test requires isolated module loading, because public/bundle.js
+  is read and compressed and stored in memory as soon as app.js is loaded.
+  Therefore to simulate two different scenarios, in which the bundle does and
+  doesn't exist, the app.ts file needs to be imported only AFTER those test
+  conditions have been set up. */
+  let sendCompressedJsClientBundle: RequestHandler;
+  const bundlePath = path.join(__dirname, '../..', 'public/bundle.js');
 
-//   beforeAll(async () => {
-//     // need to do this to allow other dynamic require tests above to succeed
-//     ({ sendHomepage } = await import('./app'));
-//     sendFileMock.mockImplementation((filePath, options, errback) => {
-//       errback();
-//     });
-//   });
+  describe('When public/bundle.js exists', () => {
+    let bundle: Buffer;
+    let bundleExistedPriorToTest = true;
 
-//   it('Calls `res.sendFile` with the index.html file', () => {
-//     sendHomepage(req, res, null);
-//     expect(sendFileMock.mock.calls[0][0]).toContain('public/index.html');
-//   });
+    beforeAll(() => {
+      try {
+        bundle = fs.readFileSync(bundlePath);
+      } catch (err) {
+        bundleExistedPriorToTest = false;
+        fs.writeFileSync(bundlePath, 'samplejs');
+        bundle = fs.readFileSync(bundlePath);
+      }
+      jest.isolateModules(() => {
+        ({ sendCompressedJsClientBundle } = require('./app'));
+      });
+    });
 
-//   describe('When `res.sendFile` does not result in error', () => {
-//     beforeAll(() => {
-//       sendFileMock.mockImplementation((filePath, options, errback) => {
-//         errback();
-//       });
-//     });
+    afterAll(() => {
+      if (!bundleExistedPriorToTest) {
+        fs.unlinkSync(bundlePath);
+      }
+    });
 
-//     it('does nothing', () => {
-//       sendHomepage(req, res, null);
-//       expect(statusMock).not.toHaveBeenCalled();
-//       expect(resReturnedFromStatus.send).not.toHaveBeenCalled();
-//     });
-//   });
+    it('sends a gzip-compressed version of the bundle', () => {
+      sendCompressedJsClientBundle(req, res, next);
+      expect(res.sendStatus).not.toHaveBeenCalledWith(404);
+      expect(res.send).toHaveBeenCalledWith(zlib.gzipSync(bundle));
+    });
+  });
 
-//   describe('When `res.sendFile` results in an error which prevents a response', () => {
-//     beforeAll(() => {
-//       sendFileMock.mockImplementation((filePath, options, errback) => {
-//         errback(new Error());
-//       });
-//     });
+  describe('When public/bundle.js does not exist', () => {
+    let preexistingBundle = '';
 
-//     it('Sends a text error response with a 404 status code', () => {
-//       sendHomepage(req, res, null);
-//       expect(statusMock).toHaveBeenCalledWith(404);
-//       expect(resReturnedFromStatus.send).toHaveBeenCalledWith(
-//         'Main HTML file not found!'
-//       );
-//     });
-//   });
-// });
+    beforeAll(() => {
+      try {
+        preexistingBundle = fs.readFileSync(bundlePath, 'utf-8');
+        fs.unlinkSync(bundlePath);
+      } catch (err) {
+        // do nothing, a missing bundle.js is what we want for this test.
+      }
+      jest.isolateModules(() => {
+        ({ sendCompressedJsClientBundle } = require('./app'));
+      });
+    });
+
+    afterAll(() => {
+      if (preexistingBundle) {
+        fs.writeFileSync(bundlePath, preexistingBundle);
+      }
+    });
+
+    it('Sends a response consisting only of a 404 status code', () => {
+      sendCompressedJsClientBundle(req, res, next);
+      expect(res.sendStatus).toHaveBeenCalledWith(404);
+    });
+  });
+});

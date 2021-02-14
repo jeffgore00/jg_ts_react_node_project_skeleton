@@ -12,8 +12,8 @@ const configMap: { [key: string]: Config } = {
   production: productionConfig,
 };
 
-export default function getConfig(): Config {
+export function getConfig(): Config {
   const env = process.env.NODE_ENV || 'production';
 
-  return configMap[env];
+  return configMap[env] || productionConfig;
 }

@@ -49,7 +49,7 @@ try {
   compressedJavascriptBundle = null;
 }
 
-export const sendBundle: RequestHandler = (req, res) => {
+export const sendCompressedJsClientBundle: RequestHandler = (req, res) => {
   if (!compressedJavascriptBundle) {
     res.sendStatus(404);
   }
@@ -59,7 +59,7 @@ export const sendBundle: RequestHandler = (req, res) => {
 };
 
 // Must be used before standard `express.static` middleware, which would send the file uncompressed.
-app.get('/bundle.js', sendBundle);
+app.get('/bundle.js', sendCompressedJsClientBundle);
 
 // When the server gets a request for a _file_, look in the /public directory
 app.use(express.static(path.join(__dirname, '../..', 'public')));
