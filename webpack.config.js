@@ -57,14 +57,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       ...(process.env.NODE_ENV === 'development'
         ? {
-            reactUrl: 'https://unpkg.com/react@16/umd/react.development.js',
+            reactUrl: 'https://unpkg.com/react@17/umd/react.development.js',
             reactDomUrl:
-              'https://unpkg.com/react-dom@16/umd/react-dom.development.js',
+              'https://unpkg.com/react-dom@17/umd/react-dom.development.js',
           }
         : {
-            reactUrl: 'https://unpkg.com/react@16/umd/react.production.min.js',
+            reactUrl: 'https://unpkg.com/react@17/umd/react.production.min.js',
             reactDomUrl:
-              'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+              'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js',
           }),
       template: 'public/index-template.html',
     }),

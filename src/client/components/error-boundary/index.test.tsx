@@ -36,9 +36,9 @@ describe('Error boundary', () => {
       expect(loggerSpy).toHaveBeenCalledWith(
         'Error Caught by React Error Boundary: unique error',
         {
-          errorComponentStack: `
-    in FaultyComponent
-    in ErrorBoundary`,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          errorComponentStack: expect.any(String),
+          // stack trace will include file location, so it would be tough to do an exact match
         },
       );
     });
