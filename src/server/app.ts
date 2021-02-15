@@ -49,13 +49,12 @@ app.use(bodyParser.json());
 // TODO: figure out what this does
 app.use(bodyParser.urlencoded({ extended: true }));
 
-export const sendResourceNotFound: RequestHandler = (req, res, next) => {
+export const sendResourceNotFound: RequestHandler = (req, res) => {
   res
     .status(404)
     .send(`Operation ${req.method} ${req.path} not recognized on this server.`);
 };
 
-// Error handler will not work without next! TODO: figure out why not.
 export const sendErrorResponse: ErrorRequestHandler = (
   err: unknown,
   req,
