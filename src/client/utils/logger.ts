@@ -1,4 +1,4 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable class-methods-use-this, no-console */
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 import { LogTypes, Metadata } from '../../shared/types/logging';
