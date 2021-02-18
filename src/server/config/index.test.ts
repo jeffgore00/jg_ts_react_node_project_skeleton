@@ -1,11 +1,51 @@
+import * as developmentConfig from './development.json';
+import * as testConfig from './test.json';
+import * as productionConfig from './production.json';
 import { getConfig } from '.';
 
-describe('get config', () => {
-  describe('When Process.env.node_env is defined', () => {
+describe('getConfig', () => {
+  describe('When process.env.NODE_ENV is defined', () => {
     describe('when the value maps to one of the valid configs', () => {
-      it('works', () => {});
+      describe('When process.env.NODE_ENV equals "development"', () => {
+        beforeAll(() => {
+          process.env.NODE_ENV = 'development';
+        });
+        it('returns the corresponding config', () => {
+          expect(getConfig()).toEqual(developmentConfig);
+        });
+      });
+      describe('When process.env.NODE_ENV equals "test"', () => {
+        beforeAll(() => {
+          process.env.NODE_ENV = 'test';
+        });
+        it('returns the corresponding config', () => {
+          expect(getConfig()).toEqual(testConfig);
+        });
+      });
+      describe('When process.env.NODE_ENV equals "production"', () => {
+        beforeAll(() => {
+          process.env.NODE_ENV = 'production';
+        });
+        it('returns the corresponding config', () => {
+          expect(getConfig()).toEqual(productionConfig);
+        });
+      });
     });
-    describe('when the value does not map to one of the valid configs', () => {});
+    describe('when the value does not map to one of the valid configs', () => {
+      beforeAll(() => {
+        process.env.NODE_ENV = 'unknown';
+      });
+      it('returns the production config', () => {
+        expect(getConfig()).toEqual(productionConfig);
+      });
+    });
   });
-  describe('When Process.env.node_env is not defined', () => {});
+  describe('When process.env.NODE_ENV is not defined', () => {
+    beforeAll(() => {
+      delete process.env.NODE_ENV;
+    });
+    it('returns the production config', () => {
+      expect(getConfig()).toEqual(productionConfig);
+    });
+  });
 });
