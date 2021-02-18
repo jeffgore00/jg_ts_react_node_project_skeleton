@@ -11,7 +11,7 @@ export const HOMEPAGE_RENDERED_LOG = 'Homepage Rendered';
 
 export const Homepage = (): React.ReactElement => {
   useEffect(() => {
-    logger.info(HOMEPAGE_RENDERED_LOG);
+    void logger.info(HOMEPAGE_RENDERED_LOG);
   }, []);
 
   return (

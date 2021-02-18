@@ -35,5 +35,6 @@ module.exports = {
     'operator-linebreak': 0, // for some reason this is not turned off by prettier extension
     'object-curly-newline': 0, // complains about perfectly reasonable one-line destructuring
     '@typescript-eslint/restrict-template-expressions': 0,
+    'no-void': 0, // conflicts with typescript-eslint/no-floating-promises, which recommends using `void` for non-awaited Promises
   },
 };

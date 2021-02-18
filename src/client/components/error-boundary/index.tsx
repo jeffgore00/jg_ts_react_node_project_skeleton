@@ -20,9 +20,12 @@ export class ErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
     this.setState({ hasError: true });
-    logger.error(`Error Caught by React Error Boundary: ${error.message}`, {
-      errorComponentStack: info.componentStack,
-    });
+    void logger.error(
+      `Error Caught by React Error Boundary: ${error.message}`,
+      {
+        errorComponentStack: info.componentStack,
+      },
+    );
   }
 
   render(): React.ReactElement | React.ReactNode {

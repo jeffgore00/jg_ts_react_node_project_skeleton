@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 
 import apiRouter from './routers/api';
-import logger from '../client/utils/logger';
+import logger from './utils/logger';
 
 const app = express();
 

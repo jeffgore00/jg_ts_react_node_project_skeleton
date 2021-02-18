@@ -27,7 +27,7 @@ res.send = sendMock;
 const headerMock = jest.fn();
 res.header = headerMock;
 
-jest.mock('../client/utils/logger');
+jest.mock('../server/utils/logger');
 jest.mock('morgan', () => jest.fn(() => (): void => {}));
 
 describe('Logging', () => {
