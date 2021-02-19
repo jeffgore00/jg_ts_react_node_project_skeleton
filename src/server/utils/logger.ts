@@ -7,13 +7,13 @@ import winston, {
 } from 'winston';
 import chalk from 'chalk';
 
-import { LogTypes, Metadata } from '../../shared/types/logging';
+import { LogType, Metadata } from '../../shared/types/logging';
 
 const LogLevels = {
-  [LogTypes.Error]: 0,
-  [LogTypes.Warn]: 1,
-  [LogTypes.Info]: 2,
-  [LogTypes.Debug]: 3,
+  [LogType.Error]: 0,
+  [LogType.Warn]: 1,
+  [LogType.Info]: 2,
+  [LogType.Debug]: 3,
 };
 
 const labels: { [index: string]: string } = {
@@ -35,7 +35,13 @@ const devLoggerColorizer: {
 const developmentFormatter = format.printf((log) => {
   const { level, message, timestamp, ...additionalData } = log;
   const additionalDataKeyVals = Object.entries(additionalData).map(
-    ([key, value]) => `data_${key}=${value}`,
+    ([key, value]: [string, unknown]) => {
+      let groomedValue = value;
+      if (typeof value === 'object') {
+        groomedValue = JSON.stringify(value);
+      }
+      return `data_${key}=${groomedValue}`;
+    },
   );
   const additionalDataStr =
     additionalDataKeyVals.length > 0

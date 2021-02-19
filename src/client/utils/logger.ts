@@ -1,14 +1,21 @@
 /* eslint-disable class-methods-use-this, no-console */
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { LogTypes, Metadata } from '../../shared/types/logging';
+import { LogType, Metadata } from '../../shared/types/logging';
 
 export class Logger {
   // In order to allow logger['info']
-  [key: string]: any;
+  [key: string]:
+    | string
+    | ((message: string, metadata?: Metadata) => void)
+    | ((
+        logType: LogType,
+        message: string,
+        additionalData?: Metadata,
+      ) => Promise<void>);
 
   sendLogToServer(
-    logType: LogTypes,
+    logType: LogType,
     message: string,
     additionalData?: Metadata,
   ): Promise<void> {
@@ -36,19 +43,19 @@ export class Logger {
   }
 
   info(message: string, additionalData?: Metadata): Promise<void> {
-    return this.sendLogToServer(LogTypes.Info, message, additionalData);
+    return this.sendLogToServer(LogType.Info, message, additionalData);
   }
 
   debug(message: string, additionalData?: Metadata): Promise<void> {
-    return this.sendLogToServer(LogTypes.Debug, message, additionalData);
+    return this.sendLogToServer(LogType.Debug, message, additionalData);
   }
 
   error(message: string, additionalData?: Metadata): Promise<void> {
-    return this.sendLogToServer(LogTypes.Error, message, additionalData);
+    return this.sendLogToServer(LogType.Error, message, additionalData);
   }
 
   warn(message: string, additionalData?: Metadata): Promise<void> {
-    return this.sendLogToServer(LogTypes.Warn, message, additionalData);
+    return this.sendLogToServer(LogType.Warn, message, additionalData);
   }
 }
 

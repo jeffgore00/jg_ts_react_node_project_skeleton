@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 import { Logger } from './logger';
-import { LogTypes } from '../../shared/types/logging';
+import { LogType } from '../../shared/types/logging';
 
 describe('Logger', () => {
   let logger: Logger;
@@ -24,13 +24,13 @@ describe('Logger', () => {
   it('exposes the logging methods info, error, warn, debug', () => {
     // Just to demonstrate it is callable
     logger = new Logger();
-    Object.values(LogTypes).forEach((logType) => {
+    Object.values(LogType).forEach((logType) => {
       void logger[logType]('hi');
     });
   });
 
   describe('when called, each of those methods...', () => {
-    it.each(Object.values(LogTypes).map((type) => [type]))(
+    it.each(Object.values(LogType).map((type) => [type]))(
       'issues a PUT request to the /api/logs endpoint with logType: %s',
       (logType) => {
         void logger[logType](SAMPLE_MESSAGE);
@@ -43,7 +43,7 @@ describe('Logger', () => {
     );
 
     describe('When the optional `additionalData` argument is provided', () => {
-      it.each(Object.values(LogTypes).map((type) => [type]))(
+      it.each(Object.values(LogType).map((type) => [type]))(
         'issues a PUT request to the /api/logs endpoint plus `additionalData`',
         (logType) => {
           void logger[logType](SAMPLE_MESSAGE, { clientId: 12345 });

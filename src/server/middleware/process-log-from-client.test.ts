@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 
 import processLogFromClient from './process-log-from-client';
-import { LogTypes, NewLogRequest } from '../../shared/types/logging';
+import { LogType, NewLogRequest } from '../../shared/types/logging';
 import logger from '../utils/logger';
 
 // @ts-ignore
@@ -24,7 +24,7 @@ describe('Middleware for logging from external source', () => {
     body: {
       message: 'TEST LOG',
       logSource: 'UI',
-      logType: LogTypes.Info,
+      logType: LogType.Info,
       additionalData: {
         storeManager: 'John Smith',
         storeId: 39735,
@@ -53,7 +53,7 @@ describe('Middleware for logging from external source', () => {
 
   describe('When the request is for an INFO log', () => {
     beforeAll(() => {
-      request.body.logType = LogTypes.Info;
+      request.body.logType = LogType.Info;
     });
     it('calls the INFO logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);
@@ -66,7 +66,7 @@ describe('Middleware for logging from external source', () => {
 
   describe('When the request is for an ERROR log', () => {
     beforeAll(() => {
-      request.body.logType = LogTypes.Error;
+      request.body.logType = LogType.Error;
     });
     it('calls the ERROR logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);
@@ -79,7 +79,7 @@ describe('Middleware for logging from external source', () => {
 
   describe('When the request is for an WARN log', () => {
     beforeAll(() => {
-      request.body.logType = LogTypes.Warn;
+      request.body.logType = LogType.Warn;
     });
     it('calls the WARN logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);
@@ -92,7 +92,7 @@ describe('Middleware for logging from external source', () => {
 
   describe('When the request is for a DEBUG log', () => {
     beforeAll(() => {
-      request.body.logType = LogTypes.Debug;
+      request.body.logType = LogType.Debug;
     });
     it('calls the DEBUG logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);

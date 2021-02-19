@@ -47,19 +47,19 @@ app.use(express.static(path.join(__dirname, '../..', 'public')));
 // Make JSON responses available on `response.body`
 app.use(bodyParser.json());
 
-// TODO: figure out what this does
-app.use(bodyParser.urlencoded({ extended: true }));
-
 export const sendResourceNotFound: RequestHandler = (req, res) => {
   res
     .status(404)
     .send(`Operation ${req.method} ${req.path} not recognized on this server.`);
 };
 
+/* This needs to be defined with four arguments in order to satisfy Express's definition of
+an error request hander, hence the unused `next` argument is necessary */
 export const sendErrorResponse: ErrorRequestHandler = (
-  err: unknown,
+  err: Error,
   req,
   res,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next,
 ) => {
   logger.error('SERVER 500 ERROR', { error: err });

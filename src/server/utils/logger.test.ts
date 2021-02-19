@@ -3,7 +3,7 @@ no-useless-escape, no-console, @typescript-eslint/no-unsafe-assignment,
 @typescript-eslint/no-unsafe-member-access */
 
 import { Logger } from './logger';
-import { LogTypes } from '../../shared/types/logging';
+import { LogType } from '../../shared/types/logging';
 
 describe('Logger', () => {
   let logger: Logger;
@@ -28,7 +28,7 @@ describe('Logger', () => {
   it('exposes the logging methods info, error, warn, debug', () => {
     // Just to demonstrate it is 1) callable and 2) returns nothing, side effects only:
     logger = new Logger();
-    Object.values(LogTypes).forEach((logType) => {
+    Object.values(LogType).forEach((logType) => {
       const result = logger[logType]('hi');
 
       expect(result).toEqual(undefined);
@@ -92,7 +92,7 @@ describe('Logger', () => {
     });
 
     describe('When the optional `additionalData` argument is provided', () => {
-      it.each(Object.values(LogTypes).map((type) => [type]))(
+      it.each(Object.values(LogType).map((type) => [type]))(
         'logs them as data_key=value in the same color as the log level, but dim',
         (logType) => {
           const logMessage = 'THIS IS A LOG';
@@ -118,7 +118,7 @@ describe('Logger', () => {
 
     describe('When the log level is not debug', () => {
       it('logs in plain JSON the log, log level, and timestamp', () => {
-        Object.values(LogTypes)
+        Object.values(LogType)
           .filter((type) => type !== 'debug')
           .forEach((logType, index) => {
             logger[logType]('hi');
