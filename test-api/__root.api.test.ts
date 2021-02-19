@@ -79,11 +79,10 @@ describe('GET /', () => {
 describe('GET /bundle.js', () => {
   const bundleJsPath = path.join(__dirname, '../public/bundle.js.gz');
 
-  /* The bundle is generated from the build step and is not
-  committed to source control. Therefore this file is not guaranteed to exist
-  before the test begins.
+  /* The bundle is generated from the build step and is not committed to source control. Therefore
+  this file is not guaranteed to exist before the test begins.
 
-  Therefore this `describe` will create a dummy bundle  and delete it after
+  If the file does not already exist, this `describe` will create a dummy bundle and delete it after
   the test completes to ensure a consistent test precondition. */
   let bundleExistedPriorToTest = true;
 

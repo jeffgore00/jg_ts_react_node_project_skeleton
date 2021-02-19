@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import Page from './page';
 
-class HomePage extends Page {
+class Homepage extends Page {
   get heading(): WebdriverIO.Element {
     return $('h1');
   }
@@ -15,4 +15,4 @@ class HomePage extends Page {
   }
 }
 
-export default new HomePage();
+export default new Homepage();

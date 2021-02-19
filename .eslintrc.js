@@ -37,4 +37,7 @@ module.exports = {
     '@typescript-eslint/restrict-template-expressions': 0,
     'no-void': 0, // conflicts with typescript-eslint/no-floating-promises, which recommends using `void` for non-awaited Promises
   },
+  globals: {
+    wdioBaseUrl: true,
+  },
 };

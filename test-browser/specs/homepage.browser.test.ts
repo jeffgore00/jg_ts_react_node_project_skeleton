@@ -1,14 +1,15 @@
-import Homepage from '../pages/home.page';
+import homepage from '../pages/home.page';
 
 describe('The homepage', () => {
+  beforeAll(() => {
+    homepage.open();
+  });
   it('should display a heading', () => {
-    Homepage.open();
-
-    expect(Homepage.isHeadingDisplayed()).toBe(true);
+    expect(homepage.isHeadingDisplayed()).toBe(true);
 
     // Simulate mobile window (Pixel 2)
     browser.setWindowSize(411, 731);
 
-    expect(Homepage.isHeadingDisplayed()).toBe(true);
+    expect(homepage.isHeadingDisplayed()).toBe(true);
   });
 });

@@ -1,8 +1,13 @@
 /* eslint-disable class-methods-use-this */
+declare let wdioBaseUrl: string;
+
 export default class Page {
-  open(): void {
-    // TODO: make this configurable
-    // return browser.url(`http://localhost:1337`);
-    return browser.url('https://ts-react-node-project-skeleton.herokuapp.com/');
+  open(path?: string): void {
+    if (path && path[0] !== '/') {
+      throw new Error(
+        `path argument, if supplied, must start with a forward slash (/). path argument supplied was: ${path}`,
+      );
+    }
+    return browser.url(`${wdioBaseUrl}${path || ''}`);
   }
 }

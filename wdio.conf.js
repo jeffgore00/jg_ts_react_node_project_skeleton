@@ -31,4 +31,7 @@ exports.config = {
     ui: 'bdd',
     timeout: 60000,
   },
+  before() {
+    global.wdioBaseUrl = 'http://localhost:1337'; // edit to deployed env if necessary
+  },
 };
