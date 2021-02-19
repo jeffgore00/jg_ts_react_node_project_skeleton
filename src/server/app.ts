@@ -33,6 +33,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('short'));
 }
 
+// On a request for a .js file, modify the request to look for the gzipped version
 app.get('*.js', (req, res, next) => {
   req.url += '.gz';
   res.set('Content-Encoding', 'gzip');
