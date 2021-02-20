@@ -14,9 +14,11 @@
   "scripts": {
     "build": "npm run build:client && npm run build:server",
     "build:dev": "NODE_ENV=development npm run build:client",
+    "build:dev:offline": "BUILD_OFFLINE=true npm run build:client",
     "build:client": "webpack",
     "build:server": "rm -rf dist && tsc --project tsconfig.server.json && if [ \"$NODE_ENV\" = \"production\" ]; then node -r ts-node/register src/server/health-check.ts; fi",
     "lint": "eslint \"**\"",
+    "prettier:fix": "prettier '**/*.js' '**/*.json' '**/*.md' '**/*.html' --fix",
     "prettier:check": "prettier '**/*.js' '**/*.json' '**/*.md' '**/*.html' --check",
     "release": "standard-version",
     "start": "NODE_ENV=production node dist/server/index.js --unhandled-rejections=strict",

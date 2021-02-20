@@ -5,6 +5,24 @@ const createStyledComponentsTransformer = require('typescript-plugin-styled-comp
   .default;
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
+const createReactScriptHtmlWebpackConfig = () => {
+  if (process.env.BUILD_OFFLINE) {
+    return {
+      reactScript: '',
+      reactDomScript: '',
+    };
+  }
+  const createReactScriptTags = (environment) => ({
+    reactScript: `<script crossorigin src="https://unpkg.com/react@17/umd/react.${environment}.js"></script>`,
+    reactDomScript: `<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.${environment}.js"></script>`,
+  });
+
+  if (process.env.NODE_ENV === 'development') {
+    return createReactScriptTags('development');
+  }
+  return createReactScriptTags('production');
+};
+
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
   // Enable sourcemaps for debugging webpack's output.
@@ -44,28 +62,20 @@ module.exports = {
     ],
   },
 
-  /* From the TypeScript boilerplate repo webpack config: 
-  "When importing a module whose path matches one of the following, just assume a corresponding 
-  global variable exists and use that instead. This is important because it allows us to avoid 
+  /* From the TypeScript boilerplate repo webpack config:
+  "When importing a module whose path matches one of the following, just assume a corresponding
+  global variable exists and use that instead. This is important because it allows us to avoid
   bundling all of our dependencies, which allows browsers to cache those libraries between builds." */
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-  },
+  ...(!process.env.BUILD_OFFLINE && {
+    externals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+    },
+  }),
   plugins: [
     new CompressionPlugin(),
     new HtmlWebpackPlugin({
-      ...(process.env.NODE_ENV === 'development'
-        ? {
-            reactUrl: 'https://unpkg.com/react@17/umd/react.development.js',
-            reactDomUrl:
-              'https://unpkg.com/react-dom@17/umd/react-dom.development.js',
-          }
-        : {
-            reactUrl: 'https://unpkg.com/react@17/umd/react.production.min.js',
-            reactDomUrl:
-              'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js',
-          }),
+      ...createReactScriptHtmlWebpackConfig(),
       template: 'public/index-template.html',
     }),
   ],
