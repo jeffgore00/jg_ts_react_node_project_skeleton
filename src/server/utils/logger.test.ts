@@ -52,7 +52,7 @@ describe('Logger', () => {
       color: string,
       logType: string,
       logMessage: string,
-      additionalData?: { [index: string]: any },
+      additionalData?: { [index: string]: unknown },
     ): RegExp => {
       const additionalDataStr = additionalData
         ? ` <dimmed text>${Object.entries(additionalData).map(

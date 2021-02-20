@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this, no-console */
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { serializeError } from 'serialize-error';
 
 import { LogType, Metadata } from '../../shared/types/logging';
 
@@ -19,13 +20,35 @@ export class Logger {
     message: string,
     additionalData?: Metadata,
   ): Promise<void> {
+    const serializedAdditionalData =
+      additionalData &&
+      Object.entries(additionalData).reduce(
+        (
+          returnObj: { [key: string]: unknown },
+          [key, value]: [string, unknown],
+        ) => {
+          if (key === 'error' && value instanceof Error) {
+            // eslint-disable-next-line no-param-reassign
+            returnObj[key] = JSON.stringify(serializeError(value));
+          } else if (typeof value === 'object') {
+            // eslint-disable-next-line no-param-reassign
+            returnObj[key] = JSON.stringify(value);
+          } else {
+            // eslint-disable-next-line no-param-reassign
+            returnObj[key] = value;
+          }
+          return returnObj;
+        },
+        {},
+      );
+
     return axios
       .put('/api/logs', {
         logType,
         logSource: 'UI',
         message,
         ...(additionalData && {
-          additionalData,
+          additionalData: serializedAdditionalData,
         }),
       })
       .then((res: AxiosResponse) => {

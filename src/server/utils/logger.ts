@@ -6,8 +6,15 @@ import winston, {
   LogCallback,
 } from 'winston';
 import chalk from 'chalk';
+import { serializeError } from 'serialize-error';
 
 import { LogType, Metadata } from '../../shared/types/logging';
+
+type BasicLog = {
+  message: string;
+  level: string;
+  error?: Error | string;
+};
 
 const LogLevels = {
   [LogType.Error]: 0,
@@ -31,6 +38,16 @@ const devLoggerColorizer: {
   warn: (logMessage: string): string => chalk.yellow(logMessage),
   error: (logMessage: string): string => chalk.red(logMessage),
 };
+
+export const errorFormatter = (log: BasicLog): BasicLog => {
+  if (log.error instanceof Error) {
+    // eslint-disable-next-line no-param-reassign
+    log.error = JSON.stringify(serializeError(log.error));
+  }
+  return log;
+};
+
+const winstonErrorFormatter = format((log) => errorFormatter(log));
 
 const developmentFormatter = format.printf((log) => {
   const { level, message, timestamp, ...additionalData } = log;
@@ -58,7 +75,11 @@ const developmentLogger = createLogger({
   transports: [
     new transports.Console({
       level: 'debug', // means that this and all levels below it will be logged
-      format: format.combine(format.timestamp(), developmentFormatter),
+      format: format.combine(
+        format.timestamp(),
+        winstonErrorFormatter(),
+        developmentFormatter,
+      ),
     }),
   ],
 });
@@ -68,7 +89,11 @@ const productionLogger = createLogger({
   transports: [
     new transports.Console({
       level: 'info', // means that this and all levels below it will be logged
-      format: format.combine(format.timestamp(), format.json()),
+      format: format.combine(
+        format.timestamp(),
+        winstonErrorFormatter(),
+        format.json(),
+      ),
     }),
   ],
 });
