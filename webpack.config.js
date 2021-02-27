@@ -20,7 +20,7 @@ const createReactScriptHtmlWebpackConfig = () => {
   if (process.env.NODE_ENV === 'development') {
     return createReactScriptTags('development');
   }
-  return createReactScriptTags('production');
+  return createReactScriptTags('production.min');
 };
 
 module.exports = {
