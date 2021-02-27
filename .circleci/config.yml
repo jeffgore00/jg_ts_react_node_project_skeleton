@@ -8,5 +8,6 @@ workflows:
       - node/test:
           version: "14.15.5"
       - heroku/deploy-via-git:
+          force: true
           requires:
             - node/test
