@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from 'axios';
+import { serializeError } from 'serialize-error';
 
 import { Logger } from './logger';
 import { LogType } from '../../shared/types/logging';
@@ -43,18 +43,56 @@ describe('Logger', () => {
     );
 
     describe('When the optional `additionalData` argument is provided', () => {
-      it.each(Object.values(LogType).map((type) => [type]))(
-        'issues a PUT request to the /api/logs endpoint plus `additionalData`',
-        (logType) => {
-          void logger[logType](SAMPLE_MESSAGE, { clientId: 12345 });
-          expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
-            logType,
-            logSource: 'UI',
-            message: SAMPLE_MESSAGE,
-            additionalData: { clientId: 12345 },
-          });
-        },
-      );
+      describe('When the `additionalData` value is a primitive', () => {
+        it.each(Object.values(LogType).map((type) => [type]))(
+          'issues a PUT request to the /api/logs endpoint plus `additionalData` key and primitive value',
+          (logType) => {
+            void logger[logType](SAMPLE_MESSAGE, { clientId: 12345 });
+            expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
+              logType,
+              logSource: 'UI',
+              message: SAMPLE_MESSAGE,
+              additionalData: { clientId: 12345 },
+            });
+          },
+        );
+      });
+
+      describe('When the `additionalData` value is an object', () => {
+        it.each(Object.values(LogType).map((type) => [type]))(
+          'issues a PUT request to the /api/logs endpoint plus `additionalData` key with stringified object value',
+          (logType) => {
+            void logger[logType](SAMPLE_MESSAGE, {
+              formData: { firstName: 'Jeff' },
+            });
+            expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
+              logType,
+              logSource: 'UI',
+              message: SAMPLE_MESSAGE,
+              additionalData: { formData: '{"firstName":"Jeff"}' },
+            });
+          },
+        );
+      });
+
+      describe('When the `additionalData` key is "error" and the value is an instance of an Error object', () => {
+        const sampleError = new Error('Client-side error');
+
+        it.each(Object.values(LogType).map((type) => [type]))(
+          'issues a PUT request to the /api/logs endpoint plus `additionalData` key with serialized Error object',
+          (logType) => {
+            void logger[logType](SAMPLE_MESSAGE, { error: sampleError });
+            expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
+              logType,
+              logSource: 'UI',
+              message: SAMPLE_MESSAGE,
+              additionalData: {
+                error: JSON.stringify(serializeError(sampleError)),
+              },
+            });
+          },
+        );
+      });
     });
 
     describe('When the call to the /api/logs endpoint is not successful', () => {
