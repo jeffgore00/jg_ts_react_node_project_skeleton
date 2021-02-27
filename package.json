@@ -14,7 +14,7 @@
   "scripts": {
     "build": "npm run build:client && npm run build:server",
     "build:dev": "NODE_ENV=development npm run build:client",
-    "build:dev:offline": "BUILD_OFFLINE=true npm run build:client",
+    "build:dev:offline": "BUILD_OFFLINE=true npm run build:dev",
     "build:client": "webpack",
     "build:server": "rm -rf dist && tsc --project tsconfig.server.json && if [ \"$NODE_ENV\" = \"production\" ]; then node -r ts-node/register src/server/health-check.ts; fi",
     "lint": "eslint \"**\"",
@@ -24,8 +24,8 @@
     "start": "NODE_ENV=production node dist/server/index.js --unhandled-rejections=strict",
     "start:dev": "NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --unhandled-rejections=strict --exec ts-node --extensions '.ts, .js'",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
-    "test": "NODE_ENV=test npm run test:unitAndApi && npm run lint && npm run prettier:check",
-    "test:unitAndApi": "jest --runInBand",
+    "test": "npm run test:unitAndApi && npm run lint && npm run prettier:check",
+    "test:unitAndApi": "NODE_ENV=test jest --runInBand",
     "pretest:browser": "tsc wdio.conf.ts --types @wdio/jasmine-framework,jasmine",
     "test:browser": "wdio wdio.conf.js",
     "posttest:browser": "rm wdio.conf.js"
