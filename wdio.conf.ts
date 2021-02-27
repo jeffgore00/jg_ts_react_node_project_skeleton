@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, import/no-extraneous-dependencies,
-@typescript-eslint/no-namespace */
-
 import { Config } from '@wdio/sync';
 
 declare global {

@@ -16,6 +16,7 @@ module.exports = {
   },
   ignorePatterns: [
     'webpack.config.js',
+    'wdio.conf.ts',
     'public',
     'dist',
     'node_modules',
