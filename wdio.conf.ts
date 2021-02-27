@@ -1,4 +1,17 @@
-exports.config = {
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, import/no-extraneous-dependencies,
+@typescript-eslint/no-namespace */
+
+import { Config } from '@wdio/sync';
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      wdioBaseUrl: string;
+    }
+  }
+}
+
+const config: Config = {
   runner: 'local',
   specs: ['./test-browser/specs/**/*.browser.test.ts'],
   maxInstances: 10,
@@ -28,10 +41,11 @@ exports.config = {
   reporters: ['spec'],
   jasmineNodeOpts: {
     helpers: [require.resolve('ts-node/register')], // this does NOT support `esnext` modules
-    ui: 'bdd',
-    timeout: 60000,
+    defaultTimeoutInterval: 60000,
   },
   before() {
     global.wdioBaseUrl = 'http://localhost:1337'; // edit to deployed env if necessary
   },
 };
+
+export { config };
