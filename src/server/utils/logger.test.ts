@@ -1,6 +1,7 @@
 /* eslint-disable global-require, @typescript-eslint/ban-ts-comment, no-underscore-dangle,
 no-useless-escape, no-console, @typescript-eslint/no-unsafe-assignment,
 @typescript-eslint/no-unsafe-member-access */
+import { serializeError } from 'serialize-error';
 
 import { Logger } from './logger';
 import { LogType } from '../../shared/types/logging';
@@ -93,7 +94,7 @@ describe('Logger', () => {
 
     describe('When the optional `additionalData` argument is provided', () => {
       it.each(Object.values(LogType).map((type) => [type]))(
-        'logs them as data_key=value in the same color as the log level, but dim',
+        '%s method: logs them as data_key=value in the same color as the log level, but dim',
         (logType) => {
           const logMessage = 'THIS IS A LOG';
           const logAdditionalData = { clientId: 12345 };
@@ -107,6 +108,23 @@ describe('Logger', () => {
           expect(consoleSpy).toHaveBeenCalledWith(expect.stringMatching(regex));
         },
       );
+
+      describe('When `additionalData` contains an `error` property that has a value that is an Error instance', () => {
+        const sampleError = new Error('Server-side error');
+        logger = new Logger();
+
+        it('logs a serialized version of that error', () => {
+          Object.values(LogType).forEach((logType) => {
+            logger[logType]('hi', { error: sampleError });
+            expect(consoleSpy).toHaveBeenCalledWith(
+              expect.stringContaining(
+                JSON.stringify(serializeError(sampleError)),
+              ),
+            );
+            jest.clearAllMocks();
+          });
+        });
+      });
     });
   });
 

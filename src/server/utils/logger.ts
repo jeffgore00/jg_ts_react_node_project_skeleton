@@ -6,14 +6,14 @@ import winston, {
   LogCallback,
 } from 'winston';
 import chalk from 'chalk';
-import { serializeError } from 'serialize-error';
+import { serializeError, ErrorObject } from 'serialize-error';
 
 import { LogType, Metadata } from '../../shared/types/logging';
 
 type BasicLog = {
   message: string;
   level: string;
-  error?: Error | string;
+  error?: Error | ErrorObject;
 };
 
 const LogLevels = {
@@ -42,7 +42,7 @@ const devLoggerColorizer: {
 export const errorFormatter = (log: BasicLog): BasicLog => {
   if (log.error instanceof Error) {
     // eslint-disable-next-line no-param-reassign
-    log.error = JSON.stringify(serializeError(log.error));
+    log.error = serializeError(log.error);
   }
   return log;
 };
