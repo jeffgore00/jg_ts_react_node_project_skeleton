@@ -98,11 +98,22 @@ const productionLogger = createLogger({
   ],
 });
 
-export class Logger {
-  internalLogger: winston.Logger;
+type LoggerMethod = (
+  message: string,
+  metadata?: Metadata,
+  callback?: LogCallback,
+) => void;
 
-  // In order to allow logger['info']
-  [key: string]: any;
+interface ServerSideLogger {
+  internalLogger: winston.Logger;
+  info: LoggerMethod;
+  debug: LoggerMethod;
+  error: LoggerMethod;
+  warn: LoggerMethod;
+}
+
+export class Logger implements ServerSideLogger {
+  internalLogger: winston.Logger;
 
   constructor() {
     if (process.env.NODE_ENV === 'development') {

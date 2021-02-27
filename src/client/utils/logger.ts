@@ -4,17 +4,23 @@ import { serializeError } from 'serialize-error';
 
 import { LogType, Metadata } from '../../shared/types/logging';
 
-export class Logger {
-  // In order to allow logger['info']
-  [key: string]:
-    | string
-    | ((message: string, metadata?: Metadata) => void)
-    | ((
-        logType: LogType,
-        message: string,
-        additionalData?: Metadata,
-      ) => Promise<void>);
+type SendLogToServer = (
+  logType: LogType,
+  message: string,
+  additionalData?: Metadata,
+) => Promise<void>;
 
+type LoggerMethod = (message: string, metadata?: Metadata) => void;
+
+export interface ClientSideLogger {
+  sendLogToServer: SendLogToServer;
+  info: LoggerMethod;
+  debug: LoggerMethod;
+  error: LoggerMethod;
+  warn: LoggerMethod;
+}
+
+export class Logger implements ClientSideLogger {
   sendLogToServer(
     logType: LogType,
     message: string,
