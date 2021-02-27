@@ -10,12 +10,12 @@
     "resolveJsonModule": true,
     "types": [
       "node",
-      "@wdio/sync",
-      "jest",
+      "express",
       "react",
       "react-dom",
       "styled-components",
-      "express"
+      "jest",
+      "@wdio/sync"
     ]
   },
   "include": ["src", "test-browser", "test-api", "test-utils", "."],
