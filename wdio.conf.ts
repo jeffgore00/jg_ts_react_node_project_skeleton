@@ -58,7 +58,7 @@ const config: Options.Testrunner = {
   autoCompileOpts: {
     tsNodeOpts: {
       transpileOnly: true,
-      project: './tsconfig.wdio.json',
+      project: 'tsconfig.wdio.json',
     },
   },
   before() {
