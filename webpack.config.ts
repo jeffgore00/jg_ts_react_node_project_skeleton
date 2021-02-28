@@ -26,7 +26,6 @@ const createReactScriptHtmlWebpackConfig = () => {
 
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
-  // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -35,7 +34,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
-    publicPath: '', // default is 'auto', which we don't want
+    publicPath: '', // default is '/auto', which we don't want
   },
   module: {
     rules: [
