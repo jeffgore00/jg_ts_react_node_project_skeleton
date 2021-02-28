@@ -10,18 +10,6 @@ declare global {
   }
 }
 
-/*
-For proper typing here, this would object be of JasmineOpts type:
-
-import { JasmineOpts } from '@wdio/jasmine-framework'
-const jasmineOpts: JasmineOpts = ...
-
-Problem is, the import of this library means that Jasmine types are injected into all the
-files covered by tsconfig.json, as if "@wdio/jasmine-framework" were included in the "types"
-array. And the Jasmine types conflict with the Jest types (i.e., both have "expect", but
-with different methods).
-
- */
 const jasmineOpts: JasmineOpts = {
   defaultTimeoutInterval: 50000, // default is 60000
 };
@@ -31,7 +19,7 @@ const config: Options.Testrunner = {
   specs: ['./test-browser/specs/**/*.browser.test.ts'],
   maxInstances: 10,
   path: '/wd/hub',
-  /*  automationProtocol: 'webdriver' was the default in WDIO v5, now v6 default is 'devtools'
+  /*  automationProtocol: 'webdriver' was the default in WDIO v5, now v7 default is 'devtools'
       (Chrome DevTools Protocol).
       "to run a local test script you won't need to download a browser driver anymore. WebdriverIO
       checks if a browser driver is running and accessible at localhost:4444/ and uses Puppeteer as
