@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
-    "target": "es5",
-    "jsx": "react",
-    "lib": ["dom", "esnext"],
+    "target": "es6",
+    "lib": ["esnext"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "types": ["node", "webdriverio/sync", "@wdio/jasmine-framework"]
