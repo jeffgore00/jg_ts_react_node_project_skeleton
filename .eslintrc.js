@@ -15,7 +15,6 @@ module.exports = {
     project: ['./tsconfig.json', './tsconfig.wdio.json'],
   },
   ignorePatterns: [
-    'webpack.config.js',
     'public',
     'dist',
     'node_modules',

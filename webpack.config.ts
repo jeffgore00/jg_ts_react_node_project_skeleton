@@ -1,8 +1,9 @@
-const path = require('path');
-const CompressionPlugin = require('compression-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
-  .default;
+import path from 'path';
+import CompressionPlugin from 'compression-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+import createStyledComponentsTransformer from 'typescript-plugin-styled-components';
+
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
 const createReactScriptHtmlWebpackConfig = () => {
@@ -12,7 +13,7 @@ const createReactScriptHtmlWebpackConfig = () => {
       reactDomScript: '',
     };
   }
-  const createReactScriptTags = (environment) => ({
+  const createReactScriptTags = (environment: string) => ({
     reactScript: `<script crossorigin src="https://unpkg.com/react@17/umd/react.${environment}.js"></script>`,
     reactDomScript: `<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.${environment}.js"></script>`,
   });
@@ -39,7 +40,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: function (modulePath) {
+        test(modulePath: string) {
           return (
             (modulePath.endsWith('.ts') || modulePath.endsWith('.tsx')) &&
             !(modulePath.endsWith('test.ts') || modulePath.endsWith('test.tsx'))
@@ -65,7 +66,8 @@ module.exports = {
   /* From the TypeScript boilerplate repo webpack config:
   "When importing a module whose path matches one of the following, just assume a corresponding
   global variable exists and use that instead. This is important because it allows us to avoid
-  bundling all of our dependencies, which allows browsers to cache those libraries between builds." */
+  bundling all of our dependencies, which allows browsers to cache those libraries between builds."
+  */
   ...(!process.env.BUILD_OFFLINE && {
     externals: {
       react: 'React',
@@ -73,6 +75,7 @@ module.exports = {
     },
   }),
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     new CompressionPlugin(),
     new HtmlWebpackPlugin({
       ...createReactScriptHtmlWebpackConfig(),
