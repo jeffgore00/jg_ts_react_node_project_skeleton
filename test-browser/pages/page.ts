@@ -8,6 +8,6 @@ export default class Page {
         `path argument, if supplied, must start with a forward slash (/). path argument supplied was: ${path}`,
       );
     }
-    return browser.url(`${wdioBaseUrl}${path || ''}`);
+    browser.url(`${wdioBaseUrl}${path || ''}`);
   }
 }

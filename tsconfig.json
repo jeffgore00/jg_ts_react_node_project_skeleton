@@ -14,7 +14,8 @@
       "react",
       "react-dom",
       "styled-components",
-      "jest"
+      "jest",
+      "webdriverio/sync"
     ]
   },
   "include": [
@@ -23,6 +24,7 @@
     "test-utils",
     "jest-setup.js",
     "jest.config.js",
-    "webpack.config.js"
+    "webpack.config.js",
+    "test-browser"
   ]
 }
