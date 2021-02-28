@@ -22,8 +22,8 @@
     "src",
     "test-api",
     "test-utils",
-    "jest-setup.js",
-    "jest.config.js",
+    "jest-setup.ts",
+    "jest.config.ts",
     "webpack.config.ts",
     "test-browser"
   ]
