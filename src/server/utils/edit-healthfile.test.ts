@@ -65,7 +65,7 @@ describe('Create Healthfile', () => {
       });
     });
 
-    it('logs the inability to get the commit ', () => {
+    it('logs the inability to get the commit', () => {
       editHealthfile();
       expect(logger.info).toHaveBeenCalledWith(logs.FAILED_TO_GET_COMMIT_HASH);
     });
