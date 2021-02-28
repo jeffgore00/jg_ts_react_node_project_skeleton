@@ -6,10 +6,6 @@ class Homepage extends Page {
     return $('h1');
   }
 
-  isHeadingDisplayed(): boolean {
-    return this.heading.waitForDisplayed();
-  }
-
   open(): void {
     return super.open();
   }

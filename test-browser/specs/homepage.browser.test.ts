@@ -5,11 +5,11 @@ describe('The homepage', () => {
     homepage.open();
   });
   it('should display a heading', () => {
-    expect(homepage.isHeadingDisplayed()).toBe(true);
+    expect(homepage.heading.isDisplayed()).toBe(true);
 
     // Simulate mobile window (Pixel 2)
     browser.setWindowSize(411, 731);
 
-    expect(homepage.isHeadingDisplayed()).toBe(true);
+    expect(homepage.heading.isDisplayed()).toBe(true);
   });
 });

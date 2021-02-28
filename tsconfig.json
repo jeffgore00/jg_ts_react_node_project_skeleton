@@ -15,9 +15,8 @@
       "react-dom",
       "styled-components",
       "jest",
-      "@wdio/sync"
+      "webdriverio/sync"
     ]
   },
-  "include": ["src", "test-browser", "test-api", "test-utils", "."],
-  "exclude": ["wdio.conf.ts"]
+  "include": ["src", "test-api", "test-utils", "."]
 }

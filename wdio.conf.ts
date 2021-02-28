@@ -1,4 +1,6 @@
-import { Config } from '@wdio/sync';
+/* eslint-disable @typescript-eslint/no-namespace, import/no-extraneous-dependencies */
+
+import { Options } from '@wdio/types';
 
 declare global {
   namespace NodeJS {
@@ -8,7 +10,23 @@ declare global {
   }
 }
 
-const config: Config = {
+/*
+For proper typing here, this would object be of JasmineOpts type:
+
+import { JasmineOpts } from '@wdio/jasmine-framework'
+const jasmineOpts: JasmineOpts = ...
+
+Problem is, the import of this library means that Jasmine types are injected into all the
+files covered by tsconfig.json, as if "@wdio/jasmine-framework" were included in the "types"
+array. And the Jasmine types conflict with the Jest types (i.e., both have "expect", but
+with different methods).
+
+ */
+const jasmineOpts = {
+  defaultTimeoutInterval: 50000, // default is 60000
+};
+
+const config: Options.Testrunner = {
   runner: 'local',
   specs: ['./test-browser/specs/**/*.browser.test.ts'],
   maxInstances: 10,
@@ -36,10 +54,7 @@ const config: Config = {
   services: ['chromedriver'],
   framework: 'jasmine',
   reporters: ['spec'],
-  jasmineNodeOpts: {
-    helpers: [require.resolve('ts-node/register')], // this does NOT support `esnext` modules
-    defaultTimeoutInterval: 60000,
-  },
+  jasmineOpts,
   before() {
     global.wdioBaseUrl = 'http://localhost:1337'; // edit to deployed env if necessary
   },
