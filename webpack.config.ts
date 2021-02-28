@@ -75,7 +75,7 @@ module.exports = {
   }),
   plugins: [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    new CompressionPlugin(),
+    new CompressionPlugin({ include: 'bundle.js' }),
     new HtmlWebpackPlugin({
       ...createReactScriptHtmlWebpackConfig(),
       template: 'public/index-template.html',
