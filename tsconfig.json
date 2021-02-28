@@ -14,9 +14,15 @@
       "react",
       "react-dom",
       "styled-components",
-      "jest",
-      "webdriverio/sync"
+      "jest"
     ]
   },
-  "include": ["src", "test-api", "test-utils", "."]
+  "include": [
+    "src",
+    "test-api",
+    "test-utils",
+    "jest-setup.js",
+    "jest.config.js",
+    "webpack.config.js"
+  ]
 }

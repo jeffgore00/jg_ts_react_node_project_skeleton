@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace, import/no-extraneous-dependencies */
-
+import { JasmineOpts } from '@wdio/jasmine-framework';
 import { Options } from '@wdio/types';
 
 declare global {
@@ -22,7 +22,7 @@ array. And the Jasmine types conflict with the Jest types (i.e., both have "expe
 with different methods).
 
  */
-const jasmineOpts = {
+const jasmineOpts: JasmineOpts = {
   defaultTimeoutInterval: 50000, // default is 60000
 };
 
@@ -55,6 +55,12 @@ const config: Options.Testrunner = {
   framework: 'jasmine',
   reporters: ['spec'],
   jasmineOpts,
+  autoCompileOpts: {
+    tsNodeOpts: {
+      transpileOnly: true,
+      project: './tsconfig.wdio.json',
+    },
+  },
   before() {
     global.wdioBaseUrl = 'http://localhost:1337'; // edit to deployed env if necessary
   },
