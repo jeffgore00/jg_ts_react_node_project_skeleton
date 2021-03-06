@@ -14,7 +14,7 @@ This is why the `health-check.ts` and `edit-healthfile.ts` files are excluded fr
 
 To run non-headless automation locally, simply run `npm run test:browser`. As long as the major version of your `chromedriver` dev dependency matches your locally installed Chrome major version, this should work.
 
-To run headless automation on a Selenium server, comment out or remove:
+To run headless automation on a Selenium server against a deployed environment, comment out or remove:
 
 ```
 services: ['chromedriver'],
