@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "description": "Skeleton for TypeScript React-Node projects.",
   "homepage": "https://ts-react-node-project-skeleton.herokuapp.com",
+  "author": "Jeff Gore",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/jeffgore00/jg_ts_react_node_project_skeleton.git"
@@ -10,6 +12,14 @@
   "main": "index.js",
   "engines": {
     "node": "14.15.5"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts"
+    ],
+    "watch": [
+      "src/server"
+    ]
   },
   "scripts": {
     "build": "npm run build:client && npm run build:server",
@@ -32,8 +42,6 @@
     "posttest:browser": "rm wdio.conf.js",
     "postinstall": "husky install"
   },
-  "author": "Jeff Gore",
-  "license": "ISC",
   "dependencies": {
     "@types/cors": "^2.8.9",
     "@types/node": "^14.14.6",
@@ -102,13 +110,5 @@
     "wdio-chromedriver-service": "^7.0.0",
     "webpack": "^5.21.2",
     "webpack-cli": "^4.5.0"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "**/*.test.ts"
-    ],
-    "watch": [
-      "src/server"
-    ]
   }
 }
