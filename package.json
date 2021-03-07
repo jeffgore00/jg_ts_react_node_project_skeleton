@@ -29,7 +29,8 @@
     "test:unitAndApi": "NODE_ENV=test jest --runInBand",
     "pretest:browser": "tsc wdio.conf.ts --typeRoots ./node_modules/@types/wdio",
     "test:browser": "wdio wdio.conf.js",
-    "posttest:browser": "rm wdio.conf.js"
+    "posttest:browser": "rm wdio.conf.js",
+    "postinstall": "husky install"
   },
   "author": "Jeff Gore",
   "license": "ISC",
@@ -101,18 +102,6 @@
     "wdio-chromedriver-service": "^7.0.0",
     "webpack": "^5.21.2",
     "webpack-cli": "^4.5.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx,md,json,html}": [
-      "npm run lint -- --fix",
-      "npm run prettier:fix"
-    ]
   },
   "nodemonConfig": {
     "ignore": [
