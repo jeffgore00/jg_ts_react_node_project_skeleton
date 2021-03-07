@@ -11,7 +11,8 @@ declare global {
 }
 
 const jasmineOpts: JasmineOpts = {
-  defaultTimeoutInterval: 50000, // default is 60000
+  /* default is 60000, this is just to show how to provide typed Jasmine options */
+  defaultTimeoutInterval: 59999,
 };
 
 const config: Options.Testrunner = {
@@ -20,11 +21,9 @@ const config: Options.Testrunner = {
   maxInstances: 10,
   path: '/wd/hub',
   /*  automationProtocol: 'webdriver' was the default in WDIO v5, now v7 default is 'devtools'
-      (Chrome DevTools Protocol).
-      "to run a local test script you won't need to download a browser driver anymore. WebdriverIO
-      checks if a browser driver is running and accessible at localhost:4444/ and uses Puppeteer as
-      fallback if not"
-  */
+  (Chrome DevTools Protocol). "...to run a local test script you won't need to download a browser
+  driver anymore. WebdriverIO checks if a browser driver is running and accessible at
+  localhost:4444/ and uses Puppeteer as fallback if not." */
   automationProtocol: 'webdriver',
   capabilities: [
     {
