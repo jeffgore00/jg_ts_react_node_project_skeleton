@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace, import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-namespace */
 import { JasmineOpts } from '@wdio/jasmine-framework';
 import { Options } from '@wdio/types';
 

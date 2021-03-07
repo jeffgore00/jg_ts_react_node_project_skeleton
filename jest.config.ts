@@ -10,7 +10,7 @@ const config: Config.InitialOptions = {
     '!**/dist/**',
   ],
   testPathIgnorePatterns: ['<rootDir>/test-browser/'],
-  setupFiles: ['<rootDir>/jest-setup.ts'],
+  setupFiles: ['<rootDir>/test-utils/jest-setup.ts'],
   rootDir: '.',
   maxWorkers: '75%', // for some reason, this is required in InitialOptions
 };

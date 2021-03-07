@@ -9,6 +9,8 @@ export default class Page {
       );
     }
     const url = `${wdioBaseUrl}${path || ''}`;
+
+    // eslint-disable-next-line no-console
     console.log(`Opening URL ${url}`);
     browser.url(url);
   }
