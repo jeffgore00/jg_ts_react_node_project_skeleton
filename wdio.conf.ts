@@ -15,6 +15,8 @@ const jasmineOpts: JasmineOpts = {
   defaultTimeoutInterval: 59999,
 };
 
+const baseUrl = 'https://ts-react-node-project-skeleton.herokuapp.com';
+
 const config: Options.Testrunner = {
   runner: 'local',
   specs: ['./test-browser/specs/**/*.browser.test.ts'],
@@ -34,7 +36,7 @@ const config: Options.Testrunner = {
   ],
   logLevel: 'warn',
   bail: 0,
-  baseUrl: 'http://localhost',
+  baseUrl,
   waitforTimeout: 10000,
   connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
@@ -44,12 +46,11 @@ const config: Options.Testrunner = {
   jasmineOpts,
   autoCompileOpts: {
     tsNodeOpts: {
-      transpileOnly: true,
       project: 'tsconfig.wdio.json',
     },
   },
   before() {
-    global.wdioBaseUrl = 'https://ts-react-node-project-skeleton.herokuapp.com'; // edit to deployed env if necessary
+    global.wdioBaseUrl = baseUrl;
   },
 };
 

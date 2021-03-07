@@ -3,7 +3,7 @@ import Page from './page';
 
 class Homepage extends Page {
   get heading(): WebdriverIO.Element {
-    return $('h1');
+    return $('h1*=Homepage');
   }
 
   open(): void {
