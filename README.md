@@ -1,5 +1,9 @@
 # TypeScript-React-Node Project Skeleton
 
+## Test
+
+Tests are run in band since that actually turns out to be faster. Also some strange issues with `supertest` when run in band.
+
 ## Build
 
 `build:client` generates a webpack bundle in `public/webpack.bundle.js`.
