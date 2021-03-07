@@ -35,10 +35,10 @@
     "start": "NODE_ENV=production node dist/server/index.js --unhandled-rejections=strict",
     "start:dev": "NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --unhandled-rejections=strict --exec ts-node --extensions '.ts, .js'",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
-    "test": "npm run test:unitAndApi && npm run lint && npm run prettier:check",
-    "test:unitAndApi": "NODE_ENV=test jest --runInBand",
-    "pretest:browser": "tsc wdio.conf.ts --typeRoots ./node_modules/@types/wdio",
+    "test": "npm run test:unit-and-api && npm run lint && npm run prettier:check",
+    "test:unit-and-api": "NODE_ENV=test jest --runInBand",
     "test:browser": "wdio wdio.conf.js",
+    "pretest:browser": "tsc wdio.conf.ts --typeRoots ./node_modules/@types/wdio",
     "posttest:browser": "rm wdio.conf.js",
     "postinstall": "husky install"
   },

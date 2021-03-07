@@ -50,7 +50,7 @@ const config: Options.Testrunner = {
     },
   },
   before() {
-    global.wdioBaseUrl = 'http://localhost:1337'; // edit to deployed env if necessary
+    global.wdioBaseUrl = 'https://ts-react-node-project-skeleton.herokuapp.com'; // edit to deployed env if necessary
   },
 };
 
