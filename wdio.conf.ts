@@ -19,19 +19,30 @@ const rawCommandLineArgs = process.argv.slice(2);
   -u, --user             username if using a cloud service as automation backend
   -w, --waitforTimeout   timeout for all waitForXXX commands */
 
+enum Environment {
+  dev = 'dev',
+  prod = 'prod',
+}
+
+enum ScreenshotModes {
+  always = 'always',
+  never = 'never',
+  failedTestsOnly = 'failedTestsOnly',
+}
+
 const { argv: parsedCommandLineArgs } = yargs(rawCommandLineArgs)
   .option('environment', {
     alias: 'e',
     describe: 'The environment to point the tests at',
-    default: 'dev',
-    choices: ['dev', 'prod'],
+    choices: Object.values(Environment),
+    default: Environment.dev,
   })
   .option('screenshot', {
     alias: 's',
     describe:
       'Take a screenshot after a browser test (see test-result-screenshots directory)',
-    choices: ['always', 'never', 'failedTestsOnly'],
-    default: 'failedTestsOnly',
+    choices: Object.values(ScreenshotModes),
+    default: ScreenshotModes.failedTestsOnly,
   })
   .option('chromedriver', {
     alias: 'c',
@@ -65,7 +76,7 @@ const jasmineOpts: JasmineOpts = {
   defaultTimeoutInterval: 59999,
 };
 
-const baseUrl = <string>environmentMap[environment];
+const baseUrl = environmentMap[environment];
 
 const config: Options.Testrunner = {
   runner: 'local',
@@ -105,8 +116,29 @@ const config: Options.Testrunner = {
     global.specFilename = specFilepathSegments[specFilepathSegments.length - 1];
   },
   afterTest(test, context, { passed }) {
-    const generateScreenshotName = () =>
-      `${global.specFilename}`.toLowerCase().trim().split(/\s+/).join('-');
+    const generateScreenshotName = (testPassed?: boolean) => {
+      const [filenameNoExtension] = global.specFilename.split(
+        '.browser.test.ts',
+      );
+
+      const testPassedMap = {
+        true: 'PASSED',
+        false: 'FAILED',
+      };
+
+      const testPassedStr =
+        testPassed !== undefined
+          ? `_${String(testPassedMap[String(testPassed)])}`
+          : '';
+
+      // @ts-ignore. `test.id` DOES exist, takes the form of "spec_" where _ is a 0-indexed number
+      const testId = <string>test.id;
+      return `${filenameNoExtension}_${testId}${testPassedStr}_${test.description
+        .toLowerCase()
+        .trim()
+        .split(/\s+/)
+        .join('-')}`;
+    };
 
     const createEmptyScreenshotDirectory = () => {
       const directoryPath = './test-result-screenshots';
@@ -116,16 +148,16 @@ const config: Options.Testrunner = {
       fs.mkdirSync(directoryPath);
     };
 
-    if (screenshot === 'failedTestsOnly' && !passed) {
+    if (screenshot === ScreenshotModes.failedTestsOnly && !passed) {
       createEmptyScreenshotDirectory();
       global.driver.saveScreenshot(
         `test-result-screenshots/${generateScreenshotName()}.png`,
       );
     }
-    if (screenshot === 'all') {
+    if (screenshot === ScreenshotModes.always) {
       createEmptyScreenshotDirectory();
       global.driver.saveScreenshot(
-        `test-result-screenshots/${generateScreenshotName()}.png`,
+        `test-result-screenshots/${generateScreenshotName(passed)}.png`,
       );
     }
   },
