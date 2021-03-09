@@ -28,13 +28,15 @@ const { argv: parsedCommandLineArgs } = yargs(rawCommandLineArgs)
   })
   .option('screenshot', {
     alias: 's',
-    describe: 'When to take a screenshot after a browser test',
-    choices: ['all', 'none', 'failedTestsOnly'],
+    describe:
+      'Take a screenshot after a browser test (see test-result-screenshots directory)',
+    choices: ['always', 'never', 'failedTestsOnly'],
     default: 'failedTestsOnly',
   })
   .option('chromedriver', {
     alias: 'c',
-    describe: 'Use chromedriver rather than a Selenium server',
+    describe:
+      'Use chromedriver rather than assume Selenium server is running on :4444',
     type: 'boolean',
     default: false,
   });
