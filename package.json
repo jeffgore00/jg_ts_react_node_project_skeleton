@@ -85,7 +85,7 @@
     "@wdio/spec-reporter": "^7.0.7",
     "@wdio/sync": "^7.0.8",
     "@wdio/types": "^7.0.7",
-    "chromedriver": "^88.0.0",
+    "chromedriver": "^89.0.0",
     "compression-webpack-plugin": "^7.1.2",
     "eslint": "^7.21.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
