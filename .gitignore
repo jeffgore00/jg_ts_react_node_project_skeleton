@@ -3,3 +3,5 @@ dist
 coverage
 public/index.html
 public/bundle*
+test-result-screenshots
+wdio.conf.js

@@ -45,5 +45,7 @@ module.exports = {
   },
   globals: {
     wdioBaseUrl: true,
+    specFilename: true,
+    driver: true,
   },
 };
