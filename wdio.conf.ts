@@ -4,6 +4,20 @@ import { Options } from '@wdio/types';
 import yargs from 'yargs/yargs';
 import fs from 'fs';
 
+declare global {
+  namespace NodeJS {
+    interface Global {
+      wdioBaseUrl: string;
+      specFilename: string;
+      /* `browser` is injected by WDIO into the global namespace, but the Clients.Browser type
+      definition is empty. */
+      browser: {
+        saveScreenshot: (filepath: string) => void;
+      };
+    }
+  }
+}
+
 /* "[In Node, the] first element will be process.execPath ... The second element will be the path to
 the JavaScript file being executed. The remaining elements will be any additional command-line
 arguments."  https://nodejs.org/docs/latest/api/process.html#process_process_argv */
@@ -59,24 +73,12 @@ const environmentMap = {
   prod: 'https://ts-react-node-project-skeleton.herokuapp.com',
 };
 
-declare global {
-  namespace NodeJS {
-    interface Global {
-      wdioBaseUrl: string;
-      specFilename: string;
-      driver: {
-        saveScreenshot: (filepath: string) => void;
-      };
-    }
-  }
-}
+const baseUrl = environmentMap[environment];
 
 const jasmineOpts: JasmineOpts = {
   /* default is 60000, this is just to show how to provide typed Jasmine options */
   defaultTimeoutInterval: 59999,
 };
-
-const baseUrl = environmentMap[environment];
 
 const config: Options.Testrunner = {
   runner: 'local',
@@ -150,13 +152,13 @@ const config: Options.Testrunner = {
 
     if (screenshot === ScreenshotModes.failedTestsOnly && !passed) {
       createEmptyScreenshotDirectory();
-      global.driver.saveScreenshot(
+      global.browser.saveScreenshot(
         `test-result-screenshots/${generateScreenshotName()}.png`,
       );
     }
     if (screenshot === ScreenshotModes.always) {
       createEmptyScreenshotDirectory();
-      global.driver.saveScreenshot(
+      global.browser.saveScreenshot(
         `test-result-screenshots/${generateScreenshotName(passed)}.png`,
       );
     }
