@@ -1,7 +1,7 @@
 /* eslint-disable global-require, @typescript-eslint/no-unsafe-assignment */
 import { Request, RequestHandler, Response } from 'express';
 
-import * as configExport from '../config';
+import * as configExport from '../../shared/config';
 import logger from '../utils/logger';
 
 describe('CORS Strict same origin', () => {

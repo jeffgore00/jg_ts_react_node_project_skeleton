@@ -1,7 +1,7 @@
 import cors, { CorsOptions } from 'cors';
 import { RequestHandler, Response, Request } from 'express';
 import logger from '../utils/logger';
-import { getConfig } from '../config';
+import { getConfig } from '../../shared/config';
 
 const { corsWhitelist } = getConfig();
 

@@ -8,6 +8,7 @@ import helmet from 'helmet';
 
 import apiRouter from './routers/api';
 import logger from './utils/logger';
+import { getConfig } from '../shared/config';
 
 const app = express();
 
@@ -24,6 +25,15 @@ app.use(
     },
   }),
 );
+
+// Necessary when the frontend domain differs from the backend domain, which happens when using
+// Webpack dev server in development.
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', getConfig().frontendUrl);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'content-type');
+  next();
+});
 
 /* Request/response logs. Do not use in `test` since API tests' console output
 would be cluttered with logs. */

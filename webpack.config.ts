@@ -1,6 +1,7 @@
 import path from 'path';
 import CompressionPlugin from 'compression-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { DefinePlugin } from 'webpack';
 
 import createStyledComponentsTransformer from 'typescript-plugin-styled-components';
 
@@ -27,6 +28,11 @@ const createReactScriptHtmlWebpackConfig = () => {
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
   devtool: 'source-map',
+  devServer: {
+    compress: true,
+    port: 8080,
+    contentBase: 'public',
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
@@ -45,9 +51,15 @@ module.exports = {
             !(modulePath.endsWith('test.ts') || modulePath.endsWith('test.tsx'))
           );
         },
-        include: [path.resolve(__dirname, 'src')],
+        include: [
+          path.resolve(__dirname, 'src/client'),
+          path.resolve(__dirname, 'src/shared'),
+        ],
         loader: 'ts-loader',
         options: {
+          // separate config file needed because ts-loader will ignore the `include` above and will
+          // obey the default tsconfig, which includes server files and test files: https://github.com/TypeStrong/ts-loader/issues/544#issuecomment-316856503
+          configFile: 'tsconfig.client.json',
           getCustomTransformers: () => ({
             before: [styledComponentsTransformer],
           }),
@@ -79,6 +91,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       ...createReactScriptHtmlWebpackConfig(),
       template: 'public/index-template.html',
+    }),
+    new DefinePlugin({
+      appEnvironment: JSON.stringify(process.env.NODE_ENV),
     }),
   ],
 };

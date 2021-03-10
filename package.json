@@ -33,7 +33,7 @@
     "prettier:check": "npm run prettier -- --check",
     "release": "standard-version",
     "start": "NODE_ENV=production node dist/server/index.js --unhandled-rejections=strict",
-    "start:dev": "NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --unhandled-rejections=strict --exec ts-node --extensions '.ts, .js'",
+    "start:dev": "NODE_ENV=development webpack serve --open & NODE_ENV=development nodemon -e js,ts,json src/server/index.ts --unhandled-rejections=strict --exec ts-node --extensions '.ts, .js'",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
     "test": "npm run test:unit-and-api && npm run lint && npm run prettier:check",
     "test:unit-and-api": "NODE_ENV=test jest --runInBand",
@@ -108,6 +108,7 @@
     "wdio-chromedriver-service": "^7.0.0",
     "webpack": "^5.21.2",
     "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2",
     "yargs": "^16.2.0"
   }
 }
