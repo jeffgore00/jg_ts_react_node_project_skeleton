@@ -57,8 +57,9 @@ module.exports = {
         ],
         loader: 'ts-loader',
         options: {
-          // separate config file needed because ts-loader will ignore the `include` above and will
-          // obey the default tsconfig, which includes server files and test files: https://github.com/TypeStrong/ts-loader/issues/544#issuecomment-316856503
+          /* Separate config file needed because ts-loader will ignore the `include` above and will
+          obey the default tsconfig, which includes server files and test files:
+          See https://github.com/TypeStrong/ts-loader/issues/544#issuecomment-316856503 */
           configFile: 'tsconfig.client.json',
           getCustomTransformers: () => ({
             before: [styledComponentsTransformer],
@@ -86,7 +87,6 @@ module.exports = {
     },
   }),
   plugins: [
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     new CompressionPlugin({ include: 'bundle.js' }),
     new HtmlWebpackPlugin({
       ...createReactScriptHtmlWebpackConfig(),

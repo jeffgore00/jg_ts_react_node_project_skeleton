@@ -3,7 +3,6 @@ import path from 'path';
 
 import express, { RequestHandler, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
-import bodyParser from 'body-parser';
 import helmet from 'helmet';
 
 import apiRouter from './routers/api';
@@ -11,8 +10,6 @@ import logger from './utils/logger';
 import { getConfig } from '../shared/config';
 
 const app = express();
-
-/* APPLY THIRD-PARTY MIDDLEWARE */
 
 app.use(
   helmet({
@@ -26,8 +23,8 @@ app.use(
   }),
 );
 
-// Necessary when the frontend domain differs from the backend domain, which happens when using
-// Webpack dev server in development.
+/* Necessary when the frontend domain differs from the backend domain, which happens when using
+in development due to the use of webpack-dev-server (:8080 frontend -> :1337 backend). */
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', getConfig().frontendUrl);
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -55,7 +52,7 @@ app.get('*.js', (req, res, next) => {
 app.use(express.static(path.join(__dirname, '../..', 'public')));
 
 // Make JSON responses available on `response.body`
-app.use(bodyParser.json());
+app.use(express.json());
 
 export const sendResourceNotFound: RequestHandler = (req, res) => {
   res
