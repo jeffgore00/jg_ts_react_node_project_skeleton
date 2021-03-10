@@ -21,6 +21,7 @@ module.exports = {
     'coverage',
     '*.json',
     '*.md',
+    'test-result-screenshots',
   ],
   plugins: ['@typescript-eslint', 'jest'],
   rules: {

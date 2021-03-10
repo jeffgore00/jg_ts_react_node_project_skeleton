@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from 'axios';
 import { serializeError } from 'serialize-error';
 
@@ -11,6 +12,8 @@ describe('Logger', () => {
   const SAMPLE_MESSAGE = 'sample message';
 
   beforeAll(() => {
+    // @ts-ignore. TODO. Add a global type. Webpack injects this as part of the build process.
+    global.appEnvironment = 'development';
     axiosPutSpy = jest
       .spyOn(axios, 'put')
       .mockImplementation(() => Promise.resolve({ status: 200 }));
@@ -34,11 +37,14 @@ describe('Logger', () => {
       'issues a PUT request to the /api/logs endpoint with logType: %s',
       (logType) => {
         void logger[logType](SAMPLE_MESSAGE);
-        expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
-          logType,
-          logSource: 'UI',
-          message: SAMPLE_MESSAGE,
-        });
+        expect(axiosPutSpy).toHaveBeenCalledWith(
+          'http://localhost:1337/api/logs',
+          {
+            logType,
+            logSource: 'UI',
+            message: SAMPLE_MESSAGE,
+          },
+        );
       },
     );
 
@@ -48,12 +54,15 @@ describe('Logger', () => {
           'issues a PUT request to the /api/logs endpoint plus `additionalData` key and primitive value',
           (logType) => {
             void logger[logType](SAMPLE_MESSAGE, { clientId: 12345 });
-            expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
-              logType,
-              logSource: 'UI',
-              message: SAMPLE_MESSAGE,
-              additionalData: { clientId: 12345 },
-            });
+            expect(axiosPutSpy).toHaveBeenCalledWith(
+              'http://localhost:1337/api/logs',
+              {
+                logType,
+                logSource: 'UI',
+                message: SAMPLE_MESSAGE,
+                additionalData: { clientId: 12345 },
+              },
+            );
           },
         );
       });
@@ -65,12 +74,15 @@ describe('Logger', () => {
             void logger[logType](SAMPLE_MESSAGE, {
               formData: { firstName: 'Jeff' },
             });
-            expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
-              logType,
-              logSource: 'UI',
-              message: SAMPLE_MESSAGE,
-              additionalData: { formData: '{"firstName":"Jeff"}' },
-            });
+            expect(axiosPutSpy).toHaveBeenCalledWith(
+              'http://localhost:1337/api/logs',
+              {
+                logType,
+                logSource: 'UI',
+                message: SAMPLE_MESSAGE,
+                additionalData: { formData: '{"firstName":"Jeff"}' },
+              },
+            );
           },
         );
       });
@@ -82,14 +94,17 @@ describe('Logger', () => {
           'issues a PUT request to the /api/logs endpoint plus `additionalData` key with serialized Error object',
           (logType) => {
             void logger[logType](SAMPLE_MESSAGE, { error: sampleError });
-            expect(axiosPutSpy).toHaveBeenCalledWith('/api/logs', {
-              logType,
-              logSource: 'UI',
-              message: SAMPLE_MESSAGE,
-              additionalData: {
-                error: JSON.stringify(serializeError(sampleError)),
+            expect(axiosPutSpy).toHaveBeenCalledWith(
+              'http://localhost:1337/api/logs',
+              {
+                logType,
+                logSource: 'UI',
+                message: SAMPLE_MESSAGE,
+                additionalData: {
+                  error: JSON.stringify(serializeError(sampleError)),
+                },
               },
-            });
+            );
           },
         );
       });

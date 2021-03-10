@@ -27,6 +27,8 @@ describe('CORS Strict same origin', () => {
         headers: { origin: 'http://goodintentions.com' },
       };
       jest.spyOn(configExport, 'getConfig').mockImplementation(() => ({
+        backendUrl: 'http://locahost:1337',
+        frontendUrl: 'http://locahost:1337',
         corsWhitelist: ['http://goodintentions.com'],
       }));
       jest.isolateModules(() => {
@@ -53,6 +55,8 @@ describe('CORS Strict same origin', () => {
     describe('When the whitelist contains "*"', () => {
       beforeAll(() => {
         jest.spyOn(configExport, 'getConfig').mockImplementation(() => ({
+          backendUrl: 'http://locahost:1337',
+          frontendUrl: 'http://locahost:1337',
           corsWhitelist: ['http://goodintentions.com', '*'],
         }));
         jest.isolateModules(() => {
@@ -71,6 +75,8 @@ describe('CORS Strict same origin', () => {
 
       beforeAll(() => {
         jest.spyOn(configExport, 'getConfig').mockImplementation(() => ({
+          backendUrl: 'http://locahost:1337',
+          frontendUrl: 'http://locahost:1337',
           corsWhitelist: ['http://goodintentions.com'],
         }));
         loggerSpy = jest.spyOn(logger, 'warn').mockImplementation(() => null);
