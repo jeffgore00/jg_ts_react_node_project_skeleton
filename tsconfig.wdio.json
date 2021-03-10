@@ -1,11 +1,6 @@
 {
+  "extends": "./tsconfig",
   "compilerOptions": {
-    "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es6",
-    "lib": ["esnext"],
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
     "types": ["node", "webdriverio/sync", "@wdio/jasmine-framework"]
   },
   "include": ["test-browser/**/*.ts", "wdio.conf.ts"]

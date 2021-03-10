@@ -2,12 +2,11 @@
   "compilerOptions": {
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es5",
-    "jsx": "react",
-    "lib": ["dom", "esnext"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "module": "commonjs",
+    "target": "es6",
+    "lib": ["esnext"],
     "types": [
       "node",
       "express",

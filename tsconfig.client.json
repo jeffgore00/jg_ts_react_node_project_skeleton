@@ -1,7 +1,11 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "sourceMap": true
+    "types": ["node", "react", "react-dom", "styled-components", "jest"],
+    "target": "es5",
+    "jsx": "react",
+    "lib": ["dom", "esnext"]
   },
+  "include": ["src/client", "src/shared"],
   "exclude": ["**/*.test.ts", "**/*.test.tsx", "node_modules"]
 }
