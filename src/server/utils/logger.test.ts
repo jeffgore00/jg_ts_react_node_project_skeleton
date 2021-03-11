@@ -1,6 +1,3 @@
-/* eslint-disable global-require, @typescript-eslint/ban-ts-comment, no-underscore-dangle,
-no-useless-escape, no-console, @typescript-eslint/no-unsafe-assignment,
-@typescript-eslint/no-unsafe-member-access */
 import { serializeError } from 'serialize-error';
 
 import { Logger } from './logger';
@@ -14,6 +11,7 @@ describe('Logger', () => {
     consoleSpy = jest
       /* TS is saying _stdout doesn't exist on Console, but it does; it's what Winston uses.
       @ts-ignore. */
+      // eslint-disable-next-line no-underscore-dangle, no-console
       .spyOn(console._stdout, 'write')
       .mockImplementation(() => null);
   });
@@ -141,9 +139,11 @@ describe('Logger', () => {
           .forEach((logType, index) => {
             logger[logType]('hi');
 
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             expect(JSON.parse(consoleSpy.mock.calls[index][0])).toEqual({
               level: logType,
               message: 'hi',
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               timestamp: expect.stringMatching(new RegExp(dateRegexString)),
             });
           });

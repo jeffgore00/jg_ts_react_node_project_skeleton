@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import request from 'supertest';
 
 import app from '../src/server/app';
@@ -6,7 +5,6 @@ import logger from '../src/server/utils/logger';
 
 describe('PUT /api/logs', () => {
   beforeEach(() => {
-    // @ts-ignore
     jest.spyOn(logger, 'info').mockImplementation(jest.fn());
   });
 

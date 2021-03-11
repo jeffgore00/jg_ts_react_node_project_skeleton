@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import path from 'path';
 
 import express, { RequestHandler, ErrorRequestHandler } from 'express';

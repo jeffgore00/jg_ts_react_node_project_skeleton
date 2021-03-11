@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import winston, {
   createLogger,
   format,

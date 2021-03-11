@@ -58,7 +58,7 @@ module.exports = {
         loader: 'ts-loader',
         options: {
           /* Separate config file needed because ts-loader will ignore the `include` above and will
-          obey the default tsconfig, which includes server files and test files:
+          obey the default .tsconfig, which includes server files and test files:
           See https://github.com/TypeStrong/ts-loader/issues/544#issuecomment-316856503 */
           configFile: 'tsconfig.client.json',
           getCustomTransformers: () => ({

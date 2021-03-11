@@ -18,21 +18,6 @@ declare global {
   }
 }
 
-/* "[In Node, the] first element will be process.execPath ... The second element will be the path to
-the JavaScript file being executed. The remaining elements will be any additional command-line
-arguments."  https://nodejs.org/docs/latest/api/process.html#process_process_argv */
-const rawCommandLineArgs = process.argv.slice(2);
-
-/* Avoiding aliases reserved by WDIO itself (i.e. the `wdio` command):
-  -f, --framework        defines the framework (Mocha, Jasmine or Cucumber) to run the specs
-  -h, --hostname         automation driver host address
-  -k, --key              corresponding access key to the user
-  -l, --logLevel         level of logging verbosity
-  -p, --port             automation driver port
-  -r, --reporters        reporters to print out the results on stdout
-  -u, --user             username if using a cloud service as automation backend
-  -w, --waitforTimeout   timeout for all waitForXXX commands */
-
 enum Environment {
   dev = 'dev',
   prod = 'prod',
@@ -43,6 +28,21 @@ enum ScreenshotModes {
   never = 'never',
   failedTestsOnly = 'failedTestsOnly',
 }
+
+/* "[In Node, the] first element will be process.execPath ... The second element will be the path to
+the JavaScript file being executed. The remaining elements will be any additional command-line
+arguments."  https://nodejs.org/docs/latest/api/process.html#process_process_argv */
+const rawCommandLineArgs = process.argv.slice(2);
+
+/* When creating new flags, avoid aliases reserved by WDIO itself (i.e. the `wdio` command):
+  -f, --framework        defines the framework (Mocha, Jasmine or Cucumber) to run the specs
+  -h, --hostname         automation driver host address
+  -k, --key              corresponding access key to the user
+  -l, --logLevel         level of logging verbosity
+  -p, --port             automation driver port
+  -r, --reporters        reporters to print out the results on stdout
+  -u, --user             username if using a cloud service as automation backend
+  -w, --waitforTimeout   timeout for all waitForXXX commands */
 
 const { argv: parsedCommandLineArgs } = yargs(rawCommandLineArgs)
   .option('environment', {
@@ -69,7 +69,7 @@ const { argv: parsedCommandLineArgs } = yargs(rawCommandLineArgs)
 const { environment, screenshot, chromedriver } = parsedCommandLineArgs;
 
 const environmentMap = {
-  dev: 'http://localhost:1337',
+  dev: 'http://localhost:8080',
   prod: 'https://ts-react-node-project-skeleton.herokuapp.com',
 };
 
@@ -85,7 +85,7 @@ const config: Options.Testrunner = {
   specs: ['./test-browser/specs/**/*.browser.test.ts'],
   maxInstances: 10,
   path: '/wd/hub',
-  /*  automationProtocol: 'webdriver' was the default in WDIO v5, now v7 default is 'devtools'
+  /*  automationProtocol: 'webdriver' was the default in WDIO v5, as of v6 it is 'devtools'
   (Chrome DevTools Protocol). "...to run a local test script you won't need to download a browser
   driver anymore. WebdriverIO checks if a browser driver is running and accessible at
   localhost:4444/ and uses Puppeteer as fallback if not." */
@@ -113,6 +113,7 @@ const config: Options.Testrunner = {
     },
   },
   before(capabilities, specs) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     global.wdioBaseUrl = baseUrl;
     const specFilepathSegments = specs[0].split('/');
     global.specFilename = specFilepathSegments[specFilepathSegments.length - 1];

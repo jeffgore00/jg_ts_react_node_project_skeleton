@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from 'axios';
 import { serializeError } from 'serialize-error';
 
@@ -10,10 +9,10 @@ describe('Logger', () => {
   let axiosPutSpy: jest.SpyInstance;
 
   const SAMPLE_MESSAGE = 'sample message';
+  const logTypes = Object.values(LogType);
 
   beforeAll(() => {
-    // @ts-ignore. TODO. Add a global type. Webpack injects this as part of the build process.
-    global.appEnvironment = 'development';
+    appEnvironment = 'development';
     axiosPutSpy = jest
       .spyOn(axios, 'put')
       .mockImplementation(() => Promise.resolve({ status: 200 }));
@@ -27,13 +26,13 @@ describe('Logger', () => {
   it('exposes the logging methods info, error, warn, debug', () => {
     // Just to demonstrate it is callable
     logger = new Logger();
-    Object.values(LogType).forEach((logType) => {
+    logTypes.forEach((logType) => {
       void logger[logType]('hi');
     });
   });
 
   describe('when called, each of those methods...', () => {
-    it.each(Object.values(LogType).map((type) => [type]))(
+    it.each(logTypes.map((type) => [type]))(
       'issues a PUT request to the /api/logs endpoint with logType: %s',
       (logType) => {
         void logger[logType](SAMPLE_MESSAGE);
@@ -50,7 +49,7 @@ describe('Logger', () => {
 
     describe('When the optional `additionalData` argument is provided', () => {
       describe('When the `additionalData` value is a primitive', () => {
-        it.each(Object.values(LogType).map((type) => [type]))(
+        it.each(logTypes.map((type) => [type]))(
           'issues a PUT request to the /api/logs endpoint plus `additionalData` key and primitive value',
           (logType) => {
             void logger[logType](SAMPLE_MESSAGE, { clientId: 12345 });
@@ -68,7 +67,7 @@ describe('Logger', () => {
       });
 
       describe('When the `additionalData` value is an object', () => {
-        it.each(Object.values(LogType).map((type) => [type]))(
+        it.each(logTypes.map((type) => [type]))(
           'issues a PUT request to the /api/logs endpoint plus `additionalData` key with stringified object value',
           (logType) => {
             void logger[logType](SAMPLE_MESSAGE, {
@@ -90,7 +89,7 @@ describe('Logger', () => {
       describe('When the `additionalData` key is "error" and the value is an instance of an Error object', () => {
         const sampleError = new Error('Client-side error');
 
-        it.each(Object.values(LogType).map((type) => [type]))(
+        it.each(logTypes.map((type) => [type]))(
           'issues a PUT request to the /api/logs endpoint plus `additionalData` key with serialized Error object',
           (logType) => {
             void logger[logType](SAMPLE_MESSAGE, { error: sampleError });

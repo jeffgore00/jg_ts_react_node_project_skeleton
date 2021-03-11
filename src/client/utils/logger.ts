@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this, no-console, @typescript-eslint/ban-ts-comment */
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { serializeError } from 'serialize-error';
 
@@ -22,6 +21,7 @@ export interface ClientSideLogger {
 }
 
 export class Logger implements ClientSideLogger {
+  // eslint-disable-next-line class-methods-use-this
   sendLogToServer(
     logType: LogType,
     message: string,
@@ -49,30 +49,28 @@ export class Logger implements ClientSideLogger {
         {},
       );
 
-    return (
-      axios
-        // @ts-ignore
-        .put(`${getConfig(appEnvironment).backendUrl}/api/logs`, {
-          logType,
-          logSource: 'UI',
-          message,
-          ...(additionalData && {
-            additionalData: serializedAdditionalData,
-          }),
-        })
-        .then((res: AxiosResponse) => {
-          if (res.status >= 300) {
-            throw new Error(
-              `Non-ok response from /api/logs endpoint: ${res.status}`,
-            );
-          }
-        })
-        .catch((err: AxiosError) => {
-          console.error(
-            `Failed to log message: "${message}". Error: ${err.message}`,
+    return axios
+      .put(`${getConfig(appEnvironment).backendUrl}/api/logs`, {
+        logType,
+        logSource: 'UI',
+        message,
+        ...(additionalData && {
+          additionalData: serializedAdditionalData,
+        }),
+      })
+      .then((res: AxiosResponse) => {
+        if (res.status >= 300) {
+          throw new Error(
+            `Non-ok response from /api/logs endpoint: ${res.status}`,
           );
-        })
-    );
+        }
+      })
+      .catch((err: AxiosError) => {
+        // eslint-disable-next-line no-console
+        console.error(
+          `Failed to log message: "${message}". Error: ${err.message}`,
+        );
+      });
   }
 
   info(message: string, additionalData?: Metadata): Promise<void> {

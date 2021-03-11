@@ -1,20 +1,15 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Request, Response } from 'express';
 
 import processLogFromClient from './process-log-from-client';
 import { LogType, NewLogRequest } from '../../shared/types/logging';
 import logger from '../utils/logger';
 
-// @ts-ignore
 const infoLoggerSpy = jest.spyOn(logger, 'info').mockImplementation(jest.fn());
-// @ts-ignore
 const warnLoggerSpy = jest.spyOn(logger, 'warn').mockImplementation(jest.fn());
 const errorLoggerSpy = jest
-  // @ts-ignore
   .spyOn(logger, 'error')
   .mockImplementation(jest.fn());
 const debugLoggerSpy = jest
-  // @ts-ignore
   .spyOn(logger, 'debug')
   .mockImplementation(jest.fn());
 

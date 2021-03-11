@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
 import { render, screen, getByRole } from '@testing-library/react';
 
@@ -14,7 +13,6 @@ describe('Homepage', () => {
   let loggerSpy: jest.SpyInstance;
 
   beforeAll(() => {
-    // @ts-ignore
     loggerSpy = jest.spyOn(logger, 'info').mockImplementation(jest.fn());
     render(<Homepage />);
     homepage = screen.getByTestId('home');

@@ -1,6 +1,3 @@
-/* eslint-disable global-require, @typescript-eslint/unbound-method,
-@typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-call,
-@typescript-eslint/no-unsafe-member-access */
 import http from 'http';
 
 import app from './app';
@@ -13,6 +10,7 @@ const serverListenMock = jest.fn(
   (path: string, listeningListener?: () => void) => listeningListener(),
 );
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore. Ignoring TS here because it's ignoring the valid overload of this function.
 httpServerMock.listen = serverListenMock;
 
@@ -26,6 +24,7 @@ describe('Server', () => {
   beforeEach(() => {
     loggerSpy = jest.spyOn(logger, 'info').mockImplementationOnce(jest.fn());
     jest.isolateModules(() => {
+      // eslint-disable-next-line global-require
       require('.');
     });
   });
@@ -37,6 +36,8 @@ describe('Server', () => {
   it('creates an HTTP server with the Express application', () => {
     expect(httpSpy).toHaveBeenCalledWith(app);
     expect(
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       loggerSpy.mock.calls[0][0].includes('HTTP server listening on port'),
     ).toBe(true);
   });
@@ -51,6 +52,7 @@ describe('Server', () => {
     });
 
     it('listens on that port', () => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(httpServerMock.listen).toHaveBeenCalledWith(
         process.env.PORT,
         expect.any(Function),
@@ -64,6 +66,7 @@ describe('Server', () => {
     });
 
     it('listens on port 1337', () => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(httpServerMock.listen).toHaveBeenCalledWith(
         '1337',
         expect.any(Function),
