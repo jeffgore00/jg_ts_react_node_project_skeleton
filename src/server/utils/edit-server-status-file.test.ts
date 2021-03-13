@@ -1,47 +1,51 @@
-/* eslint-disable no-console, global-require, @typescript-eslint/no-unused-expressions,
-@typescript-eslint/no-unsafe-assignment */
+import fs from 'fs';
+import path from 'path';
 
 import * as getServerStatusModule from './get-server-status';
+import logger from './logger';
 
 const sampleError = new Error('write failure');
+const sampleServerStatus = {
+  commit: 'unknown',
+  version: '1.0.0',
+};
 
 interface Constants {
   [key: string]: string;
 }
 
 describe('Edit server status file', () => {
-  let getServerStatusSpy: jest.SpyInstance;
-  let consoleErrorSpy: jest.SpyInstance;
+  let errorLoggerSpy: jest.SpyInstance;
+  let writeFileSpy: jest.SpyInstance;
   let module: Constants;
 
-  beforeAll(() => {
-    getServerStatusSpy = jest
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest
       .spyOn(getServerStatusModule, 'getServerStatus')
-      .mockImplementation(() => ({
-        commit: 'unknown',
-        version: '1.0.0',
-      }));
-    consoleErrorSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => null);
+      .mockImplementation(() => sampleServerStatus);
+    errorLoggerSpy = jest.spyOn(logger, 'error').mockImplementation(() => null);
+    writeFileSpy = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {
+      throw sampleError;
+    });
     jest.isolateModules(() => {
+      // eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-assignment
       module = require('./edit-server-status-file');
     });
   });
 
-  it('works', () => {});
+  it('attempts to write the server status to /dist/server/status.json', () => {
+    expect(writeFileSpy).toHaveBeenCalledWith(
+      path.join(__dirname, module.PATH_TO_DIST_HEALTHFILE),
+      JSON.stringify(sampleServerStatus, null, 2),
+    );
+  });
 
-  // it('calls editHealthfile with the distributon path', () => {
-  //   expect(getServerStatusSpy).toHaveBeenCalledWith(
-  //     module.PATH_TO_DIST_HEALTHFILE,
-  //   );
-  // });
-
-  // describe('when theres an error', () => {
-  //   it('calls editHealthfile with the distributon path', () => {
-  //     expect(consoleErrorSpy).toHaveBeenCalledWith(
-  //       `${module.HEALTHFILE_EDIT_ERROR_MESSAGE}${sampleError}`,
-  //     );
-  //   });
-  // });
+  describe('when theres an error', () => {
+    it('logs the error', () => {
+      expect(errorLoggerSpy).toHaveBeenCalledWith(
+        `${module.HEALTHFILE_EDIT_ERROR_MESSAGE}${sampleError}`,
+      );
+    });
+  });
 });
