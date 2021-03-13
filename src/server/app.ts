@@ -48,7 +48,13 @@ app.get('*.js', (req, res, next) => {
 });
 
 // When the server gets a request for a **file**, look in the /public directory
-app.use(express.static(path.join(__dirname, '../..', 'public')));
+let publicRelativePath = '../../public';
+
+if (process.env.NODE_ENV === 'production') {
+  publicRelativePath = `../${publicRelativePath}`;
+}
+
+app.use(express.static(path.join(__dirname, publicRelativePath)));
 
 // Make JSON responses available on `response.body`
 app.use(express.json());
