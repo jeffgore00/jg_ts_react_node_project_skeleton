@@ -9,8 +9,8 @@ declare global {
     interface Global {
       wdioBaseUrl: string;
       specFilename: string;
-      /* `browser` is injected by WDIO into the global namespace, but the Clients.Browser type
-      definition is empty. */
+      /* `browser` is injected by WDIO into the global namespace, but the @wdio/types
+      Clients.Browser type definition is empty. ¯\_(ツ)_/¯ */
       browser: {
         saveScreenshot: (filepath: string) => void;
       };

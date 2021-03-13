@@ -47,7 +47,15 @@ app.get('*.js', (req, res, next) => {
   next();
 });
 
-// When the server gets a request for a **file**, look in the /public directory
+/* When the server gets a request for a **file**, look in the /public directory.
+The relative path in production is different because there are files in the
+/server directory that import files from the root directory. Because of this
+dependency this causes the TypeScript compiler to create /src **within** the /dist
+directory, rather than /dist contents mapping to /src contents.
+
+This is mildly inconvenient, but much better than the alternative of forbidding
+/server files from using anything outside of the /server directory. Enforcing
+that would require a custom eslint rule and could limit future functionality. */
 let publicRelativePath = '../../public';
 
 if (process.env.NODE_ENV === 'production') {
