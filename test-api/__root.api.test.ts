@@ -4,9 +4,14 @@ import path from 'path';
 import zlib from 'zlib';
 
 import app from '../src/server/app';
+import logger from '../src/server/utils/logger';
 
 describe('GET /', () => {
   const indexHtmlPath = path.join(__dirname, '../public/index.html');
+
+  beforeAll(() => {
+    jest.spyOn(logger, 'error').mockImplementation(() => null);
+  });
 
   describe('When public/index.html exists', () => {
     /* The index.html is generated from a template on the build step and is not
@@ -66,12 +71,9 @@ describe('GET /', () => {
       }
     });
 
-    it('responds with 404 and "Operation GET / not recognized on this server."', async () => {
+    it('responds with 404', async () => {
       const response = await request(app).get('/');
       expect(response.status).toEqual(404);
-      expect(response.text).toEqual(
-        'Operation GET / not recognized on this server.',
-      );
     });
   });
 });
@@ -114,19 +116,26 @@ describe('GET /bundle.js', () => {
   });
 });
 
+describe('When a requested static file is not found', () => {
+  it('responds with 404', async () => {
+    const response = await request(app).get('/nonexistent-picture.jpg');
+    expect(response.status).toEqual(404);
+  });
+});
+
 describe('When the requested HTTP operation is not recognized', () => {
   it('responds with 404 and restates the unrecognized operation in an error message', async () => {
     let response = await request(app).get('/puppies');
     expect(response.status).toEqual(404);
     expect(response.text).toEqual(
-      'Operation GET /puppies not recognized on this server.',
+      'Operation "GET /puppies" not recognized on this server.',
     );
 
-    // GET / is valid, but not POST /
+    // "GET /" is valid, but not "POST /"
     response = await request(app).post('/');
     expect(response.status).toEqual(404);
     expect(response.text).toEqual(
-      'Operation POST / not recognized on this server.',
+      'Operation "POST /" not recognized on this server.',
     );
   });
 });
