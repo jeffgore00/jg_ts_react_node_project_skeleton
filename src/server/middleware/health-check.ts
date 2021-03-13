@@ -1,11 +1,11 @@
 import { RequestHandler } from 'express';
 import { formatDistanceToNow } from 'date-fns';
-import health from '../health.json';
+import status from '../status.json';
 
 const serverStartTimestamp = new Date();
 
 const healthCheckMiddleware: RequestHandler = (_, res) => {
-  res.json({ ...health, uptime: formatDistanceToNow(serverStartTimestamp) });
+  res.json({ ...status, uptime: formatDistanceToNow(serverStartTimestamp) });
 };
 
 export default healthCheckMiddleware;

@@ -9,7 +9,7 @@ jest.mock('date-fns', () => ({
 }));
 
 describe('The health-check middleware', () => {
-  const healthfilePath = path.join(__dirname, '../health.json');
+  const healthfilePath = path.join(__dirname, '../status.json');
   let healthfileContents: string;
   let response: Partial<Response>;
 
@@ -20,7 +20,7 @@ describe('The health-check middleware', () => {
     healthfileContents = fs.readFileSync(healthfilePath, 'utf-8');
   });
 
-  it('responds with contents of health.json, plus the server uptime', () => {
+  it('responds with contents of status.json, plus the server uptime', () => {
     healthCheckMiddleware(null, response as Response, null);
     expect(response.json).toBeCalledWith({
       ...JSON.parse(healthfileContents),
