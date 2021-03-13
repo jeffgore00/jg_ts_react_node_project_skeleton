@@ -5,7 +5,7 @@ import * as configExport from '../../shared/config';
 import logger from '../utils/logger';
 
 describe('CORS Strict same origin', () => {
-  let corsStrictSameOrigin: RequestHandler;
+  let corsAllowWhitelistOnly: RequestHandler;
   let req: Partial<Request>;
   const res: Partial<Response> = {
     sendStatus: jest.fn(),
@@ -32,12 +32,12 @@ describe('CORS Strict same origin', () => {
         corsWhitelist: ['http://goodintentions.com'],
       }));
       jest.isolateModules(() => {
-        ({ corsStrictSameOrigin } = require('./cors'));
+        ({ corsAllowWhitelistOnly } = require('./cors'));
       });
     });
 
     it('calls `next`', () => {
-      corsStrictSameOrigin(req as Request, res as Response, next);
+      corsAllowWhitelistOnly(req as Request, res as Response, next);
       expect(next).toHaveBeenCalled();
     });
   });
@@ -48,7 +48,10 @@ describe('CORS Strict same origin', () => {
         body: 'neutral intent',
         method: 'POST',
         originalUrl: 'https://www.app-that-uses-this-boilerplate.com/api/users',
-        headers: { origin: 'http://neutralintentions.com' },
+        headers: {
+          origin: 'http://neutralintentions.com',
+          'user-agent': 'Chrome',
+        },
       };
     });
 
@@ -60,12 +63,12 @@ describe('CORS Strict same origin', () => {
           corsWhitelist: ['http://goodintentions.com', '*'],
         }));
         jest.isolateModules(() => {
-          ({ corsStrictSameOrigin } = require('./cors'));
+          ({ corsAllowWhitelistOnly } = require('./cors'));
         });
       });
 
       it('calls `next`', () => {
-        corsStrictSameOrigin(req as Request, res as Response, next);
+        corsAllowWhitelistOnly(req as Request, res as Response, next);
         expect(next).toHaveBeenCalled();
       });
     });
@@ -81,18 +84,18 @@ describe('CORS Strict same origin', () => {
         }));
         loggerSpy = jest.spyOn(logger, 'warn').mockImplementation(() => null);
         jest.isolateModules(() => {
-          ({ corsStrictSameOrigin } = require('./cors'));
+          ({ corsAllowWhitelistOnly } = require('./cors'));
         });
       });
 
       it('sends a 403 response and logs the occurrence', () => {
-        corsStrictSameOrigin(req as Request, res as Response, next);
+        corsAllowWhitelistOnly(req as Request, res as Response, next);
         expect(next).not.toHaveBeenCalled();
         expect(res.sendStatus).toHaveBeenCalledWith(403);
         expect(
           loggerSpy,
         ).toHaveBeenCalledWith(
-          'Request "POST https://www.app-that-uses-this-boilerplate.com/api/users" from origin http://neutralintentions.com blocked by CORS policy',
+          'Request "POST https://www.app-that-uses-this-boilerplate.com/api/users" from origin http://neutralintentions.com, user agent Chrome blocked by CORS policy',
           { requestBody: JSON.stringify(req.body) },
         );
       });

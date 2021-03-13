@@ -6,7 +6,6 @@ import helmet from 'helmet';
 
 import apiRouter from './routers/api';
 import logger from './utils/logger';
-import { getConfig } from '../shared/config';
 
 const app = express();
 
@@ -22,12 +21,13 @@ app.use(
   }),
 );
 
-/* Necessary when the frontend domain differs from the backend domain, which happens when using
-in development due to the use of webpack-dev-server (:8080 frontend -> :1337 backend). */
+/* The default CORS rules prevent the app from applying different CORS standards to different
+routes. Set the default to maximum permissiveness and then allow varying levels of control at the
+route level via the custom CORS middleware. */
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', getConfig().frontendUrl);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'content-type');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Headers', '*');
   next();
 });
 
@@ -47,7 +47,7 @@ app.get('*.js', (req, res, next) => {
   next();
 });
 
-// When the server gets a request for a _file_, look in the /public directory
+// When the server gets a request for a **file**, look in the /public directory
 app.use(express.static(path.join(__dirname, '../..', 'public')));
 
 // Make JSON responses available on `response.body`
