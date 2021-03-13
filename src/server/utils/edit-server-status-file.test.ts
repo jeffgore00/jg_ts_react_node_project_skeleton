@@ -36,7 +36,7 @@ describe('Edit server status file', () => {
 
   it('attempts to write the server status to /dist/server/status.json', () => {
     expect(writeFileSpy).toHaveBeenCalledWith(
-      path.join(__dirname, module.PATH_TO_DIST_HEALTHFILE),
+      path.join(__dirname, module.PATH_TO_STATUSFILE),
       JSON.stringify(sampleServerStatus, null, 2),
     );
   });

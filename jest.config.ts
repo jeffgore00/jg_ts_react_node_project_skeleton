@@ -9,6 +9,7 @@ const config: Config.InitialOptions = {
     '!**/node_modules/**',
     '!**/dist/**',
   ],
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
   testPathIgnorePatterns: ['<rootDir>/test-browser/'],
   setupFiles: ['<rootDir>/test-utils/jest-setup.ts'],
   rootDir: '.',
