@@ -64,7 +64,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.static(path.join(__dirname, publicRelativePath)));
 
-// Make JSON responses available on `response.body`
+// If request is JSON, it will be available as `request.body`
 app.use(express.json());
 
 export const sendResourceNotFound: RequestHandler = (req, res) => {
