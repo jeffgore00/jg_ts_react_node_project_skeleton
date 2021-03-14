@@ -1,4 +1,5 @@
 import path from 'path';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CompressionPlugin from 'compression-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { DefinePlugin } from 'webpack';
@@ -87,6 +88,11 @@ module.exports = {
     },
   }),
   plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      reportFilename: 'bundle-size-report.html',
+      openAnalyzer: false,
+    }),
     new CompressionPlugin({ include: 'bundle.js' }),
     new HtmlWebpackPlugin({
       ...createReactScriptHtmlWebpackConfig(),
