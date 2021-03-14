@@ -38,6 +38,7 @@ module.exports = {
         devDependencies: [
           '**/*.test.ts',
           '**/*.test.tsx',
+          '**/logger-dev.ts',
           'wdio.conf.ts',
           'webpack.config.ts',
         ],
