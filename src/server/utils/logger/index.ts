@@ -1,5 +1,5 @@
 import winston, { LogCallback } from 'winston';
-import { Metadata } from '../../shared/types/logging';
+import { Metadata } from '../../../shared/types/logging';
 
 import { developmentLogger } from './logger-dev';
 import { productionLogger } from './logger-prod';

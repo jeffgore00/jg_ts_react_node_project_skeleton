@@ -2,14 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import { Response } from 'express';
 
-import healthCheckMiddleware from './health-check';
+import healthCheckMiddleware from '.';
 
 jest.mock('date-fns', () => ({
   formatDistanceToNow: (): string => 'four hours',
 }));
 
 describe('The health-check middleware', () => {
-  const healthfilePath = path.join(__dirname, '../status.json');
+  const healthfilePath = path.join(__dirname, '../../status.json');
   let healthfileContents: string;
   let response: Partial<Response>;
 

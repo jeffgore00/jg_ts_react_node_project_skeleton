@@ -1,8 +1,8 @@
 /* eslint-disable global-require, @typescript-eslint/no-unsafe-assignment */
 import { Request, RequestHandler, Response } from 'express';
 
-import * as configExport from '../../shared/config';
-import logger from '../utils/logger';
+import * as configExport from '../../../shared/config';
+import logger from '../../utils/logger';
 
 describe('CORS Strict same origin', () => {
   let corsAllowWhitelistOnly: RequestHandler;
@@ -32,7 +32,7 @@ describe('CORS Strict same origin', () => {
         corsWhitelist: ['http://goodintentions.com'],
       }));
       jest.isolateModules(() => {
-        ({ corsAllowWhitelistOnly } = require('./cors'));
+        ({ corsAllowWhitelistOnly } = require('.'));
       });
     });
 
@@ -63,7 +63,7 @@ describe('CORS Strict same origin', () => {
           corsWhitelist: ['http://goodintentions.com', '*'],
         }));
         jest.isolateModules(() => {
-          ({ corsAllowWhitelistOnly } = require('./cors'));
+          ({ corsAllowWhitelistOnly } = require('.'));
         });
       });
 
@@ -84,7 +84,7 @@ describe('CORS Strict same origin', () => {
         }));
         loggerSpy = jest.spyOn(logger, 'warn').mockImplementation(() => null);
         jest.isolateModules(() => {
-          ({ corsAllowWhitelistOnly } = require('./cors'));
+          ({ corsAllowWhitelistOnly } = require('.'));
         });
       });
 

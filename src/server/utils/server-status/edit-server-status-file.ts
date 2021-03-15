@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { getServerStatus } from './get-server-status';
-import logger from './logger';
+import logger from '../logger';
 
 export const PATH_TO_STATUSFILE = '../status.json';
 export const HEALTHFILE_EDIT_ERROR_MESSAGE = 'Health file edit failed: ';

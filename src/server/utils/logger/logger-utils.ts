@@ -1,7 +1,7 @@
 import { format } from 'winston';
 import { serializeError, ErrorObject } from 'serialize-error';
 
-import { LogType } from '../../shared/types/logging';
+import { LogType } from '../../../shared/types/logging';
 
 export type BasicLog = {
   message: string;

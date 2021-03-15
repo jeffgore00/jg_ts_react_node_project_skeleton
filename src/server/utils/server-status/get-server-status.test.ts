@@ -1,8 +1,8 @@
 import { getServerStatus, logs } from './get-server-status';
-import packageJson from '../../../package.json';
-import logger from './logger';
+import packageJson from '../../../../package.json';
+import logger from '../logger';
 
-jest.mock('./logger', () => ({
+jest.mock('../logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
   warn: jest.fn(),

@@ -28,7 +28,7 @@
     "build:dev": "NODE_ENV=development npm run build:client",
     "build:dev:offline": "BUILD_OFFLINE=true npm run build:dev",
     "build:client": "webpack",
-    "build:server": "rm -rf dist && tsc --project tsconfig.server.json && if [ \"$NODE_ENV\" = \"production\" ]; then node dist/src/server/utils/edit-server-status-file.js; fi",
+    "build:server": "rm -rf dist && tsc --project tsconfig.server.json && if [ \"$NODE_ENV\" = \"production\" ]; then node dist/src/server/utils/server-status/edit-server-status-file.js; fi",
     "lint": "eslint \"**\"",
     "prettier": "prettier '**/*.js' '**/*.ts' '**/*.tsx' '**/*.json' '**/*.md' '**/*.html'",
     "prettier:fix": "npm run prettier -- --write",

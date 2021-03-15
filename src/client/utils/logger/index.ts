@@ -1,8 +1,8 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { serializeError } from 'serialize-error';
 
-import { LogType, Metadata } from '../../shared/types/logging';
-import { getConfig } from '../../shared/config';
+import { LogType, Metadata } from '../../../shared/types/logging';
+import { getConfig } from '../../../shared/config';
 
 type SendLogToServer = (
   logType: LogType,

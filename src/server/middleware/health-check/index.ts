@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { formatDistanceToNow } from 'date-fns';
-import status from '../status.json';
+import status from '../../status.json';
 
 const serverStartTimestamp = new Date();
 

@@ -1,7 +1,4 @@
 node_modules
 dist
 coverage
-public/index.html
-public/index-template.html
-public/bundle.js
-public/bundle.js.map
+public/*

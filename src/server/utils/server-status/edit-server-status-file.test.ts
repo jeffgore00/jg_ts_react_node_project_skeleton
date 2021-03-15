@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import * as getServerStatusModule from './get-server-status';
-import logger from './logger';
+import logger from '../logger';
 
 const sampleError = new Error('write failure');
 const sampleServerStatus = {

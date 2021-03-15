@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import processLogFromClient from './process-log-from-client';
-import { LogType, NewLogRequest } from '../../shared/types/logging';
-import logger from '../utils/logger';
+import processLogFromClient from '.';
+import { LogType, NewLogRequest } from '../../../shared/types/logging';
+import logger from '../../utils/logger';
 
 const infoLoggerSpy = jest.spyOn(logger, 'info').mockImplementation(jest.fn());
 const warnLoggerSpy = jest.spyOn(logger, 'warn').mockImplementation(jest.fn());

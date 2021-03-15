@@ -1,7 +1,7 @@
 import { serializeError } from 'serialize-error';
 
-import { Logger } from './logger';
-import { LogType } from '../../shared/types/logging';
+import { Logger } from '.';
+import { LogType } from '../../../shared/types/logging';
 
 describe('Logger', () => {
   let logger: Logger;
