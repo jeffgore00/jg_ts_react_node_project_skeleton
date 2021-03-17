@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+// This global is injected before the tests begin (see wdio.conf.ts):
 declare let wdioBaseUrl: string;
 
 export default class Page {

@@ -3,7 +3,6 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CompressionPlugin from 'compression-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { DefinePlugin } from 'webpack';
-
 import createStyledComponentsTransformer from 'typescript-plugin-styled-components';
 
 const styledComponentsTransformer = createStyledComponentsTransformer();

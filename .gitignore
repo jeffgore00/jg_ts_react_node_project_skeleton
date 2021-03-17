@@ -6,3 +6,4 @@ public/bundle*
 test-result-screenshots
 wdio.conf.js
 bundle-size-report.html
+.DS_Store
