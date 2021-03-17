@@ -1,7 +1,6 @@
 import winston, { LogCallback } from 'winston';
 import { Metadata } from '../../../shared/types/logging';
 
-import { developmentLogger } from './logger-dev';
 import { productionLogger } from './logger-prod';
 
 type LoggerMethod = (
@@ -23,7 +22,12 @@ export class Logger implements ServerSideLogger {
 
   constructor() {
     if (process.env.NODE_ENV === 'development') {
-      this.internalLogger = developmentLogger;
+      /* This is dynamically required because "chalk" is a dev dependency. In production, even
+      though the development logger is not used, a standard import would cause a crash due to that
+      dependency being "missing". */
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-var-requires
+      this.internalLogger = require('./logger-dev').developmentLogger;
     } else {
       this.internalLogger = productionLogger;
     }
