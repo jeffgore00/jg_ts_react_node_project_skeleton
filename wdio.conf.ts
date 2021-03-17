@@ -113,6 +113,7 @@ const config: Options.Testrunner = {
     },
   },
   before(capabilities, specs) {
+    // This is used by test-browser/pages/page.ts for logging
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     global.wdioBaseUrl = baseUrl;
     const specFilepathSegments = specs[0].split('/');
