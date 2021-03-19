@@ -51,6 +51,11 @@ const { argv: parsedCommandLineArgs } = yargs(rawCommandLineArgs)
     choices: Object.values(Environment),
     default: Environment.dev,
   })
+  .option('headless', {
+    describe: 'Use headless mode',
+    type: 'boolean',
+    default: false,
+  })
   .option('screenshot', {
     alias: 's',
     describe:
@@ -66,7 +71,12 @@ const { argv: parsedCommandLineArgs } = yargs(rawCommandLineArgs)
     default: false,
   });
 
-const { environment, screenshot, chromedriver } = parsedCommandLineArgs;
+const {
+  environment,
+  headless,
+  screenshot,
+  chromedriver,
+} = parsedCommandLineArgs;
 
 const environmentMap = {
   dev: 'http://localhost:8080',
@@ -92,9 +102,19 @@ const config: Options.Testrunner = {
   automationProtocol: 'webdriver',
   capabilities: [
     {
-      maxInstances: 5,
+      /* Run test files sequentially. If using in SauceLabs, you may want to increase the
+      `maxInstances` to take advantage of councurrent tests. */
+      maxInstances: 1,
       browserName: 'chrome',
       acceptInsecureCerts: true,
+      /* WDIO expects only one set of browser options per capability. Therefore if this is
+      expanded to become dynamic and include other browsers, you must ensure that only one set of
+      browser options is supplied, or else all of them could be ignored. */
+      ...(headless && {
+        'goog:chromeOptions': {
+          args: ['headless'],
+        },
+      }),
     },
   ],
   logLevel: 'warn',
