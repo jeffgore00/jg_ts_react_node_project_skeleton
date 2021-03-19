@@ -1,17 +1,19 @@
 # TypeScript-React-Node Project Skeleton
 
-This is a boilerplate for a Node-Express backend, React frontend web application using TypeScript which utilizes unit, API, and browser tests. It also contains some configuration for a simple Circle CI pipeline that runs the unit/API tests, then deploys a build to Heroku.
+[![CircleCI](https://circleci.com/gh/jeffgore00/ts-react-node-project-skeleton.svg?style=shield)](https://app.circleci.com/pipelines/github/jeffgore00/ts-react-node-project-skeleton?branch=master)
+
+This is a boilerplate for a Node-Express backend, React frontend web application using TypeScript which utilizes unit, API, and browser tests. It also contains the configuration for a simple Circle CI pipeline that runs the unit/API tests, then deploys a build to Heroku.
 
 - [TypeScript-React-Node Project Skeleton](#typescript-react-node-project-skeleton)
   - [Built-in Functionality](#built-in-functionality)
   - [Under the hood](#under-the-hood)
     - [Development experience / quality](#development-experience--quality)
     - [Testing](#testing)
-    - [Build](#build)
-    - [Production Readiness](#production-readiness)
+    - [Client Bundle Optimization](#client-bundle-optimization)
+    - [Production Tools](#production-tools)
     - [Security](#security)
     - [Little stuff](#little-stuff)
-  - [Caveats / Important Points](#caveats--important-points)
+  - [Before You Buy](#before-you-buy)
   - [To-do list](#to-do-list)
   - [Usage](#usage)
     - [Running the app](#running-the-app)
@@ -20,7 +22,7 @@ This is a boilerplate for a Node-Express backend, React frontend web application
     - [Unit Tests](#unit-tests)
     - [API Tests](#api-tests)
     - [Browser Tests](#browser-tests)
-  - [Build](#build-1)
+  - [Build](#build)
   - [Contributing](#contributing)
 
 ## Built-in Functionality
@@ -30,8 +32,10 @@ Since this is a boilerplate, the functionality out-of-the-box is minimal.
 - A very simple homepage at `GET /`:
 -
 
-* A `GET /api/health` route which returns JSON of the currently deployed commit (Heroku only), `package.json` version, and server uptime
+* A `GET /api/health` route which returns JSON of the `package.json` version, server uptime, and the currently deployed commit (Heroku only).
 * A `PUT /api/logs` route for logging events from the front-end.
+
+You can see this in practice at https://ts-react-node-project-skeleton.herokuapp.com.
 
 ## Under the hood
 
@@ -58,13 +62,14 @@ Despite the limited functionality from a user's perspective, there's a lot from 
   - option to save screenshots of tests at the point of failing or of completion
   - Automatic logging of the URL whenever a page is opened
 
-### Build
+### Client Bundle Optimization
 
 - Webpack with React loaded externally to minimize build size, option to bundle if offline
 - A gzip-compressed client-side bundle
 - A report from webpack-build-analyzer to help manage dependency size
+- Source maps for debugging in the browser
 
-### Production Readiness
+### Production Tools
 
 - Proper CHANGELOG generation and updates with standard-release (note this requires commit message standards)
 - Logging for every HTTP request/response with Morgan
@@ -82,11 +87,11 @@ Despite the limited functionality from a user's perspective, there's a lot from 
 
 - Icons for your social media links
 
-## Caveats / Important Points
+## Before You Buy
 
 1. This does not include any client-side routing.
-2. This does not include any logic for session management or persistent storage.
-3. The Node server is a simple HTTP server which relies on Heroku magic to allow HTTPS in production.
+2. This does not include any logic for authentication, session management or persistent storage.
+3. The Node server is a simple HTTP server which relies on Heroku magic to allow for HTTPS in production. There is no logic for creating an HTTPS server with certs.
 
 ## To-do list
 
@@ -150,15 +155,21 @@ This repo does not contain the necessary configuration to run automated browser 
 npm run test:full:local
 ```
 
-This will first run your browser tests using Chromedriver. Browser tests are run first because they should be the best indicator that your app actually works. If they fail, the script exits, and you will see screenshots for the failed tests in `test-result-screenshots` (see x for more). If they succeed, then it moves onto the unit and API tests.
+This will first run your browser tests using Chromedriver. Browser tests are run first because they should be the best indicator that your app actually works. If they fail, the script exits, and you will see screenshots for the failed tests in `test-result-screenshots` (see the browser-tests section LINK HERE!!!!!!!!!!!! for more). If they succeed, then it moves onto the unit and API tests.
 
 ### Unit Tests
 
-Unit tests have the same name and location as the files they are testing, with the exception of the file extension.
+Unit tests have the same name and location as the files they are testing, with the exception of the file extension. For example:
+
+```
+/server
+|_ app.ts
+|_ app.test.ts
+```
 
 ### API Tests
 
-API tests assert the expected HTTP response of the server at a specific route, given a possible variety of request scenarios.
+API tests assert the expected HTTP response of the application server at a specific route, given a possible variety of request scenarios.
 
 ```
 WHEN I make a PUT request to /api/logs
@@ -172,11 +183,15 @@ AND the response should take this shape
 
 They do not test side effects, such as logging, because this test is from the point of view of the consumer of the API. They are a type of integration test, as a server route often involves several middleware working in tandem. For that reason, API tests should not mock or stub out any source code (with the exception of logging code, in order to keep the console free of noise during a test).
 
-API tests are located in `test-api` and are named after the `/api/____` server route exposed, with the exception of `_root` which is named after the main `/` route.
+API tests are located in `test-api` and are named after the `/api/____` server route being tested, with the exception of `_root` which is named after the main `/` route.
 
 ### Browser Tests
 
+Automated browser tests open a browser and simulate the actions of a user on
+
 Automated browser tests are located in the `test-browser` directory and are run with WDIO in conjunction with Jasmine.
+
+(conflicting types info?)
 
 The `npm run test:browser` script simply runs the `wdio` WebdriverIO binary with a configuration file as an argument, per its standard usage. Therefore you can pass any valid WDIO flag to this script, along with a few custom flags listed below.
 
