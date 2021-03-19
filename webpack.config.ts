@@ -4,6 +4,8 @@ import CompressionPlugin from 'compression-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { DefinePlugin } from 'webpack';
 import createStyledComponentsTransformer from 'typescript-plugin-styled-components';
+import { Application } from 'express';
+import morgan from 'morgan';
 
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
@@ -32,6 +34,9 @@ module.exports = {
     compress: true,
     port: 8080,
     contentBase: 'public',
+    before(app: Application) {
+      app.use(morgan('dev'));
+    },
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
