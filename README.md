@@ -1,6 +1,7 @@
 # TypeScript-React-Node Project Skeleton
 
 [![CircleCI](https://circleci.com/gh/jeffgore00/ts-react-node-project-skeleton.svg?style=shield)](https://app.circleci.com/pipelines/github/jeffgore00/ts-react-node-project-skeleton?branch=master)
+[![Codecov](https://img.shields.io/codecov/c/gh/jeffgore00/ts-react-node-project-skeleton)](https://app.codecov.io/gh/jeffgore00/ts-react-node-project-skeleton/)
 
 This is a boilerplate for a Node-Express backend, React frontend web application using TypeScript which utilizes unit, API, and browser tests. It also contains the configuration for a simple Circle CI pipeline that runs the unit/API tests, then deploys a build to Heroku.
 

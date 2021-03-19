@@ -22,6 +22,7 @@ module.exports = {
     '*.json',
     '*.md',
     'test-result-screenshots',
+    'scripts',
   ],
   plugins: ['@typescript-eslint', 'jest'],
   rules: {
