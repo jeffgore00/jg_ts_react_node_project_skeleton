@@ -7,7 +7,7 @@ This is a boilerplate for a Node-Express backend, React frontend web application
 
 Everything possible, from functional code to tests to config files, is written in TypeScript.
 
-It also contains the configuration for a simple Circle CI pipeline that runs the unit and API tests, then deploys a build to Heroku.
+It also contains the configuration for a simple CircleCI pipeline that runs the unit and API tests, then deploys a build to Heroku.
 
 - [💀 TypeScript-React-Node Project Skeleton 💀](#-typescript-react-node-project-skeleton-)
 - [Part 1. About This Boilerplate (Delete After You Clone)](#part-1-about-this-boilerplate-delete-after-you-clone)
@@ -24,9 +24,8 @@ It also contains the configuration for a simple Circle CI pipeline that runs the
   - [Post-clone to-do list](#post-clone-to-do-list)
 - [Part 2. Operating Instructions (Keep These After You Clone)](#part-2-operating-instructions-keep-these-after-you-clone)
   - [Usage](#usage)
-    - [Running the app](#running-the-app)
   - [Build](#build)
-    - [Logging](#logging)
+  - [Logging](#logging)
   - [Test](#test)
     - [Unit Tests](#unit-tests)
     - [API Tests](#api-tests)
@@ -127,12 +126,12 @@ This list assumes you would like all the features of this boilerplate with the p
 - [ ] Update the `<title>` and `<meta>` tags in `public/index-template.html` with your project info.
 - [ ] Delete `public/favicon.ico` or overwrite with your app's icon.
 - [ ] If you intend to run browser tests in Chrome, make sure the `chromedriver` dev dependency matches your local version of Chrome.
-- [ ] If you don't intend to integrate this with a Circle CI pipeline:
+- [ ] If you don't intend to integrate this with a CircleCI pipeline:
   - [ ] Delete the `.circleci` folder
   - [ ] Delete the `scripts` folder
   - [ ] Delete the `send-codecov-report` npm script from `package.json`.
-- [ ] If you do intend to integrate this with Circle CI:
-  - [ ] Make sure your `CODECOV_TOKEN` environment variable is set in your Circle CI project settings (assumes you've integrated your app with Codecov).
+- [ ] If you do intend to integrate this with CircleCI:
+  - [ ] Make sure your `CODECOV_TOKEN` environment variable is set in your CircleCI project settings (assumes you've integrated your app with Codecov).
 - [ ] If you don't intend to deploy this to Heroku:
   - [ ] Delete the `view-prod-logs` npm script
   - [ ] Alter the `src/server/utils/get-server-status.ts` file to use a different method (currently a Heroku-specific environment variable) to get the SHA hash of the currently deployed git commit.
@@ -145,9 +144,7 @@ This list assumes you would like all the features of this boilerplate with the p
 
 ## Usage
 
-### Running the app
-
-For development, use this:
+To start the application in development, use this:
 
 ```
 npm run start:dev
@@ -181,9 +178,9 @@ You generally don't need to touch these in development (see `npm run start:dev`)
 
 - `build` runs both `build:client` and `build:server`.
 
-### Logging
+## Logging
 
-A dedicated `logger` exists on the application server in `server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`.
+A dedicated `logger` exists on the application server in `src/server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`.
 
 ```
 logger.info('Fetching ships from Star Wars API')
