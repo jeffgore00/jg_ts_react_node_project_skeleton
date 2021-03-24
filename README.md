@@ -18,10 +18,12 @@ It also contains the configuration for a simple CircleCI pipeline that runs the 
     - [Client Bundle Optimization](#client-bundle-optimization)
     - [Production Tools](#production-tools)
     - [Security](#security)
-    - [Little stuff](#little-stuff)
+    - [Miscellaneous](#miscellaneous)
   - [Not Handled by This Boilerplate](#not-handled-by-this-boilerplate)
   - [Contributing](#contributing)
   - [Post-clone to-do list](#post-clone-to-do-list)
+    - [Conditional to-do list](#conditional-to-do-list)
+    - [The final item](#the-final-item)
 - [Part 2. Operating Instructions (Keep These After You Clone)](#part-2-operating-instructions-keep-these-after-you-clone)
   - [Usage](#usage)
   - [Build](#build)
@@ -38,7 +40,8 @@ It also contains the configuration for a simple CircleCI pipeline that runs the 
 Since this is a boilerplate, the functionality out-of-the-box is minimal.
 
 - A very simple homepage at `GET /`:
--
+
+  ![Homepage Screenshot](/public/readme-boilerplate-homepage.png 'Homepage Screenshot')
 
 * A `GET /api/health` route which returns JSON of the `package.json` version, server uptime, and the currently deployed commit (Heroku only).
 * A `PUT /api/logs` route for logging events from the front-end.
@@ -47,7 +50,7 @@ You can see this in practice at https://ts-react-node-project-skeleton.herokuapp
 
 ## Non-user-facing functionality
 
-Despite the limited functionality from a user's perspective, there's a lot from the developer's perspective. This is a heavy boilerplate, aiming at quality, reliability, and the developer experience.
+Despite the limited functionality from a user's perspective, there's a lot from the developer's perspective. This is a heavy boilerplate, aiming at quality, reliability, and a frictionless developer experience.
 
 Here is some marketing for what this project skeleton provides:
 
@@ -55,8 +58,8 @@ Here is some marketing for what this project skeleton provides:
 
 - Pre-commit hooks implemented with Husky to encourage committing clean code:
   - eslint with Airbnb configuration running with a `--fix` flag
-  - prettier both running with a `--fix` flag
-  - commitlint running to ensure standards
+  - prettier both running with a `--write` flag
+  - commitlint running the default conventional commit to ensure standards
 - Auto-reloading with webpack dev server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
 - A development logger with color coded log levels (see logging)
 - Use of `styled-components` in conjunction with `` to see styled component names when looking at components with React Dev Tools
@@ -93,7 +96,7 @@ Here is some marketing for what this project skeleton provides:
 - Helmet applied with nearly default settings to server
 - CORS applicable on a route level, with ability to block or allow requests from tools like Postman
 
-### Little stuff
+### Miscellaneous
 
 - Icons for your social media links in `/public`
 
@@ -119,25 +122,34 @@ Here is some marketing for what this project skeleton provides:
 
 ## Post-clone to-do list
 
-This list assumes you would like all the features of this boilerplate with the possible exception of the Heroku-CircleCI configuration.
+This list assumes you would like all the features of this boilerplate and are using CircleCI with Codecov.
 
-- [ ] Fork or clone this repo.
+- [ ] Fork or clone this repo. The `main` branch contains the single commit that can serve as the boilerplate. Note that this repo includes a `develop` branch with all the commits that led to its creation. Delete or overwrite it as needed, or you could clone only the `main` branch from the start.
 - [ ] Replace all instances of `ts-react-node-project-skeleton` with your application name.
 - [ ] Update the `<title>` and `<meta>` tags in `public/index-template.html` with your project info.
 - [ ] Delete `public/favicon.ico` or overwrite with your app's icon.
-- [ ] If you intend to run browser tests in Chrome, make sure the `chromedriver` dev dependency matches your local version of Chrome.
+- [ ] Make sure the `chromedriver` dev dependency matches your local version of Chrome.
+- [ ] If you are using Codecov, sure your `CODECOV_TOKEN` environment variable is set in your CircleCI
+
+### Conditional to-do list
+
+This list is for those who may not want to use CircleCI, Heroku, or Codecov.
+
 - [ ] If you don't intend to integrate this with a CircleCI pipeline:
   - [ ] Delete the `.circleci` folder
+- [ ] If you don't intend to integrate this repo with Codecov:
   - [ ] Delete the `scripts` folder
   - [ ] Delete the `send-codecov-report` npm script from `package.json`.
-- [ ] If you do intend to integrate this with CircleCI:
-  - [ ] Make sure your `CODECOV_TOKEN` environment variable is set in your CircleCI project settings (assumes you've integrated your app with Codecov).
+        project settings (assumes you've integrated your app with Codecov).
 - [ ] If you don't intend to deploy this to Heroku:
   - [ ] Delete the `view-prod-logs` npm script
   - [ ] Alter the `src/server/utils/get-server-status.ts` file to use a different method (currently a Heroku-specific environment variable) to get the SHA hash of the currently deployed git commit.
 - [ ] If your app is deployed somewhere other than Heroku,
   - [ ] Update the production URLs in `src/shared/config`
   - [ ] Update the production URL in `wdio.conf.ts`.
+
+### The final item
+
 - [ ] After all other items are complete, delete this to-do list along with all the content above it (i.e. Part 1 of this README).
 
 # Part 2. Operating Instructions (Keep These After You Clone)
@@ -150,7 +162,7 @@ To start the application in development, use this:
 npm run start:dev
 ```
 
-This starts the application server on port 1337 and the webpack dev server on port 8080. Once webpack has compiled the client-side bundle, it will automatically open `http://localhost:8080` in the browser. All changes in the `/server` and `/client` directories are watched by Nodemon and webpack-dev-server respectively, which means those servers will restart if any of the files they watch are modified.
+This starts the application server on port 1337 and the webpack dev server on port 8080. Once webpack has compiled the client-side bundle, it will automatically open `http://localhost:8080` in your default web browser. All changes in the `/server` and `/client` directories are watched by Nodemon and webpack-dev-server respectively, which means those servers will restart if any of the files they watch are modified.
 
 By default, React is fetched via CDN, rather than bundled, to minimize the size of `bundle.js`. But this default configuration does not allow for offline development. Therefore if you need to work offline, use this:
 
