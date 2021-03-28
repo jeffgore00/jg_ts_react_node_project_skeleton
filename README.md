@@ -144,8 +144,8 @@ This list is for those who may not want to use CircleCI, Heroku, or Codecov.
 - [ ] If you don't intend to deploy this to Heroku:
   - [ ] Delete the `view-prod-logs` npm script
   - [ ] Alter the `src/server/utils/get-server-status.ts` file to use a different method (currently a Heroku-specific environment variable) to get the SHA hash of the currently deployed git commit.
-- [ ] If your app is deployed somewhere other than Heroku,
-  - [ ] Update the production URLs in `src/shared/config`
+- [ ] If your app is deployed somewhere other than Heroku:
+  - [ ] Update the production URL in `src/shared/config/production.json`
   - [ ] Update the production URL in `wdio.conf.ts`.
 
 ### The final item
@@ -192,11 +192,17 @@ You generally don't need to touch these in development (see `npm run start:dev`)
 
 ## Logging
 
-A dedicated `logger` exists on the application server in `src/server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`.
+A dedicated `logger` exists on the application server in `src/server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`, corresponding to different log levels.
 
 ```
 logger.info('Fetching ships from Star Wars API')
 ```
+
+The `logger` outputs to the console, but can be configured via Winston transports to write the log content to another location. The logger not only logs the message but attaches metadata such the log level and timestamp.
+
+In development, the logger results in color-coded log strings based on the log level.
+
+In production, the log is simply turned into a json object:
 
 You can pass arbitrary additional data in the form of key-value pairs as a second argument:
 
@@ -204,13 +210,11 @@ You can pass arbitrary additional data in the form of key-value pairs as a secon
 logger.info('Fetched ships from Star Wars API', { id: 1, name: 'X-Wing' })
 ```
 
-In development, this results in color-coded logs in which the additional data (if any) is dimmed.
-
-The `.error` logger has some extra logic: if the additional data object passed in is an instance of an `Error`, it will serialize the error and print the stack trace.
+If the additional data object passed in under the key name `error` and is an instance of an `Error`, it will serialize the error and print the stack trace.
 
 A logger with the same function signature is available to front-end code as well in `client/logger`. It sends the log to the `/api/logs` endpoint, which then results in the server `logger` performing its duties per above.
 
-The server `logger` ultimately ends up as a simple console log, but can be configured via Winston transports to write the log content to another location.
+It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation of calling `/api/logs`, but `void` signifies that the promise does not need to be awaited.
 
 ## Test
 

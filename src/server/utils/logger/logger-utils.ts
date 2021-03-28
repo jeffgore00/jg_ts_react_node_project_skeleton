@@ -9,6 +9,8 @@ export type BasicLog = {
   error?: Error | ErrorObject;
 };
 
+// This ranks the logs in terms of importance, which allows an easy way to
+// enable or disable all logs above a certain level. It is required by winston.
 export const LogLevels = {
   [LogType.Error]: 0,
   [LogType.Warn]: 1,
