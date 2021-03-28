@@ -62,7 +62,7 @@ Here is some marketing for what this project skeleton provides:
   - commitlint running the default conventional commit to ensure standards
 - Auto-reloading with Webpack dev server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
 - A development logger with color coded log levels (see logging)
-- Use of `styled-components` in conjunction with `` to see styled component names when looking at components with React Dev Tools
+- Use of `styled-components` in conjunction with `` to see styled component names when looking at components with React Developer Tools
 
 ### Testing
 
@@ -79,7 +79,7 @@ Here is some marketing for what this project skeleton provides:
 
 - Webpack with React loaded externally to minimize build size, option to bundle if offline
 - A gzip-compressed client-side bundle
-- A report from Webpack-build-analyzer to help manage dependency size
+- A report from webpack-build-analyzer to help manage dependency size
 - Source maps for debugging in the browser
 
 ### Production Tools
