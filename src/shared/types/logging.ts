@@ -19,5 +19,4 @@ export interface SerializedMetadata {
 
 export interface Metadata {
   [key: string]: unknown;
-  error?: Error;
 }

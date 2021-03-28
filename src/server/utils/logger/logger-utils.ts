@@ -1,12 +1,12 @@
 import { format } from 'winston';
-import { serializeError, ErrorObject } from 'serialize-error';
+import { serializeError } from 'serialize-error';
 
 import { LogType } from '../../../shared/types/logging';
 
 export type BasicLog = {
   message: string;
   level: string;
-  error?: Error | ErrorObject;
+  error?: unknown;
 };
 
 // This ranks the logs in terms of importance, which allows an easy way to
