@@ -57,10 +57,10 @@ Here is some marketing for what this project skeleton provides:
 ### Development experience / QA
 
 - Pre-commit hooks implemented with Husky to encourage committing clean code:
-  - eslint with Airbnb configuration running with a `--fix` flag
+  - ESLint with Airbnb configuration running with a `--fix` flag
   - prettier both running with a `--write` flag
   - commitlint running the default conventional commit to ensure standards
-- Auto-reloading with webpack dev server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
+- Auto-reloading with Webpack dev server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
 - A development logger with color coded log levels (see logging)
 - Use of `styled-components` in conjunction with `` to see styled component names when looking at components with React Dev Tools
 
@@ -79,7 +79,7 @@ Here is some marketing for what this project skeleton provides:
 
 - Webpack with React loaded externally to minimize build size, option to bundle if offline
 - A gzip-compressed client-side bundle
-- A report from webpack-build-analyzer to help manage dependency size
+- A report from Webpack-build-analyzer to help manage dependency size
 - Source maps for debugging in the browser
 
 ### Production Tools
@@ -162,7 +162,7 @@ To start the application in development, use this:
 npm run start:dev
 ```
 
-This starts the application server on port 1337 and the webpack dev server on port 8080. Once webpack has compiled the client-side bundle, it will automatically open `http://localhost:8080` in your default web browser. All changes in the `/server` and `/client` directories are watched by Nodemon and webpack-dev-server respectively, which means those servers will restart if any of the files they watch are modified.
+This starts the application server on port 1337 and the Webpack dev server on port 8080. Once Webpack has compiled the client-side bundle, it will automatically open `http://localhost:8080` in your default web browser. All changes in the `/server` and `/client` directories are watched by nodemon and webpack-dev-server respectively, which means those servers will restart if any of the files they watch are modified.
 
 By default, React is fetched via CDN, rather than bundled, to minimize the size of `bundle.js`. But this default configuration does not allow for offline development. Therefore if you need to work offline, use this:
 
@@ -170,7 +170,7 @@ By default, React is fetched via CDN, rather than bundled, to minimize the size 
 npm run start:dev:offline
 ```
 
-This will signal the webpack bundler to include React and React DOM in the bundle.
+This will signal the Webpack bundler to include React and React DOM in the bundle.
 
 As expected, this is the command you want in production:
 
@@ -184,7 +184,7 @@ The above will start an HTTP server on `process.env.PORT` if that is defined, ot
 
 You generally don't need to touch these in development (see `npm run start:dev`).
 
-- `build:client` generates a webpack bundle in `public/webpack.bundle.js`, along with a gzip-compressed version.
+- `build:client` generates a Webpack bundle in `public/Webpack.bundle.js`, along with a gzip-compressed version.
 
 - `build:server` compiles the server TypeScript code into JavaScript and dumps the compiled code into the `dist` directory.
 
@@ -202,7 +202,9 @@ The `logger` outputs to the console, but can be configured via Winston transport
 
 In development, the logger results in color-coded log strings based on the log level.
 
-In production, the log is simply turned into a json object:
+In production, the log is simply turned into a JSON object:
+
+(insert image here)
 
 You can pass arbitrary additional data in the form of key-value pairs as a second argument:
 

@@ -1,0 +1,37 @@
+# Dependencies / Libraries / Tools
+ESLint
+WebdriverIO
+Chromedriver
+Codecov
+Heroku
+CircleCI
+Webpack-TypeScript
+Webpack
+webpack-build-analyzer
+supertest
+commitlint
+nodemon
+npm
+webpack-dev-server
+
+# Developer Lingo
+dev
+viewport
+bundler
+middleware
+timestamp
+repo
+metadata
+gzip-compressed
+config
+frontend
+backend
+Pre-commit
+uptime
+APIs
+
+# Abbrevations
+i.e.
+
+# Proper Nouns
+Airbnb
