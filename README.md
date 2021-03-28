@@ -200,24 +200,76 @@ Example usage:
 logger.info('Fetching ships from Star Wars API');
 ```
 
-The `logger` outputs to the console, but can be configured via Winston transports to write the log content to another location. The logger not only logs the message but attaches metadata: the log level, timestamp, as well as arbitrary metadata that you can provide. The above log in production looks like this:
+The logger not only logs the message but attaches metadata: the log level, timestamp, as well as arbitrary metadata that you can provide. The `logger` outputs to the console, but can be configured via Winston transports to write the log content to another location. The above log in production looks like this (line breaks added for clarity):
 
 ```json
-
+{
+  "level": "info",
+  "message": "Fetching ships from Star Wars API",
+  "timestamp": "2021-03-28T16:26:32.219Z"
+}
 ```
 
 To add arbitrary metadata to a log, pass a second argument in the form of an object (values that are themselves objects will be stringified):
 
 ```ts
-logger.info('Fetched ships from Star Wars API', {
+logger.info('Fetched current ship from Star Wars API', {
   shipId: 1,
   shipName: 'X-Wing',
   shipLocations: ['Alderaan', 'Tattoine'],
 });
-// output:
 ```
 
+Production output:
+
+```
+{
+  "shipId": 1,
+  "shipName": "X-Wing",
+  "shipLocations": ["Alderaan", "Tattoine"],
+  "level": "info",
+  "message": "Fetched current ship from Star Wars API",
+  "timestamp": "2021-03-28T16:26:32.221Z"
+}
+```
+
+> The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata.
+>
+> ```ts
+> logger.info('Hello', {
+>   level: 3, // will be ignored and does not affect log level
+>   message: 'hi', // will be appended to string above i.e. "Hello hi"
+>   timestamp: '20200903', // will overwrite the baked-in ISO timestamp
+> });
+> // output: { "level": "info", "message": "Hello hi","timestamp": "20200903" }
+> ```
+>
+> Do not use the names `level`, `message`, or `timestamp` as keys for arbitrary metadata. Would be nice if an ESLint plugin were out there to address this... :)
+
 If the additional data object passed in under the key name `error` and is an instance of an `Error`, it will serialize the error and print the stack trace.
+
+```ts
+try {
+  await axios.delete('https://www.cia.gov/api/agents/5');
+} catch (error: unknown) {
+  logger.error('Could not remove CIA secret agent', { error });
+}
+```
+
+Production output:
+
+```
+{
+  "error": {
+    "name": "Error",
+    "message": "Access denied",
+    "stack": "Error: Access denied\n    at /Users/bobross/Desktop/ts-react-node-project-skeleton/src/server/app.ts:29:11\n    at Layer.handle [as handle_request] (/Users/bobross/Desktop/ts-react-node-project-skeleton/node_modules/express/lib/router/layer.js:95:5)"
+  },
+  "level": "error",
+  "message": "Could not remove CIA secret agent",
+  "timestamp": "2021-03-28T16:41:22.348Z"
+}
+```
 
 In development, the logger results in color-coded log strings based on the log level.
 
@@ -238,7 +290,9 @@ All test files end in the extension `.test.ts`. Beyond that, the extensions vary
 This repo utilizes Jest for unit and API tests. Together, they account for the code coverage statistics and can be run with:
 
 ```
+
 npm run test-unit-and-api
+
 ```
 
 The standard `npm test` script not only runs the above, but also an ESLint and Prettier check. This is designed to be run in a CI pipeline.
@@ -246,7 +300,9 @@ The standard `npm test` script not only runs the above, but also an ESLint and P
 This repo does not contain the necessary configuration to run automated browser tests in CI. Therefore, if you want to run _all_ tests with one script, use:
 
 ```
+
 npm run test:full:local
+
 ```
 
 This will first run your browser tests using Chromedriver. Browser tests are run first because they should be the best indicator that your app actually works. If they fail, the script exits, and you will see screenshots for the failed tests in `test-result-screenshots` (see the Browser Tests section for more). If the browser tests succeed, then the script moves onto the unit and API tests.
@@ -256,9 +312,11 @@ This will first run your browser tests using Chromedriver. Browser tests are run
 A unit test file has the same name and location as the file it is designed to test, with the exception of the file extension. For example:
 
 ```
+
 /server
 |_ app.ts
 |_ app.test.ts
+
 ```
 
 ### API Tests
@@ -266,6 +324,7 @@ A unit test file has the same name and location as the file it is designed to te
 API tests assert the expected HTTP response of the application server at a specific route, given a possible variety of request scenarios.
 
 ```
+
 WHEN I make a PUT request to /api/logs
 AND my request is in the correct shape
 THEN I should receive a 200 response
@@ -273,6 +332,7 @@ THEN I should receive a 200 response
 WHEN I make a GET request to /api/health
 THEN I should receive a 200 response
 AND the response should be in the expected schema
+
 ```
 
 They do not test side effects, such as logging, because this test is from the point of view of the consumer of the API. They are a type of integration test, as a server route often involves several middleware working in tandem. For that reason, API tests should not mock or stub out any source code (with the exception of logging code, in order to keep the console free of noise during a test).
