@@ -194,29 +194,38 @@ You generally don't need to touch these in development (see `npm run start:dev`)
 
 A dedicated `logger` exists on the application server in `src/server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`, corresponding to different log levels.
 
+Example usage:
+
+```ts
+logger.info('Fetching ships from Star Wars API');
 ```
-logger.info('Fetching ships from Star Wars API')
-```
 
-The `logger` outputs to the console, but can be configured via Winston transports to write the log content to another location. The logger not only logs the message but attaches metadata such the log level and timestamp.
+The `logger` outputs to the console, but can be configured via Winston transports to write the log content to another location. The logger not only logs the message but attaches metadata: the log level, timestamp, as well as arbitrary metadata that you can provide. The above log in production looks like this:
 
-In development, the logger results in color-coded log strings based on the log level.
-
-In production, the log is simply turned into a JSON object:
-
-(insert image here)
-
-You can pass arbitrary additional data in the form of key-value pairs as a second argument:
+```json
 
 ```
-logger.info('Fetched ships from Star Wars API', { id: 1, name: 'X-Wing' })
+
+To add arbitrary metadata to a log, pass a second argument in the form of an object (values that are themselves objects will be stringified):
+
+```ts
+logger.info('Fetched ships from Star Wars API', {
+  shipId: 1,
+  shipName: 'X-Wing',
+  shipLocations: ['Alderaan', 'Tattoine'],
+});
+// output:
 ```
 
 If the additional data object passed in under the key name `error` and is an instance of an `Error`, it will serialize the error and print the stack trace.
 
-A logger with the same function signature is available to front-end code as well in `client/logger`. It sends the log to the `/api/logs` endpoint, which then results in the server `logger` performing its duties per above.
+In development, the logger results in color-coded log strings based on the log level.
 
-It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation of calling `/api/logs`, but `void` signifies that the promise does not need to be awaited.
+(insert image here)
+
+The server exposes an API to make this logger available to the client. In turn, a logger with the same function signature is available to front-end code as well in `client/logger`. It sends the log to the `/api/logs` endpoint, which then results in the server `logger` performing its duties per above.
+
+It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation of calling `/api/logs`, but `void` signifies that the promise result does not need to be awaited. If the promise is rejected, the app will use a vanilla `console.error` to notify of the error and the intended log message.
 
 ## Test
 
