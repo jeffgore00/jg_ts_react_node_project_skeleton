@@ -28,6 +28,10 @@ It also contains the configuration for a simple CircleCI pipeline that runs the 
   - [Usage](#usage)
   - [Build](#build)
   - [Logging](#logging)
+    - [Logging Caveats](#logging-caveats)
+    - [Error Logging](#error-logging)
+    - [Logging in Development](#logging-in-development)
+    - [Passing Logs from Client to Server via API](#passing-logs-from-client-to-server-via-api)
   - [Test](#test)
     - [Unit Tests](#unit-tests)
     - [API Tests](#api-tests)
@@ -115,6 +119,7 @@ Here is some marketing for what this project skeleton provides:
 1. This does not include any client-side routing.
 2. This does not include any logic for authentication, session management or persistent storage.
 3. The Node server is a simple HTTP server which relies on Heroku magic to allow for HTTPS in production. There is no logic for creating an HTTPS server with certs.
+4. There is no logic for server-side rendering.
 
 ## Contributing
 
@@ -162,9 +167,11 @@ To start the application in development, use this:
 npm run start:dev
 ```
 
-This starts the application server on port 1337 and the Webpack dev server on port 8080. Once Webpack has compiled the client-side bundle, it will automatically open `http://localhost:8080` in your default web browser. All changes in the `/server` and `/client` directories are watched by nodemon and webpack-dev-server respectively, which means those servers will restart if any of the files they watch are modified.
+This starts the application server on port 1337 and the Webpack development server on port 8080. (This differs from the production/default setting, which is a single server for all content.)
 
-By default, React is fetched via CDN, rather than bundled, to minimize the size of `bundle.js`. But this default configuration does not allow for offline development. Therefore if you need to work offline, use this:
+Once Webpack has compiled the client-side bundle, it will automatically open `http://localhost:8080` in your default web browser. All changes in the `/server` and `/client` directories are watched by nodemon and webpack-dev-server respectively, which means those servers will restart if any of the files they watch are modified.
+
+By default, `react` and `react-dom` is fetched via CDN, rather than bundled, to minimize the size of `bundle.js`. But this default configuration does not allow for offline development. Therefore if you need to work offline, use this:
 
 ```
 npm run start:dev:offline
@@ -178,11 +185,11 @@ As expected, this is the command you want in production:
 npm start
 ```
 
-The above will start an HTTP server on `process.env.PORT` if that is defined, otherwise port 1337. This assumes that the compiled server code is available in `/dist`.
+The above will start an HTTP server on `process.env.PORT` if that is defined, otherwise port 1337. This assumes that the compiled server code is available in `/dist` (see `build:server`).
 
 ## Build
 
-You generally don't need to touch these in development (see `npm run start:dev`).
+You generally don't need to run these scripts in development, since `npm run start:dev` requires zero explicit build.
 
 - `build:client` generates a Webpack bundle in `public/Webpack.bundle.js`, along with a gzip-compressed version.
 
@@ -233,20 +240,24 @@ Production output:
 }
 ```
 
-> The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata.
->
-> ```ts
-> logger.info('Hello', {
->   level: 3, // will be ignored and does not affect log level
->   message: 'hi', // will be appended to string above i.e. "Hello hi"
->   timestamp: '20200903', // will overwrite the baked-in ISO timestamp
-> });
-> // output: { "level": "info", "message": "Hello hi","timestamp": "20200903" }
-> ```
->
-> Do not use the names `level`, `message`, or `timestamp` as keys for arbitrary metadata. Would be nice if an ESLint plugin were out there to address this... :)
+#### Logging Caveats
 
-If the additional data object passed in under the key name `error` and is an instance of an `Error`, it will serialize the error and print the stack trace.
+The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata.
+
+```ts
+logger.info('Hello', {
+  level: 3, // will be ignored and does not affect log level
+  message: 'hi', // will be appended to string above i.e. "Hello hi"
+  timestamp: '20200903', // will overwrite the baked-in ISO timestamp
+});
+// output: { "level": "info", "message": "Hello hi","timestamp": "20200903" }
+```
+
+Do not use the names `level`, `message`, or `timestamp` as keys for arbitrary metadata. Would be nice if an ESLint plugin were out there to address this... :)
+
+#### Error Logging
+
+If the additional data object is provided, contains the key name `error` and is an instance of an `Error`, the `logger` will pass the value through `serialize-error` before logging it. This allows you to see the stack trace of the error. (Note that this functionality exists at every log level, not just `.error` logs)
 
 ```ts
 try {
@@ -271,13 +282,27 @@ Production output:
 }
 ```
 
-In development, the logger results in color-coded log strings based on the log level.
+#### Logging in Development
+
+In development, the log format is not plain JSON. Instead it results in color-coded log strings based on the log level. Metadata is dimmed.
 
 (insert image here)
 
-The server exposes an API to make this logger available to the client. In turn, a logger with the same function signature is available to front-end code as well in `client/logger`. It sends the log to the `/api/logs` endpoint, which then results in the server `logger` performing its duties per above.
+#### Passing Logs from Client to Server via API
 
-It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation of calling `/api/logs`, but `void` signifies that the promise result does not need to be awaited. If the promise is rejected, the app will use a vanilla `console.error` to notify of the error and the intended log message.
+The server exposes an API to make this logger available to the client. In turn, a logger with the same function signature as the server logger available to front-end code as well in `src/client/utils/logger`. It sends the log to the `/api/logs` endpoint, which then results in the server `logger` performing its duties per above.
+
+```ts
+// 1. Example of use client-side in React component
+useEffect(() => {
+  void logger.info('Homepage rendered');
+}, []);
+
+// 2. Sends log as JSON to /api/logs
+// 3. /api/logs middleware passes logging data to server's `logger.info`
+```
+
+It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation - the network call to calling `/api/logs` - but `void` signifies that the promise result does not need to be awaited, since the functionality of the app does not depend on a log being sent successfully. If the promise is rejected, the app will use a vanilla `console.error` to notify of the error and the intended log message.
 
 ## Test
 
@@ -290,19 +315,15 @@ All test files end in the extension `.test.ts`. Beyond that, the extensions vary
 This repo utilizes Jest for unit and API tests. Together, they account for the code coverage statistics and can be run with:
 
 ```
-
 npm run test-unit-and-api
-
 ```
 
-The standard `npm test` script not only runs the above, but also an ESLint and Prettier check. This is designed to be run in a CI pipeline.
+The standard `npm test` is designed to be run in a CI pipeline. It not only runs the above `npm run test-unit-and-api` script, but also an ESLint and Prettier check.
 
-This repo does not contain the necessary configuration to run automated browser tests in CI. Therefore, if you want to run _all_ tests with one script, use:
+This repo does not contain the necessary configuration to run automated browser tests in CI. Therefore, if you want to run _all_ tests with one script on your machine, use:
 
 ```
-
 npm run test:full:local
-
 ```
 
 This will first run your browser tests using Chromedriver. Browser tests are run first because they should be the best indicator that your app actually works. If they fail, the script exits, and you will see screenshots for the failed tests in `test-result-screenshots` (see the Browser Tests section for more). If the browser tests succeed, then the script moves onto the unit and API tests.
@@ -345,11 +366,13 @@ Automated browser tests open a browser and simulate the actions of a user on you
 
 In this repo, these tests are located in the `test-browser` directory and are run with WebdriverIO with the Jasmine framework.
 
-(Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st)
+(Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st************************\_************************)
 
-The `npm run test:browser` script simply runs the `wdio` WebdriverIO binary with a configuration file as an argument, per its standard usage. Therefore you can pass any valid WDIO flag to this script, along with a few custom flags listed below.
+The `npm run test:browser` script runs the `wdio` WebdriverIO binary with a configuration file as an argument, per its standard usage. (The configuration is found in `wdio.conf.ts`.)
 
-To run non-headless automation locally, simply run `npm run test:browser -- -c`. As long as the major version of your `chromedriver` dev dependency matches your locally installed Chrome major version, this should work.
+Therefore you can pass any valid WDIO flag to this script, along with a few custom flags listed below.
+
+To run non-headless automation locally, run `npm run test:browser -- -c`. As long as the major version of your `chromedriver` dev dependency matches your locally installed Chrome major version, this should work.
 
 To run headless automation on a Selenium server against a deployed environment:
 
