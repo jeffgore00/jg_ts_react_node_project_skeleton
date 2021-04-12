@@ -9,7 +9,6 @@ Everything possible, from functional code to tests to config files, is written i
 
 It also contains the configuration for a simple CircleCI pipeline that runs the unit and API tests, then deploys a build to Heroku.
 
-- [💀 TypeScript-React-Node Project Skeleton 💀](#-typescript-react-node-project-skeleton-)
 - [Part 1. About This Boilerplate (Delete After You Clone)](#part-1-about-this-boilerplate-delete-after-you-clone)
   - [User-facing functionality and public APIs](#user-facing-functionality-and-public-apis)
   - [Non-user-facing functionality](#non-user-facing-functionality)
@@ -28,11 +27,13 @@ It also contains the configuration for a simple CircleCI pipeline that runs the 
   - [Usage](#usage)
   - [Build](#build)
   - [Logging](#logging)
+    - [Core Functionality](#core-functionality)
     - [Logging Caveats](#logging-caveats)
     - [Error Logging](#error-logging)
     - [Logging in Development](#logging-in-development)
     - [Passing Logs from Client to Server via API](#passing-logs-from-client-to-server-via-api)
-  - [Test](#test)
+  - [Testing](#testing-1)
+    - [Test Structure](#test-structure)
     - [Unit Tests](#unit-tests)
     - [API Tests](#api-tests)
     - [Browser Tests](#browser-tests)
@@ -41,7 +42,7 @@ It also contains the configuration for a simple CircleCI pipeline that runs the 
 
 ## User-facing functionality and public APIs
 
-Since this is a boilerplate, the functionality out-of-the-box is minimal.
+Since this is a boilerplate, the user-facing functionality out-of-the-box is minimal.
 
 - A very simple homepage at `GET /`:
 
@@ -61,11 +62,11 @@ Here is some marketing for what this project skeleton provides:
 ### Development experience / QA
 
 - Pre-commit hooks implemented with Husky to encourage committing clean code:
-  - ESLint with Airbnb configuration running with a `--fix` flag
-  - prettier both running with a `--write` flag
-  - commitlint running the default conventional commit to ensure standards
-- Auto-reloading with Webpack dev server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
-- A development logger with color coded log levels (see logging)
+  - ESLint with an Airbnb configuration running with a `--fix` flag
+  - prettier running with a `--write` flag
+  - commitlint running with a conventional config
+- Auto-reloading with webpack-dev-server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
+- A development logger with color coded log levels (see [Logging in Development](#logging-in-development) for more details)
 - Use of `styled-components` in conjunction with `` to see styled component names when looking at components with React Developer Tools
 
 ### Testing
@@ -159,6 +160,8 @@ This list is for those who may not want to use CircleCI, Heroku, or Codecov.
 
 # Part 2. Operating Instructions (Keep These After You Clone)
 
+These commands assume you have a bash shell.
+
 ## Usage
 
 To start the application in development, use this:
@@ -191,13 +194,15 @@ The above will start an HTTP server on `process.env.PORT` if that is defined, ot
 
 You generally don't need to run these scripts in development, since `npm run start:dev` requires zero explicit build.
 
-- `build:client` generates a Webpack bundle in `public/Webpack.bundle.js`, along with a gzip-compressed version.
+- `build:client` generates a Webpack bundle in `public/webpack.bundle.js`, along with a gzip-compressed version.
 
 - `build:server` compiles the server TypeScript code into JavaScript and dumps the compiled code into the `dist` directory.
 
-- `build` runs both `build:client` and `build:server`.
+- `build` runs `build:client`, followed by `build:server`.
 
 ## Logging
+
+### Core Functionality
 
 A dedicated `logger` exists on the application server in `src/server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`, corresponding to different log levels.
 
@@ -216,6 +221,8 @@ The logger not only logs the message but attaches metadata: the log level, times
   "timestamp": "2021-03-28T16:26:32.219Z"
 }
 ```
+
+### Arbitrary
 
 To add arbitrary metadata to a log, pass a second argument in the form of an object (values that are themselves objects will be stringified):
 
@@ -240,7 +247,7 @@ Production output:
 }
 ```
 
-#### Logging Caveats
+### Logging Caveats
 
 The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata.
 
@@ -255,7 +262,7 @@ logger.info('Hello', {
 
 Do not use the names `level`, `message`, or `timestamp` as keys for arbitrary metadata. Would be nice if an ESLint plugin were out there to address this... :)
 
-#### Error Logging
+### Error Logging
 
 If the additional data object is provided, contains the key name `error` and is an instance of an `Error`, the `logger` will pass the value through `serialize-error` before logging it. This allows you to see the stack trace of the error. (Note that this functionality exists at every log level, not just `.error` logs)
 
@@ -282,15 +289,15 @@ Production output:
 }
 ```
 
-#### Logging in Development
+### Logging in Development
 
-In development, the log format is not plain JSON. Instead it results in color-coded log strings based on the log level. Metadata is dimmed.
+In development, logs are color-coded and formatted in a non-JSON string to make them easier to read and distinguish from one another. Arbitrary metadata is dimmed and presented in the format of `key=value`, its keys prepended with `data_`. The timestamp metadata appears in grey.
 
-(insert image here)
+![Development Logger Screenshot](/public/readme-dev-logger.png 'Development Logger Screenshot')
 
-#### Passing Logs from Client to Server via API
+### Passing Logs from Client to Server via API
 
-The server exposes an API to make this logger available to the client. In turn, a logger with the same function signature as the server logger available to front-end code as well in `src/client/utils/logger`. It sends the log to the `/api/logs` endpoint, which then results in the server `logger` performing its duties per above.
+The server exposes an API to make this logger available to clients, such as a web browser. In turn, a logger with the same function signature as the server logger is available to front-end code in `src/client/utils/logger`. This client-side logger sends the log data to the `/api/logs` endpoint, which then results in the server `logger` processing the log per the behavior described above.
 
 ```ts
 // 1. Example of use client-side in React component
@@ -304,13 +311,15 @@ useEffect(() => {
 
 It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation - the network call to calling `/api/logs` - but `void` signifies that the promise result does not need to be awaited, since the functionality of the app does not depend on a log being sent successfully. If the promise is rejected, the app will use a vanilla `console.error` to notify of the error and the intended log message.
 
-## Test
+## Testing
+
+### Test Structure
 
 All test files end in the extension `.test.ts`. Beyond that, the extensions vary by test type.
 
-- Unit tests: `.test.ts`
-- API tests: `.api.test.ts`
-- Browser tests: `.browser.test.ts`
+- Unit tests: `<name>.test.ts`
+- API tests: `<name>.api.test.ts`
+- Browser tests: `<name>.browser.test.ts`
 
 This repo utilizes Jest for unit and API tests. Together, they account for the code coverage statistics and can be run with:
 
@@ -318,7 +327,7 @@ This repo utilizes Jest for unit and API tests. Together, they account for the c
 npm run test-unit-and-api
 ```
 
-The standard `npm test` is designed to be run in a CI pipeline. It not only runs the above `npm run test-unit-and-api` script, but also an ESLint and Prettier check.
+The standard `npm test` is designed to be run in a CI pipeline. It not only runs the above `npm run test-unit-and-api` script, but also ESLint and Prettier check, along with a spellcheck of all Markdown documents in the repo.
 
 This repo does not contain the necessary configuration to run automated browser tests in CI. Therefore, if you want to run _all_ tests with one script on your machine, use:
 
@@ -366,7 +375,7 @@ Automated browser tests open a browser and simulate the actions of a user on you
 
 In this repo, these tests are located in the `test-browser` directory and are run with WebdriverIO with the Jasmine framework.
 
-(Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st************************\_************************)
+(Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st**********\*\*\*\***********\_**********\*\*\*\***********)
 
 The `npm run test:browser` script runs the `wdio` WebdriverIO binary with a configuration file as an argument, per its standard usage. (The configuration is found in `wdio.conf.ts`.)
 

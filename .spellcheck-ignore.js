@@ -35,6 +35,7 @@ module.exports = [
   'stringified',
   'README',
   'JSON',
+  'non-JSON',
   'CLI',
   'CDN',
   'SHA',
@@ -50,4 +51,6 @@ module.exports = [
   'Airbnb',
   // Things that are actually in the dictionary
   'frictionless',
+  'prepended',
+  'grey',
 ];
