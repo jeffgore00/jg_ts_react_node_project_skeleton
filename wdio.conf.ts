@@ -47,29 +47,31 @@ const rawCommandLineArgs = process.argv.slice(2);
 const { argv: parsedCommandLineArgs } = yargs(rawCommandLineArgs)
   .option('environment', {
     alias: 'e',
-    describe: 'The environment to point the tests at',
+    describe:
+      'The environment you want the tests pointed at. Default is `dev`, meaning WDIO will open your `localhost` app. The other option is `prod`. The URLs for your app in `dev` and `prod` can be found in `wdio.conf.ts`.',
     choices: Object.values(Environment),
     default: Environment.dev,
   })
   .option('headless', {
-    describe: 'Use headless mode',
+    describe: 'Use headless mode (Chrome only)',
     type: 'boolean',
     default: false,
   })
   .option('screenshot', {
     alias: 's',
     describe:
-      'Take a screenshot after a browser test (see test-result-screenshots directory)',
+      'Whether to take screenshots of the viewport during testing. Default is for `failedTestsOnly`, which will save one screenshot at the point of failure of a given assertion (`it`) in the `test-results-screenshots` directory. Other options are `always` (screenshots for every `it`, at the point of failure or success), and `never`.',
     choices: Object.values(ScreenshotModes),
     default: ScreenshotModes.failedTestsOnly,
   })
   .option('chromedriver', {
     alias: 'c',
     describe:
-      'Use chromedriver rather than assume Selenium server is running on :4444',
+      'Use Chromedriver to run the tests. Default is `false`, meaning it expects an automation server to be running on :4444.',
     type: 'boolean',
     default: false,
-  });
+  })
+  .help('info', 'Show custom WDIO flags. For standard WDIO help, use --help');
 
 const {
   environment,

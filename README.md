@@ -55,7 +55,7 @@ You can see this in practice at https://ts-react-node-project-skeleton.herokuapp
 
 ## Non-user-facing functionality
 
-Despite the limited functionality from a user's perspective, there's a lot from the developer's perspective. This is a heavy boilerplate, aiming at quality, reliability, and a frictionless developer experience.
+Despite the limited functionality from a user's perspective, there's a lot to offer the developer who cares deeply about quality, but still wants to start writing feature code right away.
 
 Here is some marketing for what this project skeleton provides:
 
@@ -72,17 +72,17 @@ Here is some marketing for what this project skeleton provides:
 ### Testing
 
 - Unit testing with Jest, utilizing its code coverage reporter
-  - ...in conjunction with react-testing-library for the frontend...
-  - ...and supertest for API tests on the backend.
+  - ...in conjunction with React Testing Library for the frontend...
+  - ...and SuperTest for API tests on the backend.
 - Automation with WebdriverIO/Jasmine with one passing test out of the box
-  - Custom CLI flags built in to facilitate ease of use
-  - locally with Chromedriver, headless with Selenium Docker
-  - option to save screenshots of tests at the point of failing or of completion
-  - Automatic logging of the URL whenever a page is opened
+  - Custom `wdio` CLI flags built in to facilitate ease of use
+  - Runnable on your local machine in Chrome with Chromedriver, or in headless mode in a handful of browsers with Selenium Docker
+  - Has the option to save screenshots of tests at the point of failing or of completion
+  - Whenever WebdriverIO loads a new URL, logs the URL to the console
 
 ### Client Bundle Optimization
 
-- Webpack with React loaded externally to minimize build size, option to bundle if offline
+- Webpack with React loaded externally to minimize build size; option to bundle if offline
 - A gzip-compressed client-side bundle
 - A report from webpack-build-analyzer to help manage dependency size
 - Source maps for debugging in the browser
@@ -103,7 +103,7 @@ Here is some marketing for what this project skeleton provides:
 
 ### Miscellaneous
 
-- Icons for your social media links in `/public`
+- Icons for social media links in `/public`
 
 > Note from Jeff:
 >
@@ -130,7 +130,7 @@ Here is some marketing for what this project skeleton provides:
 
 This list assumes you would like all the features of this boilerplate and are using CircleCI with Codecov.
 
-- [ ] Fork or clone this repo. The `main` branch contains the single commit that can serve as the boilerplate. Note that this repo includes a `develop` branch with all the commits that led to its creation. Delete or overwrite it as needed, or you could clone only the `main` branch from the start.
+- [ ] Fork or clone this repo. The `main` branch contains the single commit that can serve as the boilerplate.
 - [ ] Replace all instances of `ts-react-node-project-skeleton` with your application name.
 - [ ] Update the `<title>` and `<meta>` tags in `public/index-template.html` with your project info.
 - [ ] Delete `public/favicon.ico` or overwrite with your app's icon.
@@ -309,7 +309,7 @@ useEffect(() => {
 // 3. /api/logs middleware passes logging data to server's `logger.info`
 ```
 
-It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation - the network call to calling `/api/logs` - but `void` signifies that the promise result does not need to be awaited, since the functionality of the app does not depend on a log being sent successfully. If the promise is rejected, the app will use a vanilla `console.error` to notify of the error and the intended log message.
+It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation - the network call to calling `/api/logs` - but `void` signifies that the promise result does not need to be awaited, since the functionality of the app does not depend on a log being sent successfully. If the promise is rejected, the app will use a vanilla `console.error` to log the error and the intended log message.
 
 ## Testing
 
@@ -375,7 +375,7 @@ Automated browser tests open a browser and simulate the actions of a user on you
 
 In this repo, these tests are located in the `test-browser` directory and are run with WebdriverIO with the Jasmine framework.
 
-(Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st**********\*\*\*\***********\_**********\*\*\*\***********)
+(Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st)
 
 The `npm run test:browser` script runs the `wdio` WebdriverIO binary with a configuration file as an argument, per its standard usage. (The configuration is found in `wdio.conf.ts`.)
 
@@ -388,10 +388,10 @@ To run headless automation on a Selenium server against a deployed environment:
 1. `npm run selenium`
 2. `npm run test:browser -- -e prod`
 
-Custom flags:
+To view all the flags for the `test:browser` script, you can use the `--info` command:
 
-`-c, --chromedriver`. Use Chromedriver to run the tests. Default is `false`, meaning it expects an automation server to be running on :4444.
+```
+npm run test:browser -- --info
+```
 
-`-e, --environment`. The environment you want the tests pointed at. Default is `dev`, meaning WDIO will open your `localhost` app. The other option is `prod`. The URLs for your app in `dev` and `prod` can be found in `wdio.conf.ts`.
-
-`-s, --screenshot`. Whether to take screenshots of the viewport during testing. Default is for `failedTestsOnly`, which will save one screenshot at the point of failure of a given assertion (`it`) in the `test-results-screenshots` directory. Other options are `always` (screenshots for every `it`, at the point of failure or success), and `never`.
+The definitions for these flags can be found in `wdio.conf.ts`.

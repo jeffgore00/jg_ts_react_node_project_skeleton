@@ -11,7 +11,7 @@ module.exports = [
   'Webpack-TypeScript',
   'Webpack',
   'webpack-build-analyzer',
-  'supertest',
+  'SuperTest',
   'commitlint',
   'nodemon',
   'npm',
@@ -45,6 +45,7 @@ module.exports = [
   'HTTPS',
   'HTTP',
   'DOM',
+  /runnable/i,
   // Abbreviations
   'i.e.',
   // Proper Nouns
