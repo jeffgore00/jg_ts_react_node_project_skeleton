@@ -54,7 +54,7 @@ dependency this causes the TypeScript compiler to create /src **within** the /di
 directory, rather than /dist contents mapping to /src contents.
 
 This is mildly inconvenient, but much better than the alternative of forbidding
-/server files from using anything outside of the /server directory. Enforcing
+new /server files from using anything outside of the /server directory. Enforcing
 that would require a custom eslint rule and could limit future functionality. */
 let publicRelativePath = '../../public';
 

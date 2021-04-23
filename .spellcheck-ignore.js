@@ -1,6 +1,6 @@
 // These are all regex patterns, so you can supply valid regex as an array element
 module.exports = [
-  // Dependencies / Libraries / Tools'
+  // Dependencies / Libraries / Tools
   'ESLint',
   'WebdriverIO',
   'WDIO',
@@ -25,6 +25,7 @@ module.exports = [
   'timestamp',
   'repo',
   'metadata',
+  'gzip',
   'gzip-compressed',
   'config',
   'frontend',

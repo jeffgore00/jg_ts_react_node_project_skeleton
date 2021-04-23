@@ -67,7 +67,7 @@ Here is some marketing for what this project skeleton provides:
   - commitlint running with a conventional config
 - Auto-reloading with webpack-dev-server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
 - A development logger with color coded log levels (see [Logging in Development](#logging-in-development) for more details)
-- Use of `styled-components` in conjunction with `` to see styled component names when looking at components with React Developer Tools
+- Use of styled-components in conjunction with `` to see styled component names when looking at components with React Developer Tools
 
 ### Testing
 
@@ -75,7 +75,7 @@ Here is some marketing for what this project skeleton provides:
   - ...in conjunction with React Testing Library for the frontend...
   - ...and SuperTest for API tests on the backend.
 - Automation with WebdriverIO/Jasmine with one passing test out of the box
-  - Custom `wdio` CLI flags built in to facilitate ease of use
+  - WebdriverIO CLI extended with new flags to facilitate ease of use
   - Runnable on your local machine in Chrome with Chromedriver, or in headless mode in a handful of browsers with Selenium Docker
   - Has the option to save screenshots of tests at the point of failing or of completion
   - Whenever WebdriverIO loads a new URL, logs the URL to the console
@@ -109,7 +109,7 @@ Here is some marketing for what this project skeleton provides:
 >
 > This boilerplate is my belief in what a repo should have as the basis for a healthy web application. It comes from my own experience developing and deploying production-ready (and in some cases, non-production-ready 😅 ) code for a Fortune 100 company.
 >
-> Is this boilerplate itself based on any boilerplate? Yes, a very light one with no backend. I started with a Webpack-TypeScript blog post on the TypeScript page that seems to have disappeared from the internet. That is where the idea of excluding React from the client bundle comes from, and I still have a quote from that boilerplate in the Webpack config.
+> Is this boilerplate itself based on any boilerplate? Yes, a very light one with no backend. I started with a blog post on the TypeScript website that seems to have disappeared from the internet. It outlined a very simple Webpack configuration for a TypeScript page with no backend. That is where the idea of excluding React from the client bundle comes from, and I still have a quote from that boilerplate in the Webpack config.
 >
 > I tried create-react-app, but I found it was a nightmare to try to compile TypeScript that didn't live in `src`, such as the browser tests.
 >
@@ -119,7 +119,7 @@ Here is some marketing for what this project skeleton provides:
 
 1. This does not include any client-side routing.
 2. This does not include any logic for authentication, session management or persistent storage.
-3. The Node server is a simple HTTP server which relies on Heroku magic to allow for HTTPS in production. There is no logic for creating an HTTPS server with certs.
+3. The Node server is a simple HTTP server which relies on Heroku routing magic to allow for HTTPS in production. There is no logic for creating an HTTPS server with certs.
 4. There is no logic for server-side rendering.
 
 ## Contributing
@@ -204,7 +204,7 @@ You generally don't need to run these scripts in development, since `npm run sta
 
 ### Core Functionality
 
-A dedicated `logger` exists on the application server in `src/server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`, corresponding to different log levels.
+A dedicated Winston `logger` exists on the application server in `src/server/utils/logger` with the methods `.error`, `.warn`, `.info`, and `.debug`, corresponding to different log levels.
 
 Example usage:
 
@@ -222,9 +222,9 @@ The logger not only logs the message but attaches metadata: the log level, times
 }
 ```
 
-### Arbitrary
+### Arbitrary Metadata
 
-To add arbitrary metadata to a log, pass a second argument in the form of an object (values that are themselves objects will be stringified):
+To add arbitrary metadata to a log, pass a second argument in the form of an object:
 
 ```ts
 logger.info('Fetched current ship from Star Wars API', {
@@ -236,7 +236,7 @@ logger.info('Fetched current ship from Star Wars API', {
 
 Production output:
 
-```
+```json
 {
   "shipId": 1,
   "shipName": "X-Wing",
@@ -276,7 +276,7 @@ try {
 
 Production output:
 
-```
+```json
 {
   "error": {
     "name": "Error",
@@ -395,3 +395,42 @@ npm run test:browser -- --info
 ```
 
 The definitions for these flags can be found in `wdio.conf.ts`.
+
+<!-- prettier-ignore-start -->
+
+[Node]: 
+[Express]: 
+[React]: 
+[TypeScript]: 
+[CircleCI]: 
+[Heroku]: 
+[Husky]: 
+[ESLint]: 
+[Airbnb]: 
+[prettier]: 
+[commitlint]: 
+[webpack-dev-server]: 
+[nodemon]: 
+[styled-components]:
+[React Developer Tools]: 
+[Jest]: 
+[React Testing Library]:  
+[SuperTest]: 
+[WebdriverIO]: 
+[Jasmine]: 
+[Jest]: 
+[Chromedriver]:
+[Selenium Docker]:
+[Webpack]:
+[gzip]:
+[webpack-build-analyzer]:
+[standard-release]:
+[Morgan]:
+[Winston]:
+[Codecov]:
+[Helmet]:
+[CORS]:
+[Postman]:
+[Heroku routing magic]: https://devcenter.heroku.com/articles/http-routing#routing
+
+<!-- prettier-ignore-end -->

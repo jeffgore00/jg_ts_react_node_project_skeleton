@@ -36,10 +36,7 @@ export class Logger implements ClientSideLogger {
         ) => {
           if (key === 'error' && value instanceof Error) {
             // eslint-disable-next-line no-param-reassign
-            returnObj[key] = JSON.stringify(serializeError(value));
-          } else if (typeof value === 'object') {
-            // eslint-disable-next-line no-param-reassign
-            returnObj[key] = JSON.stringify(value);
+            returnObj[key] = serializeError(value);
           } else {
             // eslint-disable-next-line no-param-reassign
             returnObj[key] = value;

@@ -79,7 +79,7 @@ describe('Logger', () => {
                 logType,
                 logSource: 'UI',
                 message: SAMPLE_MESSAGE,
-                additionalData: { formData: '{"firstName":"Jeff"}' },
+                additionalData: { formData: { firstName: 'Jeff' } },
               },
             );
           },
@@ -100,7 +100,7 @@ describe('Logger', () => {
                 logSource: 'UI',
                 message: SAMPLE_MESSAGE,
                 additionalData: {
-                  error: JSON.stringify(serializeError(sampleError)),
+                  error: serializeError(sampleError),
                 },
               },
             );
