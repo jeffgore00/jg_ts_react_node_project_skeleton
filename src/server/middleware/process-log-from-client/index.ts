@@ -4,12 +4,13 @@ import { NewLogRequest } from '../../../shared/types/logging';
 
 const processLogFromClient: RequestHandler = (req: NewLogRequest, res) => {
   const { body } = req;
-  const { message, logType, additionalData, logSource } = body;
+  const { message, logType, additionalData } = body;
 
-  logger[logType](
-    `Log from ${logSource.toUpperCase()}: ${message}`,
-    additionalData,
-  );
+  logger[logType](message, {
+    ...additionalData,
+    logFromClient: true,
+    logSource: req.get('Origin'),
+  });
 
   res.sendStatus(200);
 };

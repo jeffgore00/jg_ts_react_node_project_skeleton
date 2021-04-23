@@ -247,21 +247,6 @@ Production output:
 }
 ```
 
-### Logging Caveats
-
-The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata.
-
-```ts
-logger.info('Hello', {
-  level: 3, // will be ignored and does not affect log level
-  message: 'hi', // will be appended to string above i.e. "Hello hi"
-  timestamp: '20200903', // will overwrite the baked-in ISO timestamp
-});
-// output: { "level": "info", "message": "Hello hi","timestamp": "20200903" }
-```
-
-Do not use the names `level`, `message`, or `timestamp` as keys for arbitrary metadata. Would be nice if an ESLint plugin were out there to address this... :)
-
 ### Error Logging
 
 If the additional data object is provided, contains the key name `error` and is an instance of an `Error`, the `logger` will pass the value through `serialize-error` before logging it. This allows you to see the stack trace of the error. (Note that this functionality exists at every log level, not just `.error` logs)
@@ -299,6 +284,8 @@ In development, logs are color-coded and formatted in a non-JSON string to make 
 
 The server exposes an API to make this logger available to clients, such as a web browser. In turn, a logger with the same function signature as the server logger is available to front-end code in `src/client/utils/logger`. This client-side logger sends the log data to the `/api/logs` endpoint, which then results in the server `logger` processing the log per the behavior described above.
 
+The `api/logs` endpoint passes two additional pieces of metadata to the logger: `logFromClient: true` and `logSource`, which is the origin URL of the logging request.
+
 ```ts
 // 1. Example of use client-side in React component
 useEffect(() => {
@@ -310,6 +297,34 @@ useEffect(() => {
 ```
 
 It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation - the network call to calling `/api/logs` - but `void` signifies that the promise result does not need to be awaited, since the functionality of the app does not depend on a log being sent successfully. If the promise is rejected, the app will use a vanilla `console.error` to log the error and the intended log message.
+
+### Logging Caveats
+
+The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata. Here is a sample log which will output as planned, due to the use of reserved keys. The first three are Winston keys, the second are particular to this application.
+
+```ts
+logger.info('Milestone', {
+  level: 3, // will be ignored and does not affect log level
+  message: 'Character reached new level', // will be appended to string above
+  timestamp: '20200903', // will overwrite the baked-in ISO timestamp
+  logFromClient: 'New Level', // will be overwritten if the log comes from /api/logs
+  logSource: 'Milestone Service', // will be overwritten if the log comes from /api/logs
+});
+```
+
+Output from above if the log comes from a client using `/api/logs`:
+
+```json
+{
+  "level": "info",
+  "message": "Milestone Character reached new level",
+  "timestamp": "20200903",
+  "logFromClient": true,
+  "logSource": "http://yoururl.com" // the Origin of the url that called /api/logs
+}
+```
+
+Do not use the names `level`, `message`, `timestamp`, `logFromClient`, or `logSource` as keys for arbitrary metadata. It would be nice if an ESLint plugin were out there to prevent people from overwriting Winston log metadata... ;)
 
 ## Testing
 

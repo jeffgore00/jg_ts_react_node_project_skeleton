@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Request, Response } from 'express';
 
 import processLogFromClient from '.';
@@ -18,18 +19,26 @@ describe('Middleware for logging from external source', () => {
   const request: Partial<NewLogRequest> = {
     body: {
       message: 'TEST LOG',
-      logSource: 'UI',
       logType: LogType.Info,
       additionalData: {
         storeManager: 'John Smith',
         storeId: 39735,
       },
     },
+    // @ts-ignore. Express has a special type for set-cookie arg that makes this difficult to mock.
+    get(headerName: string) {
+      if (headerName === 'Origin') {
+        return 'http://localhost:8080';
+      }
+      return '';
+    },
   };
 
-  const expectedLogMessage = `Log from ${request.body.logSource.toUpperCase()}: ${
-    request.body.message
-  }`;
+  const expectedLogMessage = request.body.message;
+  const expectedBakedInClientLogMetadata = {
+    logFromClient: true,
+    logSource: request.get('Origin'),
+  };
 
   beforeAll(() => {
     response = {
@@ -52,10 +61,10 @@ describe('Middleware for logging from external source', () => {
     });
     it('calls the INFO logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);
-      expect(infoLoggerSpy).toHaveBeenCalledWith(
-        expectedLogMessage,
-        request.body.additionalData,
-      );
+      expect(infoLoggerSpy).toHaveBeenCalledWith(expectedLogMessage, {
+        ...request.body.additionalData,
+        ...expectedBakedInClientLogMetadata,
+      });
     });
   });
 
@@ -65,10 +74,10 @@ describe('Middleware for logging from external source', () => {
     });
     it('calls the ERROR logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);
-      expect(errorLoggerSpy).toHaveBeenCalledWith(
-        expectedLogMessage,
-        request.body.additionalData,
-      );
+      expect(errorLoggerSpy).toHaveBeenCalledWith(expectedLogMessage, {
+        ...request.body.additionalData,
+        ...expectedBakedInClientLogMetadata,
+      });
     });
   });
 
@@ -78,10 +87,10 @@ describe('Middleware for logging from external source', () => {
     });
     it('calls the WARN logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);
-      expect(warnLoggerSpy).toHaveBeenCalledWith(
-        expectedLogMessage,
-        request.body.additionalData,
-      );
+      expect(warnLoggerSpy).toHaveBeenCalledWith(expectedLogMessage, {
+        ...request.body.additionalData,
+        ...expectedBakedInClientLogMetadata,
+      });
     });
   });
 
@@ -91,10 +100,10 @@ describe('Middleware for logging from external source', () => {
     });
     it('calls the DEBUG logger with the attached information and prefixes the log message with the log source', () => {
       processLogFromClient(request as Request, response as Response, null);
-      expect(debugLoggerSpy).toHaveBeenCalledWith(
-        expectedLogMessage,
-        request.body.additionalData,
-      );
+      expect(debugLoggerSpy).toHaveBeenCalledWith(expectedLogMessage, {
+        ...request.body.additionalData,
+        ...expectedBakedInClientLogMetadata,
+      });
     });
   });
 });
