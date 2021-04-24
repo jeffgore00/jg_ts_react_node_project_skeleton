@@ -50,6 +50,7 @@
     "test:full:local": "npm run test:browser -- -c --headless && npm run test",
     "view-prod-logs": "heroku logs --tail -a ts-react-node-project-skeleton",
     "postinstall": "husky install",
+    "posttest:unit-and-api": "if [ \"$CI\" = \"true\" ]; then npm run send-codecov-report; fi",
     "pretest:browser": "tsc wdio.conf.ts --typeRoots ./node_modules/@types/wdio --resolveJsonModule --esModuleInterop"
   },
   "dependencies": {

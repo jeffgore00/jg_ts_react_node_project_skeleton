@@ -2,23 +2,11 @@ version: 2.1
 orbs:
   node: circleci/node@4.1.1
   heroku: circleci/heroku@1.2.5
-jobs:
-  send-code-coverage:
-    docker:
-     - image: cimg/base:2021.04 # https://circleci.com/docs/2.0/circleci-images/#circleci-base-image
-    steps:
-     - checkout
-     - run: 
-        command: |
-          sh scripts/send-codecov-report.sh
 workflows:
   heroku-deploy:
     jobs:
       - node/test:
           version: "14.15.5"
-      - send-code-coverage:
-          requires:
-            - node/test
       - heroku/deploy-via-git:
           filters:
             branches:
