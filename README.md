@@ -67,7 +67,7 @@ Here is some marketing for what this project skeleton provides:
   - [commitlint][commitlint] running with a conventional config
 - Auto-reloading with [webpack-dev-server][webpack-dev-server] and [nodemon][nodemon] to ensure you won't have to manually rebuild or restart anything in development.
 - A development logger with color coded log levels (see [Logging in Development](#logging-in-development) for more details)
-- Use of [styled-components][styled-components] in conjunction with ******\_\_\_\_****** to see styled component names when looking at components with React Developer Tools
+- Use of [styled-components][styled-components] in conjunction with **\*\***\_\_\_\_**\*\*** to see styled component names when looking at components with React Developer Tools
 
 ### Testing
 
@@ -75,7 +75,7 @@ Here is some marketing for what this project skeleton provides:
   - ...in conjunction with [React Testing Library][react testing library] for the frontend...
   - ...and [SuperTest][supertest] for API tests on the backend.
 - Automation with [WebdriverIO][webdriverio] and [Jasmine][jasmine] with one passing test out of the box
-  - WebdriverIO CLI extended with new flags to facilitate ease of use
+  - WebdriverIO CLI extended with custom flags to facilitate ease of use
   - Runnable on your local machine in Chrome with [Chromedriver][chromedriver], or in headless mode in Chrome or Firefox with [selenium-standalone][selenium-standalone]
   - Has the option to save screenshots of tests at the point of failing or of completion
   - Whenever WebdriverIO loads a new URL, logs the URL to the console
@@ -89,11 +89,11 @@ Here is some marketing for what this project skeleton provides:
 
 ### Production Tools
 
-- Proper CHANGELOG generation and updates with [standard-version][standard-version] (note this requires commit message standards ********\_\_********)
+- Proper CHANGELOG generation and updates with [standard-version][standard-version] (note this requires commit message standards **\*\*\*\***\_\_**\*\*\*\***)
 - Logging for every HTTP request/response with [Morgan][morgan]
 - Arbitrary logging with [Winston][winston]
 - Boilerplate for CI with CircleCI, including an upload of code coverage to [Codecov][codecov]
-- A health check API (as described in ****\_\_\_\_****)
+- A health check API (as described in \***\*\_\_\_\_\*\***)
 - Top level React error boundary to catch and log front-end errors
 
 ### Security
@@ -119,10 +119,6 @@ Here is some marketing for what this project skeleton provides:
 2. This does not include any logic for authentication, session management or persistent storage.
 3. The Node server is a simple HTTP server which relies on [Heroku routing magic][heroku routing magic] to allow for HTTPS in production. There is no logic for creating an HTTPS server with certs.
 4. There is no logic for server-side rendering.
-
-## Contributing
-
-<!-- ## Links -->
 
 ## Post-clone to-do list
 
@@ -341,7 +337,7 @@ The standard `npm test` is designed to be run in a CI pipeline. It not only runs
 
 This repo does not contain the necessary configuration to run automated browser tests in CI. Therefore, if you want to run _all_ tests with one script on your machine, use:
 
-```
+```shell
 npm run test:full:local
 ```
 
@@ -352,11 +348,9 @@ This will first run your browser tests using Chromedriver. Browser tests are run
 A unit test file has the same name and location as the file it is designed to test, with the exception of the file extension. For example:
 
 ```
-
 /server
 |_ app.ts
 |_ app.test.ts
-
 ```
 
 ### API Tests
@@ -364,7 +358,6 @@ A unit test file has the same name and location as the file it is designed to te
 API tests assert the expected HTTP response of the application server at a specific route, given a possible variety of request scenarios.
 
 ```
-
 WHEN I make a PUT request to /api/logs
 AND my request is in the correct shape
 THEN I should receive a 200 response
@@ -372,7 +365,6 @@ THEN I should receive a 200 response
 WHEN I make a GET request to /api/health
 THEN I should receive a 200 response
 AND the response should be in the expected schema
-
 ```
 
 They do not test side effects, such as logging, because this test is from the point of view of the consumer of the API. They are a type of integration test, as a server route often involves several middleware working in tandem. For that reason, API tests should not mock or stub out any source code (with the exception of logging code, in order to keep the console free of noise during a test).
@@ -387,9 +379,9 @@ In the case of this repo, these are fully integrated browser tests: the backend 
 
 In this repo, these tests are located in the `test-browser` directory and are run with WebdriverIO with the Jasmine framework.
 
-(Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st)
+(Jest is currently [not supported by WebdriverIO](https://github.com/webdriverio/webdriverio/issues/2052#issuecomment-575380414) as an integrated test framework. Hence Jasmine, being an ancestor of Jest and closest to it in syntax, was chosen as the framework for browser tests.)
 
-The `npm run test:browser` script runs the `wdio` WebdriverIO binary ****\_**** with a configuration file as an argument, per its standard usage. (The configuration is found in `wdio.conf.ts`.)
+The `npm run test:browser` script runs the `wdio` WebdriverIO binary with a configuration file as an argument, per its standard usage. (The configuration is found in `wdio.conf.ts` and is compiled into JavaScript at runtime. The `wdio.conf.js` file is discarded after the test completes.)
 
 Therefore you can pass any valid WDIO flag to this script, along with a few custom flags listed below.
 
@@ -402,7 +394,7 @@ To run headless automation on a Selenium server against a deployed environment:
 
 To view all the flags for the `test:browser` script, you can use the `--info` command:
 
-```
+```shell
 npm run test:browser -- --info
 ```
 

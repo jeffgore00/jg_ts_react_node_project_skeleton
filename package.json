@@ -43,13 +43,14 @@
     "test:unit-and-api": "NODE_ENV=test jest --runInBand",
     "test:unit": "NODE_ENV=test jest --runInBand --testPathIgnorePatterns api.test browser.test",
     "test:api": "NODE_ENV=test jest --runInBand --testPathPattern api.test",
-    "test:browser": "NODE_ENV=test wdio wdio.conf.js",
+    "test:browser:base": "NODE_ENV=test wdio wdio.conf.js",
+    "test:browser:cleanup": "rm wdio.conf.js",
+    "test:browser": "sh scripts/test-browser.sh",
     "test:spellcheck": "spellchecker -d .spellcheck-ignore.js --files \"**/*.md\" \"!CHANGELOG.md\" --no-suggestions",
     "test:full:local": "npm run test:browser -- -c --headless && npm run test",
     "view-prod-logs": "heroku logs --tail -a ts-react-node-project-skeleton",
     "postinstall": "husky install",
-    "pretest:browser": "tsc wdio.conf.ts --typeRoots ./node_modules/@types/wdio --resolveJsonModule --esModuleInterop",
-    "posttest:browser": "rm wdio.conf.js"
+    "pretest:browser": "tsc wdio.conf.ts --typeRoots ./node_modules/@types/wdio --resolveJsonModule --esModuleInterop"
   },
   "dependencies": {
     "@types/cors": "^2.8.9",
