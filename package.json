@@ -39,7 +39,7 @@
     "start:dev": "concurrently -p \"[{name}]\" -n static,___app -c \"magenta,cyan\" \"NODE_ENV=development webpack serve --open\" \"NODE_ENV=development nodemon src/server/index.ts\" --kill-others",
     "start:dev:offline": "BUILD_OFFLINE=true npm run start:dev",
     "selenium": "docker run -it -p 4444:4444 vvoyer/selenium-standalone",
-    "test": "npm run test:unit-and-api && npm run lint && npm run prettier:check && npm run test:spellcheck; if [ \"$CI\" = \"true\" ]; then npm run send-codecov-report; fi",
+    "test": "npm run test:unit-and-api && npm run lint && npm run prettier:check && npm run test:spellcheck",
     "test:unit-and-api": "NODE_ENV=test jest --runInBand",
     "test:unit": "NODE_ENV=test jest --runInBand --testPathIgnorePatterns api.test browser.test",
     "test:api": "NODE_ENV=test jest --runInBand --testPathPattern api.test",
