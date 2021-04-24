@@ -10,7 +10,7 @@ module.exports = [
   'CircleCI',
   'Webpack-TypeScript',
   'Webpack',
-  'webpack-build-analyzer',
+  'webpack-bundle-analyzer',
   'SuperTest',
   'commitlint',
   'nodemon',

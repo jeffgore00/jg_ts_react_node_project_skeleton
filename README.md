@@ -3,11 +3,11 @@
 [![CircleCI](https://circleci.com/gh/jeffgore00/ts-react-node-project-skeleton.svg?style=shield)](https://app.circleci.com/pipelines/github/jeffgore00/ts-react-node-project-skeleton?branch=master)
 [![Codecov](https://img.shields.io/codecov/c/gh/jeffgore00/ts-react-node-project-skeleton)](https://app.codecov.io/gh/jeffgore00/ts-react-node-project-skeleton/)
 
-This is a boilerplate for a Node-Express backend, React frontend web application which utilizes unit, API, and browser tests.
+This is a boilerplate for a [Node][node]-[Express][express] backend, [React][react] frontend web application which utilizes unit, API, and browser tests.
 
-Everything possible, from functional code to tests to config files, is written in TypeScript.
+Everything possible, from functional code to tests to config files, is written in [TypeScript][typescript].
 
-It also contains the configuration for a simple CircleCI pipeline that runs the unit and API tests, then deploys a build to Heroku.
+It also contains the configuration for a simple [CircleCI][circleci] pipeline that runs the unit and API tests, then deploys a build to [Heroku][heroku].
 
 - [Part 1. About This Boilerplate (Delete After You Clone)](#part-1-about-this-boilerplate-delete-after-you-clone)
   - [User-facing functionality and public APIs](#user-facing-functionality-and-public-apis)
@@ -61,53 +61,51 @@ Here is some marketing for what this project skeleton provides:
 
 ### Development experience / QA
 
-- Pre-commit hooks implemented with Husky to encourage committing clean code:
-  - ESLint with an Airbnb configuration running with a `--fix` flag
-  - prettier running with a `--write` flag
-  - commitlint running with a conventional config
-- Auto-reloading with webpack-dev-server and nodemon to ensure you won't have to manually rebuild or restart anything in development.
+- Pre-commit hooks implemented with [Husky][husky] to encourage committing clean code:
+  - [ESLint][eslint] with an [Airbnb configuration][airbnb configuration] running with a `--fix` flag
+  - [prettier][prettier] running with a `--write` flag
+  - [commitlint][commitlint] running with a conventional config
+- Auto-reloading with [webpack-dev-server][webpack-dev-server] and [nodemon][nodemon] to ensure you won't have to manually rebuild or restart anything in development.
 - A development logger with color coded log levels (see [Logging in Development](#logging-in-development) for more details)
-- Use of styled-components in conjunction with `` to see styled component names when looking at components with React Developer Tools
+- Use of [styled-components][styled-components] in conjunction with ******\_\_\_\_****** to see styled component names when looking at components with React Developer Tools
 
 ### Testing
 
-- Unit testing with Jest, utilizing its code coverage reporter
-  - ...in conjunction with React Testing Library for the frontend...
-  - ...and SuperTest for API tests on the backend.
-- Automation with WebdriverIO/Jasmine with one passing test out of the box
+- Unit testing with [Jest][jest], utilizing its code coverage reporter
+  - ...in conjunction with [React Testing Library][react testing library] for the frontend...
+  - ...and [SuperTest][supertest] for API tests on the backend.
+- Automation with [WebdriverIO][webdriverio] and [Jasmine][jasmine] with one passing test out of the box
   - WebdriverIO CLI extended with new flags to facilitate ease of use
-  - Runnable on your local machine in Chrome with Chromedriver, or in headless mode in a handful of browsers with Selenium Docker
+  - Runnable on your local machine in Chrome with [Chromedriver][chromedriver], or in headless mode in Chrome or Firefox with [selenium-standalone][selenium-standalone]
   - Has the option to save screenshots of tests at the point of failing or of completion
   - Whenever WebdriverIO loads a new URL, logs the URL to the console
 
 ### Client Bundle Optimization
 
-- Webpack with React loaded externally to minimize build size; option to bundle if offline
-- A gzip-compressed client-side bundle
-- A report from webpack-build-analyzer to help manage dependency size
+- [Webpack][webpack] with React loaded externally to minimize build size; option to bundle if offline
+- A [gzip][gzip]-compressed client-side bundle
+- A report from [webpack-bundle-analyzer][webpack-bundle-analyzer] to help manage dependency size
 - Source maps for debugging in the browser
 
 ### Production Tools
 
-- Proper CHANGELOG generation and updates with standard-release (note this requires commit message standards)
-- Logging for every HTTP request/response with Morgan
-- Arbitrary logging with Winston
-- Boilerplate for CI with CircleCI, including an upload of code coverage to Codecov
-- Health check API (as described above)
+- Proper CHANGELOG generation and updates with [standard-version][standard-version] (note this requires commit message standards ********\_\_********)
+- Logging for every HTTP request/response with [Morgan][morgan]
+- Arbitrary logging with [Winston][winston]
+- Boilerplate for CI with CircleCI, including an upload of code coverage to [Codecov][codecov]
+- A health check API (as described in ****\_\_\_\_****)
 - Top level React error boundary to catch and log front-end errors
 
 ### Security
 
-- Helmet applied with nearly default settings to server
-- CORS applicable on a route level, with ability to block or allow requests from tools like Postman
+- [Helmet][helmet] applied with nearly default settings to server
+- [CORS][cors] applicable on a route level, with ability to block or allow requests from tools like [Postman][postman]
 
 ### Miscellaneous
 
 - Icons for social media links in `/public`
 
 > Note from Jeff:
->
-> This boilerplate is my belief in what a repo should have as the basis for a healthy web application. It comes from my own experience developing and deploying production-ready (and in some cases, non-production-ready 😅 ) code for a Fortune 100 company.
 >
 > Is this boilerplate itself based on any boilerplate? Yes, a very light one with no backend. I started with a blog post on the TypeScript website that seems to have disappeared from the internet. It outlined a very simple Webpack configuration for a TypeScript page with no backend. That is where the idea of excluding React from the client bundle comes from, and I still have a quote from that boilerplate in the Webpack config.
 >
@@ -119,7 +117,7 @@ Here is some marketing for what this project skeleton provides:
 
 1. This does not include any client-side routing.
 2. This does not include any logic for authentication, session management or persistent storage.
-3. The Node server is a simple HTTP server which relies on Heroku routing magic to allow for HTTPS in production. There is no logic for creating an HTTPS server with certs.
+3. The Node server is a simple HTTP server which relies on [Heroku routing magic][heroku routing magic] to allow for HTTPS in production. There is no logic for creating an HTTPS server with certs.
 4. There is no logic for server-side rendering.
 
 ## Contributing
@@ -160,13 +158,13 @@ This list is for those who may not want to use CircleCI, Heroku, or Codecov.
 
 # Part 2. Operating Instructions (Keep These After You Clone)
 
-These commands assume you have a bash shell.
+All shell commands listed below need to be run from a Unix shell.
 
 ## Usage
 
 To start the application in development, use this:
 
-```
+```shell
 npm run start:dev
 ```
 
@@ -176,7 +174,7 @@ Once Webpack has compiled the client-side bundle, it will automatically open `ht
 
 By default, `react` and `react-dom` is fetched via CDN, rather than bundled, to minimize the size of `bundle.js`. But this default configuration does not allow for offline development. Therefore if you need to work offline, use this:
 
-```
+```shell
 npm run start:dev:offline
 ```
 
@@ -184,7 +182,7 @@ This will signal the Webpack bundler to include React and React DOM in the bundl
 
 As expected, this is the command you want in production:
 
-```
+```shell
 npm start
 ```
 
@@ -249,7 +247,7 @@ Production output:
 
 ### Error Logging
 
-If the additional data object is provided, contains the key name `error` and is an instance of an `Error`, the `logger` will pass the value through `serialize-error` before logging it. This allows you to see the stack trace of the error. (Note that this functionality exists at every log level, not just `.error` logs)
+If the additional data object is provided, contains the key name `error` and is an instance of an `Error`, the `logger` will pass the value through [serialize-error][serialize-error] before logging it. This allows you to see the stack trace of the error. (Note that this functionality exists at every log level, not just for the `.error` method.)
 
 ```ts
 try {
@@ -284,25 +282,22 @@ In development, logs are color-coded and formatted in a non-JSON string to make 
 
 The server exposes an API to make this logger available to clients, such as a web browser. In turn, a logger with the same function signature as the server logger is available to front-end code in `src/client/utils/logger`. This client-side logger sends the log data to the `/api/logs` endpoint, which then results in the server `logger` processing the log per the behavior described above.
 
-The `api/logs` endpoint passes two additional pieces of metadata to the logger: `logFromClient: true` and `logSource`, which is the origin URL of the logging request.
+The `api/logs` endpoint passes two additional pieces of metadata to the logger: `logFromClient: true` and `logSource`, which is the origin URL of the logging request. Here's an example of how the client-side `logger` would be used in a React component:
 
 ```ts
-// 1. Example of use client-side in React component
 useEffect(() => {
   void logger.info('Homepage rendered');
 }, []);
-
-// 2. Sends log as JSON to /api/logs
-// 3. /api/logs middleware passes logging data to server's `logger.info`
 ```
 
 It is recommended to call the client-side logger with `void` to avoid lint errors. The logger triggers an asynchronous operation - the network call to calling `/api/logs` - but `void` signifies that the promise result does not need to be awaited, since the functionality of the app does not depend on a log being sent successfully. If the promise is rejected, the app will use a vanilla `console.error` to log the error and the intended log message.
 
 ### Logging Caveats
 
-The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata. Here is a sample log which will output as planned, due to the use of reserved keys. The first three are Winston keys, the second are particular to this application.
+The downside of Winston's ability to pass arbitrary data is the possibility of interfering with core metadata by unwittingly using key names that are already in use. Here is a sample log which will not have the intended output, due to the use of reserved keys. The first three are Winston keys, the second are particular to this application.
 
 ```ts
+// Again, this is an example of what NOT to do:
 logger.info('Milestone', {
   level: 3, // will be ignored and does not affect log level
   message: 'Character reached new level', // will be appended to string above
@@ -320,11 +315,11 @@ Output from above if the log comes from a client using `/api/logs`:
   "message": "Milestone Character reached new level",
   "timestamp": "20200903",
   "logFromClient": true,
-  "logSource": "http://yoururl.com" // the Origin of the url that called /api/logs
+  "logSource": "http://yoururl.com" // this is the origin of the client called /api/logs
 }
 ```
 
-Do not use the names `level`, `message`, `timestamp`, `logFromClient`, or `logSource` as keys for arbitrary metadata. It would be nice if an ESLint plugin were out there to prevent people from overwriting Winston log metadata... ;)
+In sum: do not use the names `level`, `message`, `timestamp`, `logFromClient`, or `logSource` as keys for arbitrary metadata. (It would be nice if an ESLint plugin were out there to prevent people from overwriting Winston log metadata...😉)
 
 ## Testing
 
@@ -338,7 +333,7 @@ All test files end in the extension `.test.ts`. Beyond that, the extensions vary
 
 This repo utilizes Jest for unit and API tests. Together, they account for the code coverage statistics and can be run with:
 
-```
+```shell
 npm run test-unit-and-api
 ```
 
@@ -388,11 +383,13 @@ API tests are located in `test-api` and are named after the `/api/____` server r
 
 Automated browser tests open a browser and simulate the actions of a user on your web page, such as clicking, typing into fields, and scrolling.
 
+In the case of this repo, these are fully integrated browser tests: the backend Express server is not mocked. Therefore these are highest-level integration tests possible, testing the entire application from the point of view of the user.
+
 In this repo, these tests are located in the `test-browser` directory and are run with WebdriverIO with the Jasmine framework.
 
 (Jest is currently not supported by WebdriverIO as an integrated test framework. Jasmine, being an ancestor of Jest, is st)
 
-The `npm run test:browser` script runs the `wdio` WebdriverIO binary with a configuration file as an argument, per its standard usage. (The configuration is found in `wdio.conf.ts`.)
+The `npm run test:browser` script runs the `wdio` WebdriverIO binary ****\_**** with a configuration file as an argument, per its standard usage. (The configuration is found in `wdio.conf.ts`.)
 
 Therefore you can pass any valid WDIO flag to this script, along with a few custom flags listed below.
 
@@ -413,39 +410,38 @@ The definitions for these flags can be found in `wdio.conf.ts`.
 
 <!-- prettier-ignore-start -->
 
-[Node]: 
-[Express]: 
-[React]: 
-[TypeScript]: 
-[CircleCI]: 
-[Heroku]: 
-[Husky]: 
-[ESLint]: 
-[Airbnb]: 
-[prettier]: 
-[commitlint]: 
-[webpack-dev-server]: 
-[nodemon]: 
-[styled-components]:
-[React Developer Tools]: 
-[Jest]: 
-[React Testing Library]:  
-[SuperTest]: 
-[WebdriverIO]: 
-[Jasmine]: 
-[Jest]: 
-[Chromedriver]:
-[Selenium Docker]:
-[Webpack]:
-[gzip]:
-[webpack-build-analyzer]:
-[standard-release]:
-[Morgan]:
-[Winston]:
-[Codecov]:
-[Helmet]:
-[CORS]:
-[Postman]:
+[Node]: https://nodejs.org/
+[Express]: https://expressjs.com/
+[React]: https://reactjs.org/
+[TypeScript]: https://www.typescriptlang.org/
+[CircleCI]: https://circleci.com/
+[Heroku]: https://www.heroku.com/
+[Husky]: https://www.npmjs.com/package/husky
+[ESLint]: https://eslint.org/
+[Airbnb configuration]: https://www.npmjs.com/package/eslint-config-airbnb
+[prettier]: https://prettier.io/
+[commitlint]: https://commitlint.js.org/#/
+[webpack-dev-server]: https://webpack.js.org/configuration/dev-server/
+[nodemon]: https://nodemon.io/
+[styled-components]: https://styled-components.com/
+[React Developer Tools]: https://reactjs.org/blog/2019/08/15/new-react-devtools.html
+[Jest]: https://jestjs.io/
+[React Testing Library]: https://testing-library.com/docs/react-testing-library/intro/
+[SuperTest]: https://www.npmjs.com/package/supertest
+[WebdriverIO]: https://webdriver.io/
+[Jasmine]: https://jasmine.github.io/
+[Chromedriver]: https://chromedriver.chromium.org/
+[selenium-standalone]: https://www.npmjs.com/package/selenium-standalone
+[Webpack]: https://webpack.js.org/
+[gzip]: https://en.wikipedia.org/wiki/Gzip
+[webpack-bundle-analyzer]: https://www.npmjs.com/package/webpack-bundle-analyzer
+[standard-version]: https://github.com/conventional-changelog/standard-version
+[Morgan]: https://github.com/expressjs/morgan
+[Winston]: https://github.com/winstonjs/winston
+[Codecov]: https://about.codecov.io/
+[Helmet]: https://helmetjs.github.io/
+[CORS]: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+[Postman]: https://www.postman.com/
 [Heroku routing magic]: https://devcenter.heroku.com/articles/http-routing#routing
-
+[serialize-error]: https://www.npmjs.com/package/serialize-error
 <!-- prettier-ignore-end -->
