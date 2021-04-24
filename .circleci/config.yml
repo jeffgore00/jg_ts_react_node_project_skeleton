@@ -3,11 +3,15 @@ orbs:
   node: circleci/node@4.1.1
   heroku: circleci/heroku@1.2.5
 workflows:
-  heroku_deploy:
+  heroku-deploy:
     jobs:
       - node/test:
           version: "14.15.5"
       - heroku/deploy-via-git:
+          filters:
+            branches:
+              only:
+                - master
           force: true
           requires:
             - node/test

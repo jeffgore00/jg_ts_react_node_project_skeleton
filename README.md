@@ -67,7 +67,7 @@ Here is some marketing for what this project skeleton provides:
   - [commitlint][commitlint] running with a conventional config
 - Auto-reloading with [webpack-dev-server][webpack-dev-server] and [nodemon][nodemon] to ensure you won't have to manually rebuild or restart anything in development.
 - A development logger with color coded log levels (see [Logging in Development](#logging-in-development) for more details)
-- Use of [styled-components][styled-components] in conjunction with **\*\***\_\_\_\_**\*\*** to see styled component names when looking at components with React Developer Tools
+- Use of [styled-components][styled-components] in conjunction with [typescript-plugin-styled-components][typescript-plugin-styled-components] to see styled component names rather than compiled hashes in [React Developer Tools][react developer tools]
 
 ### Testing
 
@@ -89,11 +89,11 @@ Here is some marketing for what this project skeleton provides:
 
 ### Production Tools
 
-- Proper CHANGELOG generation and updates with [standard-version][standard-version] (note this requires commit message standards **\*\*\*\***\_\_**\*\*\*\***)
+- Proper CHANGELOG generation and updates with [standard-version][standard-version]
 - Logging for every HTTP request/response with [Morgan][morgan]
 - Arbitrary logging with [Winston][winston]
 - Boilerplate for CI with CircleCI, including an upload of code coverage to [Codecov][codecov]
-- A health check API (as described in \***\*\_\_\_\_\*\***)
+- A health check API (as described in [User-facing functionality and public APIs](#user-facing-functionality-and-public-apis))
 - Top level React error boundary to catch and log front-end errors
 
 ### Security
@@ -416,6 +416,7 @@ The definitions for these flags can be found in `wdio.conf.ts`.
 [webpack-dev-server]: https://webpack.js.org/configuration/dev-server/
 [nodemon]: https://nodemon.io/
 [styled-components]: https://styled-components.com/
+[typescript-plugin-styled-components]: https://github.com/Igorbek/typescript-plugin-styled-components
 [React Developer Tools]: https://reactjs.org/blog/2019/08/15/new-react-devtools.html
 [Jest]: https://jestjs.io/
 [React Testing Library]: https://testing-library.com/docs/react-testing-library/intro/
