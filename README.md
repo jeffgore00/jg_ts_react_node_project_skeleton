@@ -311,7 +311,7 @@ Output from above if the log comes from a client using `/api/logs`:
   "message": "Milestone Character reached new level",
   "timestamp": "20200903",
   "logFromClient": true,
-  "logSource": "http://yoururl.com" // this is the origin of the client called /api/logs
+  "logSource": "http://domainofclientthatcalledlogsapi.com"
 }
 ```
 
