@@ -84,7 +84,7 @@
     "@types/react-dom": "17.0.3",
     "@types/styled-components": "5.1.9",
     "@types/supertest": "2.0.11",
-    "@types/webpack-bundle-analyzer": "3.9.3",
+    "@types/webpack-bundle-analyzer": "4.4.0",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.22.0",
     "@wdio/cli": "7.5.2",
@@ -120,7 +120,7 @@
     "typescript-plugin-styled-components": "1.5.0",
     "wdio-chromedriver-service": "7.0.0",
     "webpack": "5.35.1",
-    "webpack-bundle-analyzer": "4.4.0",
+    "webpack-bundle-analyzer": "4.4.1",
     "webpack-cli": "4.6.0",
     "webpack-dev-server": "3.11.2",
     "yargs": "16.2.0"
