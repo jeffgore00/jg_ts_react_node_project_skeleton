@@ -54,7 +54,7 @@
     "pretest:browser": "tsc wdio.conf.ts --typeRoots ./node_modules/@types/wdio --resolveJsonModule --esModuleInterop"
   },
   "dependencies": {
-    "@types/cors": "2.8.9",
+    "@types/cors": "2.8.10",
     "@types/node": "14.14.6",
     "axios": "0.21.1",
     "cors": "2.8.5",
